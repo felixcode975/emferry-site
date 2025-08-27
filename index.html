@@ -14,6 +14,10 @@
 <body>
   <!-- HEADER -->
   <header class="header">
+    <!-- Hamburger (mobile) -->
+    <button id="mobileMenuBtn" class="hamburger" aria-label="Open menu" type="button">
+      <i class="fa-solid fa-bars" aria-hidden="true"></i>
+    </button>
     <!-- Logo -->
     <div class="header-logo">
       <a href="#">
@@ -125,6 +129,7 @@
   <div class="header-option" id="accountArea">
       <p class="small-text">Hello, sign in</p>
       <p class="bold-text">Account & Lists</p>
+      <span class="mobile-signin">Sign in <span class="chev">&gt;</span></span>
     </div>
 
     <!-- Orders -->
@@ -697,6 +702,12 @@
   </div>
 
   <script>
+    // Hook hamburger to open categories drawer
+    (function(){
+      const mb = document.getElementById('mobileMenuBtn');
+      const allBtn = document.getElementById('navAllBtn');
+      if (mb && allBtn) mb.addEventListener('click', () => allBtn.click());
+    })();
     // Mobile location chip toggle
     (function(){
       const chip = document.getElementById('locChip');
@@ -998,6 +1009,7 @@
       const acct = document.getElementById('accountArea');
       const small = acct.querySelector('.small-text');
       const bold = acct.querySelector('.bold-text');
+      const mob = acct.querySelector('.mobile-signin');
       if (session && session.email) {
         const user = users.find(u => u.email.toLowerCase() === session.email.toLowerCase());
         const name = user ? user.name : session.email;
@@ -1008,9 +1020,11 @@
           small.innerHTML = `<span class="avatar">${initial}</span>`;
         }
         bold.textContent = 'Account';
+        if (mob) mob.style.display = 'none';
       } else {
         small.textContent = 'Hello, sign in';
         bold.textContent = 'Account & Lists';
+        if (mob) mob.style.display = '';
       }
     }
 

@@ -212,6 +212,10 @@ img, video { max-width: 100%; height: auto; }
   padding: 1px 5px;
 }
 
+/* Hamburger (mobile) */
+.hamburger { display: none; background: transparent; border: none; color: #fff; font-size: 22px; padding: 6px 8px; border-radius: 6px; }
+.hamburger:hover { background: rgba(255,255,255,.08); }
+
 /* Location chip + dropdown */
 .loc-chip { display: none; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.2); cursor: pointer; }
 .loc-chip:hover { background: rgba(255,255,255,.18); }
@@ -419,8 +423,9 @@ img, video { max-width: 100%; height: auto; }
 
 /* Phones and small tablets */
 @media (max-width: 768px) {
-  /* Wrap header so Location stays visible below/next to logo */
-  .header { height: auto; flex-wrap: wrap; padding: 8px 10px; gap: 8px; overflow-x: visible; }
+  /* Sticky header, mobile refinement */
+  .header { position: sticky; top: 0; z-index: 1100; height: auto; flex-wrap: wrap; padding: 8px 10px; gap: 8px; overflow-x: hidden; }
+  .hamburger { display: inline-block; }
   .header-logo { order: 1; }
   .header-location { order: 2; }
   .header-search { order: 3; flex: 1 1 100%; justify-content: stretch; }
@@ -443,6 +448,8 @@ img, video { max-width: 100%; height: auto; }
   .header-language select { font-size: 12px; padding: 2px 4px; }
   .header-option { padding: 4px 6px; }
   .header-option .bold-text { font-size: 12px; }
+  #accountArea .mobile-signin { display: inline-flex; align-items: center; gap: 6px; color: #fff; }
+  #accountArea .mobile-signin .chev { opacity: .8; }
   .header-orders .small-text { display: none; }
   .header-orders .bold-text { font-size: 12px; }
   .account-dialog, .auth-dialog { margin: 6vh auto 0; width: 94%; }
