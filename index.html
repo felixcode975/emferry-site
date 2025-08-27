@@ -19,12 +19,15 @@
 
     <!-- Location -->
     <div class="header-location">
-      <i class="fa-solid fa-location-dot"></i>
-      <div>
+      <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+      <button id="locChip" class="loc-chip" type="button" aria-expanded="false" aria-controls="locDropdown">
+        Deliver to <span id="locChipText">Select</span>
+      </button>
+      <div id="locDropdown" class="loc-dropdown">
         <p class="small-text">Deliver to</p>
-        <select id="countrySelect"></select>
-        <select id="stateSelect"></select>
-        <select id="citySelect"></select>
+        <select id="countrySelect" aria-label="Country"></select>
+        <select id="stateSelect" aria-label="State"></select>
+        <select id="citySelect" aria-label="City"></select>
       </div>
     </div>
 
@@ -121,7 +124,7 @@
     </div>
 
     <!-- Orders -->
-    <div class="header-option">
+  <div class="header-option header-orders">
       <p class="small-text">Returns</p>
       <p class="bold-text">& Orders</p>
     </div>
@@ -690,6 +693,27 @@
   </div>
 
   <script>
+    // Mobile location chip toggle
+    (function(){
+      const chip = document.getElementById('locChip');
+      const dd = document.getElementById('locDropdown');
+      const country = document.getElementById('countrySelect');
+      const state = document.getElementById('stateSelect');
+      const city = document.getElementById('citySelect');
+      const chipText = document.getElementById('locChipText');
+      if (!chip || !dd) return;
+      function toggle(){
+        const isOpen = dd.style.display === 'block';
+        dd.style.display = isOpen ? 'none' : 'block';
+        chip.setAttribute('aria-expanded', String(!isOpen));
+      }
+      chip.addEventListener('click', toggle);
+      function updateChip(){
+        const c = city.value || state.value || country.value || 'Select';
+        chipText.textContent = c;
+      }
+      [country, state, city].forEach(el => el && el.addEventListener('change', updateChip));
+    })();
     // ===== Sub-header nav (All menu) =====
     (function(){
       const btn = document.getElementById('navAllBtn');
@@ -1762,6 +1786,40 @@
       showManageTab('profile');
       origOpenManage();
     };
+    // Bottom nav actions
+    (function(){
+      const sel = (id) => document.getElementById(id);
+      const home = sel('bnHome');
+      const cats = sel('bnCategories');
+      const deals = sel('bnDeals');
+      const cart = sel('bnCart');
+      const acct = sel('bnAccount');
+      home && home.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      cats && cats.addEventListener('click', () => {
+        const b = document.getElementById('navAllBtn'); b && b.click();
+      });
+      deals && deals.addEventListener('click', () => {
+        const sh = document.querySelector('.sub-header');
+        if (sh) sh.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      cart && cart.addEventListener('click', () => {
+        const c = document.querySelector('.header-cart');
+        if (c) c.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      acct && acct.addEventListener('click', () => {
+        const accountArea = document.getElementById('accountArea');
+        if (accountArea) accountArea.click();
+      });
+    })();
   </script>
+
+  <!-- Bottom navigation (mobile) -->
+  <nav class="bottom-nav" aria-label="Primary">
+    <button class="bn-item" id="bnHome" type="button" aria-label="Home"><i class="fa-solid fa-house"></i><span>Home</span></button>
+    <button class="bn-item" id="bnCategories" type="button" aria-label="Categories"><i class="fa-solid fa-bars"></i><span>Categories</span></button>
+    <button class="bn-item" id="bnDeals" type="button" aria-label="Deals"><i class="fa-solid fa-bolt"></i><span>Deals</span></button>
+    <button class="bn-item" id="bnCart" type="button" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i><span>Cart</span></button>
+    <button class="bn-item" id="bnAccount" type="button" aria-label="Account"><i class="fa-solid fa-user"></i><span>Account</span></button>
+  </nav>
 </body>
 </html>
