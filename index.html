@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EMFERRY</title>
+  <link rel="stylesheet" href="style.css?v=20250827-1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <!-- Logo -->
+    <div class="header-logo">
+      <a href="#">
+        <span class="brand">EMFERRY</span>
+      </a>
+    </div>
+
+    <!-- Location -->
+    <div class="header-location">
+      <i class="fa-solid fa-location-dot"></i>
+      <div>
+        <p class="small-text">Deliver to</p>
+        <select id="countrySelect"></select>
+        <select id="stateSelect"></select>
+        <select id="citySelect"></select>
+      </div>
+    </div>
+
+    <!-- Search bar -->
+    <div class="header-search">
+            <div class="ef-search">
+              <select id="ef-category" class="ef-search-select" aria-label="Search category">
+                <option value="all">All</option>
+                <option value="electronics">Electronics</option>
+                <option value="computers">Computers</option>
+                <option value="phones">Cell Phones</option>
+                <option value="accessories">Accessories</option>
+                <option value="books">Books</option>
+                <option value="ebooks">eBooks</option>
+                <option value="movies_tv">Movies & TV</option>
+                <option value="music">Music</option>
+                <option value="video_games">Video Games</option>
+                <option value="software">Software</option>
+                <option value="fashion">Fashion</option>
+                <option value="shoes">Shoes</option>
+                <option value="jewelry">Jewelry</option>
+                <option value="watches">Watches</option>
+                <option value="beauty">Beauty</option>
+                <option value="health">Health & Personal Care</option>
+                <option value="baby">Baby</option>
+                <option value="toys">Toys</option>
+                <option value="sports">Sports</option>
+                <option value="outdoors">Outdoors</option>
+                <option value="home">Home</option>
+                <option value="kitchen">Kitchen & Dining</option>
+                <option value="appliances">Appliances</option>
+                <option value="furniture">Furniture</option>
+                <option value="garden">Garden & Patio</option>
+                <option value="tools">Tools & Home Improvement</option>
+                <option value="automotive">Automotive</option>
+                <option value="industrial">Industrial & Scientific</option>
+                <option value="grocery">Grocery</option>
+                <option value="pet_supplies">Pet Supplies</option>
+                <option value="office">Office Products</option>
+                <option value="arts_crafts">Arts, Crafts & Sewing</option>
+                <option value="musical_instruments">Musical Instruments</option>
+                <option value="luggage">Luggage</option>
+                <option value="travel">Travel Accessories</option>
+                <option value="gift_cards">Gift Cards</option>
+              </select>
+              <input type="text" placeholder="Search EMFERRY" class="search-input">
+            </div>
+    </div>
+
+    <!-- Language -->
+    <div class="header-language">
+      <img id="langFlag" src="https://flagcdn.com/w20/us.png" alt="EN">
+      <select id="languageSelect">
+        <option value="en" data-flag="https://flagcdn.com/w20/us.png">English</option>
+<option value="es" data-flag="https://flagcdn.com/w20/es.png">Spanish</option>
+<option value="fr" data-flag="https://flagcdn.com/w20/fr.png">French</option>
+<option value="de" data-flag="https://flagcdn.com/w20/de.png">German</option>
+<option value="pt" data-flag="https://flagcdn.com/w20/pt.png">Portuguese</option>
+<option value="it" data-flag="https://flagcdn.com/w20/it.png">Italian</option>
+<option value="ru" data-flag="https://flagcdn.com/w20/ru.png">Russian</option>
+<option value="zh" data-flag="https://flagcdn.com/w20/cn.png">Chinese (Simplified)</option>
+<option value="zh-tw" data-flag="https://flagcdn.com/w20/tw.png">Chinese (Traditional)</option>
+<option value="ja" data-flag="https://flagcdn.com/w20/jp.png">Japanese</option>
+<option value="ko" data-flag="https://flagcdn.com/w20/kr.png">Korean</option>
+<option value="ar" data-flag="https://flagcdn.com/w20/sa.png">Arabic</option>
+<option value="hi" data-flag="https://flagcdn.com/w20/in.png">Hindi</option>
+<option value="bn" data-flag="https://flagcdn.com/w20/bd.png">Bengali</option>
+<option value="pa" data-flag="https://flagcdn.com/w20/in.png">Punjabi</option>
+<option value="ur" data-flag="https://flagcdn.com/w20/pk.png">Urdu</option>
+<option value="fa" data-flag="https://flagcdn.com/w20/ir.png">Persian (Farsi)</option>
+<option value="tr" data-flag="https://flagcdn.com/w20/tr.png">Turkish</option>
+<option value="vi" data-flag="https://flagcdn.com/w20/vn.png">Vietnamese</option>
+<option value="th" data-flag="https://flagcdn.com/w20/th.png">Thai</option>
+<option value="id" data-flag="https://flagcdn.com/w20/id.png">Indonesian</option>
+<option value="ms" data-flag="https://flagcdn.com/w20/my.png">Malay</option>
+<option value="sw" data-flag="https://flagcdn.com/w20/tz.png">Swahili</option>
+<option value="ha" data-flag="https://flagcdn.com/w20/ng.png">Hausa</option>
+<option value="yo" data-flag="https://flagcdn.com/w20/ng.png">Yoruba</option>
+<option value="ig" data-flag="https://flagcdn.com/w20/ng.png">Igbo</option>
+<option value="zu" data-flag="https://flagcdn.com/w20/za.png">Zulu</option>
+<option value="xh" data-flag="https://flagcdn.com/w20/za.png">Xhosa</option>
+<option value="am" data-flag="https://flagcdn.com/w20/et.png">Amharic</option>
+<option value="he" data-flag="https://flagcdn.com/w20/il.png">Hebrew</option>
+<option value="el" data-flag="https://flagcdn.com/w20/gr.png">Greek</option>
+<option value="pl" data-flag="https://flagcdn.com/w20/pl.png">Polish</option>
+<option value="uk" data-flag="https://flagcdn.com/w20/ua.png">Ukrainian</option>
+      </select>
+    </div>
+
+    <!-- Account -->
+  <div class="header-option" id="accountArea">
+      <p class="small-text">Hello, sign in</p>
+      <p class="bold-text">Account & Lists</p>
+    </div>
+
+    <!-- Orders -->
+    <div class="header-option">
+      <p class="small-text">Returns</p>
+      <p class="bold-text">& Orders</p>
+    </div>
+
+    <!-- Cart -->
+    <div class="header-cart">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span class="cart-count">0</span>
+      <p class="bold-text">Cart</p>
+    </div>
+  </header>
+
+  <!-- Sub Header (Amazon-like) -->
+  <nav class="sub-header" role="navigation" aria-label="Site navigation">
+    <button class="nav-all" id="navAllBtn" aria-expanded="false" aria-controls="navDrawer">
+      <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      <span>All</span>
+    </button>
+
+    <ul class="nav-links">
+      <li><a href="#">Today's Deals</a></li>
+      <li><a href="#">Customer Service</a></li>
+      <li><a href="#">Registry</a></li>
+      <li><a href="#">Gift Cards</a></li>
+      <li><a href="#">Sell</a></li>
+    </ul>
+
+    <div class="nav-promo">Shop deals in Electronics</div>
+  </nav>
+
+  <!-- Side Drawer for "All" menu -->
+  <div id="navDrawer" class="nav-drawer" aria-hidden="true">
+    <div class="nav-backdrop" data-close-drawer></div>p
+    <aside class="nav-panel" role="dialog" aria-modal="true" aria-label="All Departments">
+      <div class="nav-panel-header">
+        <strong>Browse</strong>
+        <button class="nav-close" type="button" aria-label="Close" data-close-drawer>&times;</button>
+      </div>
+      <div class="nav-panel-content">
+        <ul class="nav-section">
+          <li><a href="#">Electronics</a></li>
+          <li><a href="#">Computers</a></li>
+          <li><a href="#">Smartphones</a></li>
+          <li><a href="#">Home & Kitchen</a></li>
+          <li><a href="#">Fashion</a></li>
+          <li><a href="#">Beauty & Health</a></li>
+          <li><a href="#">Toys & Games</a></li>
+          <li><a href="#">Sports & Outdoors</a></li>
+          <li><a href="#">Automotive</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="auth-modal" aria-hidden="true">
+    <div class="auth-backdrop"></div>
+    <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <button class="auth-close" aria-label="Close">&times;</button>
+      <h3 id="authTitle">Your account</h3>
+
+      <div id="signedInBox" class="signed-in hidden">
+        <p>Signed in as <strong id="signedInName"></strong></p>
+        <button id="signOutBtn" class="auth-secondary">Sign out</button>
+      </div>
+
+      <div class="auth-tabs" id="authTabs">
+        <button class="auth-tab active" data-tab="signin" type="button">Sign in</button>
+        <button class="auth-tab" data-tab="signup" type="button">Create account</button>
+      </div>
+
+      <form id="signinForm" class="auth-form" novalidate>
+        <label for="siEmail">Email</label>
+        <input type="email" id="siEmail" autocomplete="email" required>
+
+        <label for="siPassword">Password</label>
+        <input type="password" id="siPassword" autocomplete="current-password" minlength="6" required>
+        <div class="show-row">
+          <input type="checkbox" id="siShowPw">
+          <label for="siShowPw">Show password</label>
+        </div>
+
+        <div class="auth-error" id="siError"></div>
+        <button type="submit" class="auth-primary">Sign in</button>
+      </form>
+
+      <form id="signupForm" class="auth-form hidden" novalidate>
+        <label for="suName">Full name</label>
+        <input type="text" id="suName" autocomplete="name" required>
+
+        <label for="suEmail">Email</label>
+        <input type="email" id="suEmail" autocomplete="email" required>
+
+        <label for="suPassword">Password</label>
+        <input type="password" id="suPassword" autocomplete="new-password" minlength="6" required>
+        <div class="show-row">
+          <input type="checkbox" id="suShowPw">
+          <label for="suShowPw">Show password</label>
+        </div>
+
+        <label for="suPassword2">Confirm password</label>
+        <input type="password" id="suPassword2" autocomplete="new-password" minlength="6" required>
+        <div class="show-row">
+          <input type="checkbox" id="suShowPw2">
+          <label for="suShowPw2">Show confirm password</label>
+        </div>
+
+        <div class="auth-error" id="suError"></div>
+        <button type="submit" class="auth-primary">Create account</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Account Modal (shown when signed in) -->
+  <div id="accountModal" class="account-modal" aria-hidden="true">
+    <div class="auth-backdrop"></div>
+    <div class="account-dialog" role="dialog" aria-modal="true" aria-labelledby="acctTitle">
+      <button class="auth-close" aria-label="Close">&times;</button>
+      <h3 id="acctTitle" class="acct-title">Account</h3>
+      <div class="acct-header">Hello, <strong id="acctHelloName"></strong></div>
+      <div class="acct-actions">
+        <button id="acctManageBtn" class="auth-secondary">Manage account</button>
+        <button id="acctSignOutBtn" class="auth-secondary">Sign out</button>
+      </div>
+      <div class="acct-grid">
+        <div class="acct-col">
+          <h4>Your account</h4>
+          <ul>
+            <li><a href="#">Orders</a></li>
+            <li><a href="#">Returns & Refunds</a></li>
+            <li><a href="#">Addresses</a></li>
+            <li><a href="#">Payment methods</a></li>
+            <li><a href="#">Security settings</a></li>
+            <li><a href="#">Notifications</a></li>
+          </ul>
+        </div>
+        <div class="acct-col">
+          <h4>Your lists</h4>
+          <ul>
+            <li><a href="#">Wishlist</a></li>
+            <li><a href="#">Save for later</a></li>
+            <li><a href="#">Idea boards</a></li>
+            <li><a href="#">Followed stores</a></li>
+            <li><a href="#">Browsing history</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manage Account Fullscreen Modal -->
+  <div id="manageModal" class="manage-modal" aria-hidden="true">
+    <div class="auth-backdrop"></div>
+    <div class="manage-dialog" role="dialog" aria-modal="true" aria-labelledby="manageTitle">
+      <div class="manage-header">
+        <h3 id="manageTitle">Manage your account</h3>
+        <button class="auth-close" aria-label="Close">&times;</button>
+      </div>
+      <div id="manageForm" class="manage-form">
+        <div class="manage-tabs" id="manageTabs">
+          <button class="manage-tab active" data-tab="profile" type="button">Profile</button>
+          <button class="manage-tab" data-tab="addresses" type="button">Addresses</button>
+          <button class="manage-tab" data-tab="payments" type="button">Payment methods</button>
+          <button class="manage-tab" data-tab="security" type="button">Security &amp; Privacy</button>
+        </div>
+
+        <div class="manage-content">
+          <!-- Profile -->
+          <section id="m-profile" class="manage-section">
+            <div class="profile-layout">
+              <div class="profile-avatar-wrap">
+                <div class="profile-avatar" id="profileAvatar">
+                  <img id="profileAvatarImg" alt="Profile avatar" />
+                  <label for="avatarInput" class="avatar-edit" title="Change photo">
+                    <i class="fa-solid fa-camera"></i>
+                  </label>
+                  <input id="avatarInput" type="file" accept="image/*" class="visually-hidden">
+                </div>
+                <div class="avatar-hint">Click the camera to upload a photo</div>
+              </div>
+
+        <form id="profileForm" class="form-grid narrow" novalidate>
+                <div class="form-row">
+                  <label for="profileName">Full name</label>
+          <input id="profileName" class="input-modern icon-name" type="text" required>
+                </div>
+                <div class="form-row">
+                  <label for="profileEmail">Email</label>
+          <input id="profileEmail" class="input-modern icon-email" type="email" required>
+                </div>
+                <div class="form-actions">
+                  <div id="profileMsg" class="form-msg"></div>
+                  <button class="auth-primary" type="submit">Save profile</button>
+                </div>
+              </form>
+
+              <div class="divider"></div>
+
+              <div class="profile-security">
+                <h4>Password</h4>
+                <button id="pwToggle" class="auth-secondary" type="button">Change password</button>
+                <form id="profilePwdForm" class="form-grid hidden" novalidate>
+                  <div class="form-row">
+                    <label for="pwCurrent">Current password</label>
+                    <input id="pwCurrent" type="password" required>
+                  </div>
+                  <div class="form-row grid-2">
+                    <div>
+                      <label for="pwNew">New password</label>
+                      <input id="pwNew" type="password" minlength="8" required>
+                    </div>
+                    <div>
+                      <label for="pwNew2">Confirm new password</label>
+                      <input id="pwNew2" type="password" minlength="8" required>
+                    </div>
+                  </div>
+                  <div class="pw-rules">
+                    Must be at least 8 characters and include upper, lower, and a number.
+                  </div>
+                  <div class="form-actions">
+                    <div id="pwError" class="form-msg error"></div>
+                    <div id="pwSuccess" class="form-msg success"></div>
+                    <button id="pwCancel" class="auth-secondary" type="button">Cancel</button>
+                    <button class="auth-primary" type="submit">Update password</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          <!-- Addresses -->
+          <section id="m-addresses" class="manage-section hidden">
+            <div class="section-actions">
+              <button id="addrNewBtn" class="auth-primary" type="button">Add address</button>
+            </div>
+            <form id="addrForm" class="form-grid hidden" novalidate>
+              <input type="hidden" id="addrId">
+              <div class="form-row">
+                <label for="addrLabel">Label (e.g., Home, Work)</label>
+                <input id="addrLabel" type="text" required>
+              </div>
+              <div class="form-row">
+                <label for="addrFullName">Recipient name</label>
+                <input id="addrFullName" type="text" required>
+              </div>
+              <div class="form-row">
+                <label for="addrPhone">Phone</label>
+                <input id="addrPhone" type="tel" required>
+              </div>
+              <div class="form-row">
+                <label for="addrCountry">Country</label>
+                <select id="addrCountry"></select>
+              </div>
+              <div class="form-row grid-2">
+                <div>
+                  <label for="addrState">State/Region</label>
+                  <input id="addrState" type="text">
+                </div>
+                <div>
+                  <label for="addrCity">City</label>
+                  <input id="addrCity" type="text">
+                </div>
+              </div>
+              <div class="form-row">
+                <label for="addrStreet">Street address</label>
+                <input id="addrStreet" type="text" required>
+              </div>
+              <div class="form-row grid-2">
+                <div>
+                  <label for="addrPostal">Postal code</label>
+                  <input id="addrPostal" type="text">
+                </div>
+              </div>
+              <div class="form-actions">
+                <div id="addrMsg" class="form-msg"></div>
+                <button class="auth-secondary" id="addrCancel" type="button">Cancel</button>
+                <button class="auth-primary" type="submit">Save address</button>
+              </div>
+            </form>
+            <div id="addrList" class="item-list"></div>
+          </section>
+
+          <!-- Payments -->
+          <section id="m-payments" class="manage-section hidden">
+            <div class="section-actions">
+              <button id="cardNewBtn" class="auth-primary" type="button">Add card</button>
+            </div>
+            <form id="cardForm" class="form-grid hidden" novalidate>
+              <input type="hidden" id="cardId">
+              <div class="form-row">
+                <label for="cardName">Name on card</label>
+                <input id="cardName" type="text" required>
+              </div>
+              <div class="form-row grid-2">
+                <div>
+                  <label for="cardNumber">Card number</label>
+                  <input id="cardNumber" type="text" inputmode="numeric" autocomplete="cc-number" required>
+                </div>
+                <div>
+                  <label for="cardExpiry">Expiry (MM/YY)</label>
+                  <input id="cardExpiry" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" required>
+                </div>
+              </div>
+              <div class="form-actions">
+                <div id="cardMsg" class="form-msg"></div>
+                <button class="auth-secondary" id="cardCancel" type="button">Cancel</button>
+                <button class="auth-primary" type="submit">Save card</button>
+              </div>
+            </form>
+            <div id="cardList" class="item-list"></div>
+          </section>
+
+          <!-- Security -->
+          <section id="m-security" class="manage-section hidden">
+            <div class="section-actions">
+              <button id="secOpenModal" class="auth-primary" type="button">Change password</button>
+            </div>
+            <form id="securityForm" class="form-grid hidden" novalidate>
+              <div class="form-row">
+                <label for="secCurrent">Current password</label>
+                <input id="secCurrent" type="password" required>
+              </div>
+              <div class="form-row grid-2">
+                <div>
+                  <label for="secNew">New password</label>
+                  <input id="secNew" type="password" minlength="6" required>
+                </div>
+                <div>
+                  <label for="secNew2">Confirm new password</label>
+                  <input id="secNew2" type="password" minlength="6" required>
+                </div>
+              </div>
+              <div class="form-actions">
+                <div id="secError" class="form-msg error"></div>
+                <div id="secSuccess" class="form-msg success"></div>
+                <button class="auth-primary" type="submit">Update password</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Address Modal (Add/Edit) -->
+  <div id="addrModal" class="addr-modal" aria-hidden="true">
+    <div class="auth-backdrop"></div>
+    <div class="addr-dialog" role="dialog" aria-modal="true" aria-labelledby="addrTitle">
+      <button class="auth-close" aria-label="Close">&times;</button>
+      <h3 id="addrTitle">Add a new address</h3>
+      <form id="addrModalForm" class="form-grid" novalidate>
+        <input type="hidden" id="addrMId">
+        <div class="form-row">
+          <label for="addrMLabel">Address label (optional)</label>
+          <input id="addrMLabel" type="text" placeholder="e.g., Home, Work">
+        </div>
+        <div class="form-row grid-2">
+          <div>
+            <label for="addrMFullName">Full name</label>
+            <input id="addrMFullName" type="text" required>
+          </div>
+          <div>
+            <label for="addrMPhone">Phone</label>
+            <input id="addrMPhone" type="tel" inputmode="tel" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="addrMCountry">Country</label>
+          <select id="addrMCountry"></select>
+        </div>
+        <div class="form-row">
+          <label for="addrMStreet">Address line 1</label>
+          <input id="addrMStreet" type="text" placeholder="Street address, P.O. box, company name" required>
+        </div>
+        <div class="form-row">
+          <label for="addrMStreet2">Address line 2 (optional)</label>
+          <input id="addrMStreet2" type="text" placeholder="Apartment, suite, unit, building, floor">
+        </div>
+        <div class="form-row">
+          <label for="addrMLandmark">Landmark/Company (optional)</label>
+          <input id="addrMLandmark" type="text" placeholder="Nearby landmark or company name">
+        </div>
+        <div class="form-row grid-2">
+          <div>
+            <label for="addrMCity">City</label>
+            <input id="addrMCity" type="text" required>
+          </div>
+          <div>
+            <label for="addrMState">State/Region</label>
+            <input id="addrMState" type="text" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="addrMPostal">Postal code (optional)</label>
+          <input id="addrMPostal" type="text">
+        </div>
+
+        <div class="form-row">
+          <label>Address type</label>
+          <div class="radio-group">
+            <label><input type="radio" name="addrType" value="home" checked> Home</label>
+            <label><input type="radio" name="addrType" value="work"> Work</label>
+            <label><input type="radio" name="addrType" value="other"> Other</label>
+          </div>
+        </div>
+
+        <div class="show-row">
+          <input type="checkbox" id="addrMDefault">
+          <label for="addrMDefault">Make this my default address</label>
+        </div>
+
+        <div class="form-actions">
+          <div id="addrMMsg" class="form-msg"></div>
+          <button type="button" class="auth-secondary" id="addrMCancel">Cancel</button>
+          <button type="submit" class="auth-primary">Save address</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Payment Modal (Add/Edit) -->
+  <div id="cardModal" class="pay-modal" aria-hidden="true">
+    <div class="auth-backdrop"></div>
+    <div class="pay-dialog" role="dialog" aria-modal="true" aria-labelledby="cardTitle">
+      <button class="auth-close" aria-label="Close">&times;</button>
+      <h3 id="cardTitle">Add a new card</h3>
+      <form id="cardModalForm" class="form-grid" novalidate>
+        <input type="hidden" id="cardMId">
+        <div class="form-row">
+          <label for="cardMName">Name on card</label>
+          <input id="cardMName" type="text" required>
+        </div>
+        <div class="form-row grid-2">
+          <div>
+            <label for="cardMNumber">Card number</label>
+            <input id="cardMNumber" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="•••• •••• •••• ••••" required>
+          </div>
+          <div>
+            <label for="cardMExpiry">Expiry (MM/YY)</label>
+            <input id="cardMExpiry" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" required>
+          </div>
+        </div>
+        <div class="form-row grid-2">
+          <div>
+            <label for="cardMCvc">Security code</label>
+            <input id="cardMCvc" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="CVC" required>
+          </div>
+          <div>
+            <label>&nbsp;</label>
+            <div class="show-row">
+              <input type="checkbox" id="cardMDefault">
+              <label for="cardMDefault">Make this my default card</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <div id="cardMMsg" class="form-msg"></div>
+          <button type="button" class="auth-secondary" id="cardMCancel">Cancel</button>
+          <button type="submit" class="auth-primary">Save card</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Security & Privacy Modal -->
+  <div id="secModal" class="sec-modal" aria-hidden="true">
+    <div class="auth-backdrop"></div>
+    <div class="sec-dialog" role="dialog" aria-modal="true" aria-labelledby="secTitle">
+      <button class="auth-close" aria-label="Close">&times;</button>
+      <h3 id="secTitle">Security &amp; Privacy</h3>
+  <div class="subtabs" id="secSubtabs">
+        <button class="subtab active" data-st="security" type="button">Security</button>
+        <button class="subtab" data-st="privacy" type="button">Privacy</button>
+      </div>
+
+  <div class="sec-content">
+  <!-- Security pane -->
+  <div id="secPaneSecurity" class="subpane">
+        <form id="secModalForm" class="form-grid" novalidate>
+          <div class="form-row">
+            <label for="secMCurrent">Current password</label>
+            <input id="secMCurrent" type="password" required>
+          </div>
+          <div class="form-row grid-2">
+            <div>
+              <label for="secMNew">New password</label>
+              <input id="secMNew" type="password" required>
+            </div>
+            <div>
+              <label for="secMNew2">Confirm new password</label>
+              <input id="secMNew2" type="password" required>
+            </div>
+          </div>
+          <div class="pw-rules">Must be at least 8 characters and include upper, lower, and a number.</div>
+          <div class="form-actions">
+            <div id="secMError" class="form-msg error"></div>
+            <div id="secMSuccess" class="form-msg success"></div>
+            <button type="button" class="auth-secondary" id="secMCancel">Cancel</button>
+            <button type="submit" class="auth-primary">Update password</button>
+          </div>
+        </form>
+
+        <div class="divider"></div>
+
+        <div class="form-grid">
+          <div class="form-row">
+            <label>Two-factor authentication (2FA)</label>
+            <div class="show-row">
+              <input type="checkbox" id="twoFAEnabled">
+              <label for="twoFAEnabled">Require a code when signing in on a new device</label>
+            </div>
+          </div>
+          <div class="form-row">
+            <label>Login alerts</label>
+            <div class="show-row">
+              <input type="checkbox" id="loginAlerts">
+              <label for="loginAlerts">Notify me about unrecognized logins</label>
+            </div>
+          </div>
+          <div class="form-row">
+            <label>Active sessions</label>
+            <div id="sessionList" class="item-list"></div>
+            <div class="form-actions">
+              <button id="signOutOthers" type="button" class="auth-secondary">Sign out of other sessions</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Privacy pane -->
+      <div id="secPanePrivacy" class="subpane hidden">
+        <div class="form-grid">
+          <div class="form-row">
+            <label for="msgSetting">Who can message me</label>
+            <select id="msgSetting">
+              <option value="everyone">Everyone</option>
+              <option value="sellers">Sellers only</option>
+              <option value="buyers">Buyers only</option>
+              <option value="noone">No one</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Blocked users</label>
+            <div class="grid-2">
+              <input id="blockInput" type="text" placeholder="Email or username">
+              <button id="blockAdd" type="button" class="auth-secondary">Block</button>
+            </div>
+            <div id="blockedList" class="item-list"></div>
+          </div>
+          <div class="form-row">
+            <label>Download your data</label>
+            <button id="exportData" type="button" class="auth-secondary">Download JSON</button>
+          </div>
+          <div class="form-row">
+            <label>Account status</label>
+            <div class="show-row">
+              <input type="checkbox" id="deactivateAccount">
+              <label for="deactivateAccount">Temporarily deactivate my account</label>
+            </div>
+            <button id="deleteAccount" type="button" class="danger">Delete account</button>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Sub-header nav (All menu) =====
+    (function(){
+      const btn = document.getElementById('navAllBtn');
+      const drawer = document.getElementById('navDrawer');
+      if (!btn || !drawer) return;
+      const backdrop = drawer.querySelector('[data-close-drawer]');
+      const closeBtn = drawer.querySelector('.nav-close');
+
+      function openDrawer(){
+        drawer.classList.add('show');
+        drawer.setAttribute('aria-hidden','false');
+        btn.setAttribute('aria-expanded','true');
+        // prevent body scroll behind drawer
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+      }
+      function closeDrawer(){
+        drawer.classList.remove('show');
+        drawer.setAttribute('aria-hidden','true');
+        btn.setAttribute('aria-expanded','false');
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+      }
+      btn.addEventListener('click', openDrawer);
+      backdrop && backdrop.addEventListener('click', closeDrawer);
+      closeBtn && closeBtn.addEventListener('click', closeDrawer);
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
+    })();
+
+    // 🌍 Delivery location (countries → states → cities)
+    const countrySelect = document.getElementById('countrySelect');
+    const stateSelect = document.getElementById('stateSelect');
+    const citySelect = document.getElementById('citySelect');
+
+    // Local fallback: a few examples in case network fails
+    const fallbackLocations = {
+      Nigeria: { Lagos: ['Ikeja', 'Lekki', 'Yaba'], Abuja: ['Maitama', 'Garki', 'Wuse'] },
+      USA: { California: ['Los Angeles', 'San Francisco'], 'New York': ['NYC', 'Buffalo'] },
+      UK: { England: ['London', 'Manchester'], Scotland: ['Edinburgh', 'Glasgow'] }
+    };
+
+    // Offline country list covering almost all sovereign states (used if REST Countries is unavailable)
+    const fallbackCountryList = [
+      'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria','Azerbaijan',
+      'Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi',
+      'Cabo Verde','Cambodia','Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros','Congo (Congo-Brazzaville)','Costa Rica','Côte d’Ivoire','Croatia','Cuba','Cyprus','Czechia',
+      'Democratic Republic of the Congo','Denmark','Djibouti','Dominica','Dominican Republic',
+      'Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia',
+      'Fiji','Finland','France',
+      'Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau','Guyana',
+      'Haiti','Honduras','Hungary',
+      'Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy',
+      'Jamaica','Japan','Jordan',
+      'Kazakhstan','Kenya','Kiribati','Kuwait','Kyrgyzstan',
+      'Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg',
+      'Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia','Moldova','Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar',
+      'Namibia','Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Korea','North Macedonia','Norway',
+      'Oman',
+      'Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal',
+      'Qatar',
+      'Romania','Russia','Rwanda',
+      'Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','South Korea','South Sudan','Spain','Sri Lanka','Sudan','Suriname','Sweden','Switzerland','Syria',
+      'Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu',
+      'Uganda','Ukraine','United Arab Emirates','United Kingdom','United States of America','Uruguay','Uzbekistan',
+      'Vanuatu','Venezuela','Vietnam',
+      'Yemen',
+      'Zambia','Zimbabwe'
+    ];
+
+    function setPlaceholder(select, text) {
+      select.innerHTML = '';
+      const opt = document.createElement('option');
+      opt.value = '';
+      opt.textContent = text;
+      opt.disabled = true;
+      opt.selected = true;
+      select.appendChild(opt);
+    }
+
+    function fillOptions(select, items) {
+      items.forEach((val) => {
+        const opt = document.createElement('option');
+        opt.value = val;
+        opt.textContent = val;
+        select.appendChild(opt);
+      });
+    }
+
+    async function loadCountries() {
+      setPlaceholder(countrySelect, 'Select country');
+      setPlaceholder(stateSelect, 'Select state');
+      setPlaceholder(citySelect, 'Select city');
+      stateSelect.disabled = true;
+      citySelect.disabled = true;
+      try {
+        // Use REST Countries for a near-complete list of country names
+        const res = await fetch('https://restcountries.com/v3.1/all');
+        const data = await res.json();
+        const names = data
+          .map((c) => c?.name?.common)
+          .filter(Boolean)
+          .sort((a, b) => a.localeCompare(b));
+        if (names.length) {
+          fillOptions(countrySelect, names);
+        } else {
+          fillOptions(countrySelect, fallbackCountryList);
+        }
+      } catch (e) {
+        // Fallback to comprehensive offline list
+        fillOptions(countrySelect, fallbackCountryList);
+      }
+    }
+
+    async function loadStates(country) {
+      setPlaceholder(stateSelect, 'Select state');
+      stateSelect.disabled = true;
+      setPlaceholder(citySelect, 'Select city');
+      citySelect.disabled = true;
+
+      // If we have a local fallback, use it when network fails
+      const useFallback = async () => {
+        const states = Object.keys(fallbackLocations[country] || {});
+        if (states.length) {
+          fillOptions(stateSelect, states);
+          stateSelect.disabled = false;
+        }
+      };
+
+      try {
+        // Countries Now API for states
+        const res = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ country })
+        });
+        const json = await res.json();
+        const states = json?.data?.states?.map((s) => s.name) || [];
+        if (states.length) {
+          fillOptions(stateSelect, states);
+          stateSelect.disabled = false;
+        } else {
+          await useFallback();
+        }
+      } catch (e) {
+        await useFallback();
+      }
+    }
+
+    async function loadCities(country, state) {
+      setPlaceholder(citySelect, 'Select city');
+      citySelect.disabled = true;
+
+      // Local fallback
+      const useFallback = () => {
+        const cities = (fallbackLocations[country] || {})[state] || [];
+        if (cities.length) {
+          fillOptions(citySelect, cities);
+          citySelect.disabled = false;
+        }
+      };
+
+      try {
+        const res = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ country, state })
+        });
+        const json = await res.json();
+        const cities = json?.data || [];
+        if (Array.isArray(cities) && cities.length) {
+          fillOptions(citySelect, cities);
+          citySelect.disabled = false;
+        } else {
+          useFallback();
+        }
+      } catch (e) {
+        useFallback();
+      }
+    }
+
+    // Wire up events
+    countrySelect.addEventListener('change', (e) => {
+      const country = e.target.value;
+      if (!country) return;
+      loadStates(country);
+    });
+
+    stateSelect.addEventListener('change', (e) => {
+      const state = e.target.value;
+      const country = countrySelect.value;
+      if (!country || !state) return;
+      loadCities(country, state);
+    });
+
+    // Init
+    loadCountries();
+
+    // 🌐 Language change flag
+    const languageSelect = document.getElementById("languageSelect");
+    const langFlag = document.getElementById("langFlag");
+
+    languageSelect.addEventListener("change", function() {
+      const selected = this.options[this.selectedIndex];
+      const flag = selected.getAttribute("data-flag");
+      langFlag.src = flag;
+    });
+
+    // 📍 Auto-detect user location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        console.log("Detected location:", pos.coords.latitude, pos.coords.longitude);
+        // Here you could reverse-geocode with API (e.g. OpenCage or Google Maps)
+      });
+    }
+
+    // 🔐 Simple front-end auth (localStorage demo)
+    const LS_USERS = 'emferry_users_v1';
+    const LS_SESSION = 'emferry_session_v1';
+
+    function getUsers() {
+      try { return JSON.parse(localStorage.getItem(LS_USERS)) || []; } catch { return []; }
+    }
+    function saveUsers(users) {
+      localStorage.setItem(LS_USERS, JSON.stringify(users));
+    }
+    function setSession(email) {
+      localStorage.setItem(LS_SESSION, JSON.stringify({ email }));
+    }
+    function getSession() {
+      try { return JSON.parse(localStorage.getItem(LS_SESSION)) || null; } catch { return null; }
+    }
+    function clearSession() {
+      localStorage.removeItem(LS_SESSION);
+    }
+
+    function firstNameOf(name) {
+      return (name || '').split(' ')[0] || '';
+    }
+    function isValidEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+      return re.test(String(email).trim());
+    }
+
+    // UI elements
+    const accountArea = document.getElementById('accountArea');
+    const authModal = document.getElementById('authModal');
+    const authBackdrop = authModal.querySelector('.auth-backdrop');
+    const authClose = authModal.querySelector('.auth-close');
+    const tabs = Array.from(document.querySelectorAll('.auth-tab'));
+    const signinForm = document.getElementById('signinForm');
+    const signupForm = document.getElementById('signupForm');
+    const siError = document.getElementById('siError');
+    const suError = document.getElementById('suError');
+    const signedInBox = document.getElementById('signedInBox');
+    const signedInName = document.getElementById('signedInName');
+    const signOutBtn = document.getElementById('signOutBtn');
+
+    function openModal() {
+      authModal.classList.add('show');
+      authModal.setAttribute('aria-hidden', 'false');
+    }
+    function closeModal() {
+      authModal.classList.remove('show');
+      authModal.setAttribute('aria-hidden', 'true');
+      siError.textContent = '';
+      suError.textContent = '';
+    }
+
+    function switchTab(tab) {
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+      signinForm.classList.toggle('hidden', tab !== 'signin');
+      signupForm.classList.toggle('hidden', tab !== 'signup');
+    }
+
+    function updateHeaderUser() {
+      const session = getSession();
+      const users = getUsers();
+      const acct = document.getElementById('accountArea');
+      const small = acct.querySelector('.small-text');
+      const bold = acct.querySelector('.bold-text');
+      if (session && session.email) {
+        const user = users.find(u => u.email.toLowerCase() === session.email.toLowerCase());
+        const name = user ? user.name : session.email;
+        const initial = (name || 'U').trim().charAt(0).toUpperCase();
+        if (user && user.avatar) {
+          small.innerHTML = `<span class="avatar"><img src="${user.avatar}" alt="avatar"/></span>`;
+        } else {
+          small.innerHTML = `<span class="avatar">${initial}</span>`;
+        }
+        bold.textContent = 'Account';
+      } else {
+        small.textContent = 'Hello, sign in';
+        bold.textContent = 'Account & Lists';
+      }
+    }
+
+    function toggleSignedInView() {
+      const session = getSession();
+      const users = getUsers();
+      if (session && session.email) {
+        const user = users.find(u => u.email.toLowerCase() === session.email.toLowerCase());
+        signedInName.textContent = user ? user.name : session.email;
+        signedInBox.classList.remove('hidden');
+        document.getElementById('authTabs').classList.add('hidden');
+        signinForm.classList.add('hidden');
+        signupForm.classList.add('hidden');
+      } else {
+        signedInBox.classList.add('hidden');
+        document.getElementById('authTabs').classList.remove('hidden');
+        // Keep current tab
+      }
+    }
+
+    // Handlers
+    accountArea.addEventListener('click', () => {
+      const session = getSession();
+      if (session && session.email) {
+        openAccountModal();
+      } else {
+        switchTab('signin');
+        toggleSignedInView();
+        openModal();
+      }
+    });
+    authBackdrop.addEventListener('click', closeModal);
+    authClose.addEventListener('click', closeModal);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+  // Account modal wiring
+    const accountModalEl = document.getElementById('accountModal');
+    const acctBackdrop = accountModalEl.querySelector('.auth-backdrop');
+    const acctClose = accountModalEl.querySelector('.auth-close');
+    const acctHelloName = document.getElementById('acctHelloName');
+    const acctManageBtn = document.getElementById('acctManageBtn');
+    const acctSignOutBtn = document.getElementById('acctSignOutBtn');
+
+    function openAccountModal() {
+      const session = getSession();
+      const users = getUsers();
+      const user = session ? users.find(u => u.email.toLowerCase() === session.email.toLowerCase()) : null;
+      acctHelloName.textContent = user ? user.name : '';
+      accountModalEl.classList.add('show');
+      accountModalEl.setAttribute('aria-hidden', 'false');
+    }
+    function closeAccountModal() {
+      accountModalEl.classList.remove('show');
+      accountModalEl.setAttribute('aria-hidden', 'true');
+    }
+    acctBackdrop.addEventListener('click', closeAccountModal);
+    acctClose.addEventListener('click', closeAccountModal);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAccountModal(); });
+
+    // Manage Account fullscreen modal
+    const manageModalEl = document.getElementById('manageModal');
+    const manageBackdrop = manageModalEl.querySelector('.auth-backdrop');
+    const manageClose = manageModalEl.querySelector('.auth-close');
+    function openManageModal() {
+      manageModalEl.classList.add('show');
+      manageModalEl.setAttribute('aria-hidden', 'false');
+    }
+    function closeManageModal() {
+      manageModalEl.classList.remove('show');
+      manageModalEl.setAttribute('aria-hidden', 'true');
+    }
+    acctManageBtn.addEventListener('click', () => { closeAccountModal(); openManageModal(); });
+    manageBackdrop.addEventListener('click', closeManageModal);
+    manageClose.addEventListener('click', closeManageModal);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeManageModal(); });
+    acctSignOutBtn.addEventListener('click', () => {
+      clearSession();
+      updateHeaderUser();
+      closeAccountModal();
+    });
+
+    tabs.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
+
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      suError.textContent = '';
+      const name = document.getElementById('suName').value.trim();
+      const email = document.getElementById('suEmail').value.trim();
+      const pw = document.getElementById('suPassword').value;
+      const pw2 = document.getElementById('suPassword2').value;
+      if (!name || !email || !pw) { suError.textContent = 'Please complete all fields.'; return; }
+      if (!isValidEmail(email)) { suError.textContent = 'Enter a valid email address.'; return; }
+      if (pw.length < 6) { suError.textContent = 'Password must be at least 6 characters.'; return; }
+      if (pw !== pw2) { suError.textContent = 'Passwords do not match.'; return; }
+      const users = getUsers();
+      if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+        suError.textContent = 'An account with this email already exists.'; return;
+      }
+      users.push({ name, email, password: pw }); // Demo only; do not store plain passwords in production
+      saveUsers(users);
+      setSession(email);
+      updateHeaderUser();
+      closeModal();
+    });
+
+    signinForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      siError.textContent = '';
+      const email = document.getElementById('siEmail').value.trim();
+      const pw = document.getElementById('siPassword').value;
+      if (!isValidEmail(email)) { siError.textContent = 'Enter a valid email address.'; return; }
+      const users = getUsers();
+      const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+      if (!user || user.password !== pw) { siError.textContent = 'Invalid email or password.'; return; }
+      setSession(email);
+      updateHeaderUser();
+      closeModal();
+    });
+
+    // Show password toggles
+    document.getElementById('siShowPw').addEventListener('change', (e) => {
+      document.getElementById('siPassword').type = e.target.checked ? 'text' : 'password';
+    });
+    document.getElementById('suShowPw').addEventListener('change', (e) => {
+      document.getElementById('suPassword').type = e.target.checked ? 'text' : 'password';
+    });
+    document.getElementById('suShowPw2').addEventListener('change', (e) => {
+      document.getElementById('suPassword2').type = e.target.checked ? 'text' : 'password';
+    });
+
+    signOutBtn.addEventListener('click', () => {
+      clearSession();
+      updateHeaderUser();
+      closeModal();
+    });
+
+    // Initialize header on load
+    updateHeaderUser();
+
+    // ===== Manage Account logic =====
+    const manageTabs = Array.from(document.querySelectorAll('#manageTabs .manage-tab'));
+    const manageSections = {
+      profile: document.getElementById('m-profile'),
+      addresses: document.getElementById('m-addresses'),
+      payments: document.getElementById('m-payments'),
+      security: document.getElementById('m-security')
+    };
+
+    function showManageTab(tab) {
+      manageTabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+      Object.entries(manageSections).forEach(([k, el]) => el.classList.toggle('hidden', k !== tab));
+    }
+    manageTabs.forEach(btn => btn.addEventListener('click', () => showManageTab(btn.dataset.tab)));
+
+    // Data helpers under users array
+    function getUserByEmail(email) {
+      return getUsers().find(u => u.email.toLowerCase() === email.toLowerCase());
+    }
+    function saveUser(updated) {
+      const users = getUsers();
+      const idx = users.findIndex(u => u.email.toLowerCase() === updated.email.toLowerCase());
+      if (idx >= 0) { users[idx] = updated; saveUsers(users); }
+    }
+
+    // Profile
+    const profileForm = document.getElementById('profileForm');
+    const pfName = document.getElementById('profileName');
+    const pfEmail = document.getElementById('profileEmail');
+    const profileMsg = document.getElementById('profileMsg');
+    const avatarInput = document.getElementById('avatarInput');
+    const avatarImg = document.getElementById('profileAvatarImg');
+    const pwForm = document.getElementById('profilePwdForm');
+    const pwToggle = document.getElementById('pwToggle');
+    const pwCancel = document.getElementById('pwCancel');
+    const pwError = document.getElementById('pwError');
+    const pwSuccess = document.getElementById('pwSuccess');
+
+    function loadProfile() {
+      const session = getSession(); if (!session) return;
+      const user = getUserByEmail(session.email); if (!user) return;
+      pfName.value = user.name || '';
+      pfEmail.value = user.email;
+      if (user.avatar) { avatarImg.src = user.avatar; avatarImg.style.display = 'block'; }
+      else { avatarImg.src = ''; avatarImg.style.display = 'none'; }
+    }
+    profileForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const session = getSession(); if (!session) return;
+      const users = getUsers();
+      const idx = users.findIndex(u => u.email.toLowerCase() === session.email.toLowerCase());
+      if (idx < 0) return;
+      const curUser = users[idx];
+      const name = pfName.value.trim();
+      const email = pfEmail.value.trim();
+      profileMsg.textContent = '';
+      if (!name) { profileMsg.textContent = 'Name is required.'; return; }
+      if (!isValidEmail(email)) { profileMsg.textContent = 'Enter a valid email address.'; return; }
+      const emailChanged = email.toLowerCase() !== curUser.email.toLowerCase();
+      if (emailChanged) {
+        const taken = users.some((u, i) => i !== idx && u.email.toLowerCase() === email.toLowerCase());
+        if (taken) { profileMsg.textContent = 'That email is already in use.'; return; }
+      }
+      users[idx] = { ...curUser, name, email };
+      saveUsers(users);
+      if (emailChanged) { setSession(email); }
+      updateHeaderUser();
+      profileMsg.textContent = 'Profile saved.';
+      setTimeout(() => {
+        profileMsg.textContent = '';
+        // Return user to the Account panel after saving profile
+        closeManageModal();
+        openAccountModal();
+      }, 700);
+    });
+
+    // Avatar upload -> store data URL in user, update header
+    avatarInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const session = getSession(); if (!session) return;
+        const users = getUsers();
+        const idx = users.findIndex(u => u.email.toLowerCase() === session.email.toLowerCase());
+        if (idx < 0) return;
+        users[idx].avatar = String(reader.result);
+        saveUsers(users);
+        avatarImg.src = users[idx].avatar;
+        avatarImg.style.display = 'block';
+        updateHeaderUser();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Stronger password change flow under Profile
+    function strongPassword(pw) {
+      // at least 8 chars, with upper, lower, number
+      return /(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}/.test(pw);
+    }
+    pwToggle.addEventListener('click', () => { pwForm.classList.toggle('hidden'); });
+    pwCancel.addEventListener('click', () => { pwForm.reset(); pwError.textContent=''; pwSuccess.textContent=''; pwForm.classList.add('hidden'); });
+    pwForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      pwError.textContent = ''; pwSuccess.textContent = '';
+      const session = getSession(); if (!session) return;
+      const users = getUsers();
+      const idx = users.findIndex(u => u.email.toLowerCase() === session.email.toLowerCase());
+      if (idx < 0) return;
+      const cur = document.getElementById('pwCurrent').value;
+      const nw = document.getElementById('pwNew').value;
+      const nw2 = document.getElementById('pwNew2').value;
+      if (users[idx].password !== cur) { pwError.textContent = 'Current password is incorrect.'; return; }
+      if (!strongPassword(nw)) { pwError.textContent = 'Use at least 8 chars with upper, lower and a number.'; return; }
+      if (nw !== nw2) { pwError.textContent = 'Passwords do not match.'; return; }
+      users[idx].password = nw; saveUsers(users);
+      pwSuccess.textContent = 'Password updated.';
+      pwForm.reset();
+      setTimeout(() => { pwSuccess.textContent = ''; pwForm.classList.add('hidden'); }, 1200);
+    });
+
+    // Addresses
+    const addrCountry = document.getElementById('addrCountry');
+    const addrForm = document.getElementById('addrForm');
+    const addrNewBtn = document.getElementById('addrNewBtn');
+    const addrCancel = document.getElementById('addrCancel');
+    const addrMsg = document.getElementById('addrMsg');
+    const addrList = document.getElementById('addrList');
+
+    // Seed country select with same list
+    function seedAddrCountries() {
+      addrCountry.innerHTML = '';
+      fillOptions(addrCountry, countrySelect.options.length ? Array.from(countrySelect.options).slice(1).map(o => o.value) : fallbackCountryList);
+    }
+
+    // Address Modal wiring
+    const addrModalEl = document.getElementById('addrModal');
+    const addrMBackdrop = addrModalEl.querySelector('.auth-backdrop');
+    const addrMClose = addrModalEl.querySelector('.auth-close');
+    const addrMTitle = document.getElementById('addrTitle');
+    const addrMForm = document.getElementById('addrModalForm');
+    const addrMId = document.getElementById('addrMId');
+    const addrMLabel = document.getElementById('addrMLabel');
+    const addrMFullName = document.getElementById('addrMFullName');
+    const addrMPhone = document.getElementById('addrMPhone');
+    const addrMCountry = document.getElementById('addrMCountry');
+    const addrMStreet = document.getElementById('addrMStreet');
+    const addrMStreet2 = document.getElementById('addrMStreet2');
+    const addrMLandmark = document.getElementById('addrMLandmark');
+    const addrMCity = document.getElementById('addrMCity');
+    const addrMState = document.getElementById('addrMState');
+    const addrMPostal = document.getElementById('addrMPostal');
+    const addrMDefault = document.getElementById('addrMDefault');
+    const addrMMsg = document.getElementById('addrMMsg');
+    const addrMCancel = document.getElementById('addrMCancel');
+
+    function seedAddrModalCountries() {
+      addrMCountry.innerHTML = '';
+      fillOptions(addrMCountry, countrySelect.options.length ? Array.from(countrySelect.options).slice(1).map(o => o.value) : fallbackCountryList);
+    }
+
+    function openAddrModal(mode = 'new', index = null) {
+      seedAddrModalCountries();
+      addrMMsg.textContent = '';
+      if (mode === 'edit' && index != null) {
+        const user = currentUser(); if (!user) return;
+        ensureCollections(user);
+        const a = user.addresses[index]; if (!a) return;
+        addrMTitle.textContent = 'Edit address';
+        addrMId.value = String(index);
+        addrMLabel.value = a.label || '';
+        addrMFullName.value = a.fullName || '';
+        addrMPhone.value = a.phone || '';
+        addrMCountry.value = a.country || '';
+        addrMStreet.value = a.street || '';
+        addrMStreet2.value = a.street2 || '';
+        addrMLandmark.value = a.landmark || '';
+        addrMCity.value = a.city || '';
+        addrMState.value = a.state || '';
+        addrMPostal.value = a.postal || '';
+        const type = a.type || 'home';
+        (addrMForm.querySelector(`input[name="addrType"][value="${type}"]`) || addrMForm.querySelector('input[name="addrType"][value="home"]')).checked = true;
+        addrMDefault.checked = !!a.isDefault;
+      } else {
+        addrMTitle.textContent = 'Add a new address';
+        addrMForm.reset();
+        addrMId.value = '';
+      }
+      addrModalEl.classList.add('show');
+      addrModalEl.setAttribute('aria-hidden', 'false');
+    }
+    function closeAddrModal() {
+      addrModalEl.classList.remove('show');
+      addrModalEl.setAttribute('aria-hidden', 'true');
+    }
+    addrMBackdrop.addEventListener('click', closeAddrModal);
+    addrMClose.addEventListener('click', closeAddrModal);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAddrModal(); });
+
+    addrMForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      addrMMsg.textContent = '';
+      const user = currentUser(); if (!user) return;
+      ensureCollections(user);
+      const idx = addrMId.value;
+      const type = (addrMForm.querySelector('input[name="addrType"]:checked')?.value) || 'home';
+      const entry = {
+        label: addrMLabel.value.trim(),
+        fullName: addrMFullName.value.trim(),
+        phone: addrMPhone.value.trim(),
+        country: addrMCountry.value,
+        state: addrMState.value.trim(),
+        city: addrMCity.value.trim(),
+        street: addrMStreet.value.trim(),
+        street2: addrMStreet2.value.trim(),
+        landmark: addrMLandmark.value.trim(),
+        postal: addrMPostal.value.trim(),
+        type,
+        isDefault: addrMDefault.checked || false
+      };
+      if (!entry.fullName || !entry.phone || !entry.country || !entry.street || !entry.city || !entry.state) {
+        addrMMsg.textContent = 'Please complete all required fields.'; return;
+      }
+      if (entry.isDefault) {
+        user.addresses.forEach((a, i) => { if (i !== +idx) a.isDefault = false; });
+      }
+      if (idx !== '') user.addresses[+idx] = { ...user.addresses[+idx], ...entry };
+      else user.addresses.push(entry);
+      saveUser(user);
+      closeAddrModal();
+      renderAddresses();
+    });
+
+    function currentUser() { const s = getSession(); return s ? getUserByEmail(s.email) : null; }
+    function ensureCollections(user) {
+      user.addresses = user.addresses || [];
+      user.cards = user.cards || [];
+    }
+
+    function renderAddresses() {
+      const user = currentUser(); if (!user) return;
+      ensureCollections(user);
+      addrList.innerHTML = '';
+      if (!user.addresses.length) {
+        addrList.innerHTML = '<p class="muted">No addresses yet.</p>';
+        return;
+      }
+      user.addresses.forEach((a, i) => {
+        const card = document.createElement('div');
+        card.className = 'list-card';
+        const badges = `
+          ${a.isDefault ? '<span class="badge default">Default</span>' : ''}
+          ${a.type ? `<span class="badge">${(a.type||'').charAt(0).toUpperCase()+ (a.type||'').slice(1)}</span>` : ''}
+        `;
+        card.innerHTML = `
+          <div class="list-body">
+            <div class="list-title">${a.label || 'Address'} ${badges}</div>
+            <div class="list-sub">${a.fullName || ''} · ${a.phone || ''}</div>
+            <div class="list-sub">${a.street || ''}${a.street2 ? ', ' + a.street2 : ''}</div>
+            <div class="list-sub">${a.city || ''}, ${a.state || ''} ${a.postal || ''}</div>
+            <div class="list-sub">${a.country || ''}${a.landmark ? ' · ' + a.landmark : ''}</div>
+          </div>
+          <div class="list-actions">
+            <button class="auth-secondary" data-edit="${i}">Edit</button>
+            <button class="danger" data-del="${i}">Delete</button>
+          </div>`;
+        addrList.appendChild(card);
+      });
+      addrList.querySelectorAll('[data-edit]').forEach(btn => btn.addEventListener('click', () => openAddrModal('edit', +btn.dataset.edit)));
+      addrList.querySelectorAll('[data-del]').forEach(btn => btn.addEventListener('click', () => deleteAddress(+btn.dataset.del)));
+    }
+
+  function editAddress(index) { openAddrModal('edit', index); }
+
+    function deleteAddress(index) {
+      const user = currentUser(); if (!user) return;
+      ensureCollections(user);
+      user.addresses.splice(index, 1);
+      saveUser(user);
+      renderAddresses();
+    }
+
+  addrNewBtn.addEventListener('click', () => { openAddrModal('new'); });
+  addrMCancel.addEventListener('click', () => { closeAddrModal(); });
+    addrCancel.addEventListener('click', () => {
+      addrForm.classList.add('hidden');
+      addrMsg.textContent = '';
+    });
+    addrForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      addrMsg.textContent = '';
+      const user = currentUser(); if (!user) return;
+      ensureCollections(user);
+      const idx = document.getElementById('addrId').value;
+      const entry = {
+        label: document.getElementById('addrLabel').value.trim(),
+        fullName: document.getElementById('addrFullName').value.trim(),
+        phone: document.getElementById('addrPhone').value.trim(),
+        country: document.getElementById('addrCountry').value,
+        state: document.getElementById('addrState').value.trim(),
+        city: document.getElementById('addrCity').value.trim(),
+        street: document.getElementById('addrStreet').value.trim(),
+        postal: document.getElementById('addrPostal').value.trim(),
+      };
+      if (!entry.label || !entry.fullName || !entry.phone || !entry.street || !entry.country) {
+        addrMsg.textContent = 'Please complete the required fields.'; return;
+      }
+      if (idx !== '') user.addresses[+idx] = entry; else user.addresses.push(entry);
+      saveUser(user);
+      addrForm.classList.add('hidden');
+      renderAddresses();
+    });
+
+    // Cards
+    const cardForm = document.getElementById('cardForm');
+    const cardNewBtn = document.getElementById('cardNewBtn');
+    const cardCancel = document.getElementById('cardCancel');
+    const cardMsg = document.getElementById('cardMsg');
+    const cardList = document.getElementById('cardList');
+
+    function maskCard(num) {
+      const s = num.replace(/\D/g, '');
+      if (s.length < 4) return '••••';
+      return '•••• •••• •••• ' + s.slice(-4);
+    }
+    function renderCards() {
+      const user = currentUser(); if (!user) return;
+      ensureCollections(user);
+      cardList.innerHTML = '';
+      if (!user.cards.length) { cardList.innerHTML = '<p class="muted">No cards yet.</p>'; return; }
+      user.cards.forEach((c, i) => {
+        const brand = detectCardBrand((c.number||'').replace(/\s+/g,''));
+        const el = document.createElement('div');
+        el.className = 'list-card';
+        const badges = `
+          ${c.isDefault ? '<span class="badge default">Default</span>' : ''}
+          ${brand ? `<span class=\"badge\">${brand}</span>` : ''}
+        `;
+        el.innerHTML = `
+          <div class="list-body">
+            <div class="list-title">${c.name || 'Card'} ${badges}</div>
+            <div class="list-sub">${maskCard(c.number)} · exp ${c.expiry}</div>
+          </div>
+          <div class="list-actions">
+            <button class="auth-secondary" data-edit-card="${i}">Edit</button>
+            <button class="danger" data-del-card="${i}">Delete</button>
+          </div>`;
+        cardList.appendChild(el);
+      });
+      cardList.querySelectorAll('[data-edit-card]').forEach(btn => btn.addEventListener('click', () => openCardModal('edit', +btn.dataset.editCard)));
+      cardList.querySelectorAll('[data-del-card]').forEach(btn => btn.addEventListener('click', () => deleteCard(+btn.dataset.delCard)));
+    }
+    function editCard(index) { openCardModal('edit', index); }
+    function deleteCard(index) {
+      const user = currentUser(); if (!user) return;
+      ensureCollections(user);
+      user.cards.splice(index, 1);
+      saveUser(user);
+      renderCards();
+    }
+    // Payment modal wiring
+    const cardModalEl = document.getElementById('cardModal');
+    const cardMBackdrop = cardModalEl.querySelector('.auth-backdrop');
+    const cardMClose = cardModalEl.querySelector('.auth-close');
+    const cardMForm = document.getElementById('cardModalForm');
+    const cardMTitle = document.getElementById('cardTitle');
+    const cardMId = document.getElementById('cardMId');
+    const cardMName = document.getElementById('cardMName');
+    const cardMNumber = document.getElementById('cardMNumber');
+    const cardMExpiry = document.getElementById('cardMExpiry');
+    const cardMCvc = document.getElementById('cardMCvc');
+    const cardMDefault = document.getElementById('cardMDefault');
+    const cardMMsg = document.getElementById('cardMMsg');
+    const cardMCancel = document.getElementById('cardMCancel');
+
+    function openCardModal(mode = 'new', index = null) {
+      cardMMsg.textContent = '';
+      if (mode === 'edit' && index != null) {
+        const user = currentUser(); if (!user) return;
+        ensureCollections(user);
+        const c = user.cards[index]; if (!c) return;
+        cardMTitle.textContent = 'Edit card';
+        cardMId.value = String(index);
+        cardMName.value = c.name || '';
+        cardMNumber.value = c.number || '';
+        cardMExpiry.value = c.expiry || '';
+        cardMCvc.value = c.cvc || '';
+        cardMDefault.checked = !!c.isDefault;
+      } else {
+        cardMTitle.textContent = 'Add a new card';
+        cardMForm.reset();
+        cardMId.value = '';
+      }
+      cardModalEl.classList.add('show');
+      cardModalEl.setAttribute('aria-hidden', 'false');
+    }
+    function closeCardModal() {
+      cardModalEl.classList.remove('show');
+      cardModalEl.setAttribute('aria-hidden', 'true');
+    }
+    cardMBackdrop.addEventListener('click', closeCardModal);
+    cardMClose.addEventListener('click', closeCardModal);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCardModal(); });
+
+    // Helpers
+    function detectCardBrand(num) {
+      if (/^4\d{12,18}$/.test(num)) return 'Visa';
+      if (/^(5[1-5]\d{14}|2(2[2-9]\d{2}|[3-6]\d{3}|7[01]\d{2}|720\d)\d{10})$/.test(num)) return 'Mastercard';
+      if (/^3[47]\d{13}$/.test(num)) return 'AmEx';
+      if (/^6(?:011|5\d{2})\d{12}$/.test(num)) return 'Discover';
+      return '';
+    }
+    function normalizeCardNumber(s) { return s.replace(/\s+/g, '').replace(/[^\d]/g, ''); }
+
+    cardNewBtn.addEventListener('click', () => openCardModal('new'));
+    cardMCancel.addEventListener('click', () => closeCardModal());
+    cardMForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      cardMMsg.textContent = '';
+      const user = currentUser(); if (!user) return;
+      ensureCollections(user);
+      const idx = cardMId.value;
+      const entry = {
+        name: cardMName.value.trim(),
+        number: normalizeCardNumber(cardMNumber.value),
+        expiry: cardMExpiry.value.trim(),
+        cvc: cardMCvc.value.trim(),
+        isDefault: cardMDefault.checked || false
+      };
+      if (!entry.name || !entry.number || !entry.expiry || !entry.cvc) { cardMMsg.textContent = 'Please fill all fields.'; return; }
+      if (!/^\d{12,19}$/.test(entry.number)) { cardMMsg.textContent = 'Enter a valid card number.'; return; }
+      if (!/^(0[1-9]|1[0-2])\/(\d{2})$/.test(entry.expiry)) { cardMMsg.textContent = 'Use MM/YY for expiry.'; return; }
+      if (!/^\d{3,4}$/.test(entry.cvc)) { cardMMsg.textContent = 'CVC must be 3 or 4 digits.'; return; }
+      if (entry.isDefault) { user.cards.forEach((c, i) => { if (i !== +idx) c.isDefault = false; }); }
+      if (idx !== '') user.cards[+idx] = { ...user.cards[+idx], ...entry };
+      else user.cards.push(entry);
+      saveUser(user);
+      closeCardModal();
+      renderCards();
+    });
+
+    // Security (change password)
+    const securityForm = document.getElementById('securityForm');
+    const secError = document.getElementById('secError');
+    const secSuccess = document.getElementById('secSuccess');
+    securityForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      secError.textContent = '';
+      secSuccess.textContent = '';
+      const user = currentUser(); if (!user) return;
+      const cur = document.getElementById('secCurrent').value;
+      const nw = document.getElementById('secNew').value;
+      const nw2 = document.getElementById('secNew2').value;
+      if (user.password !== cur) { secError.textContent = 'Current password is incorrect.'; return; }
+      if (nw.length < 6) { secError.textContent = 'New password must be at least 6 characters.'; return; }
+      if (nw !== nw2) { secError.textContent = 'Passwords do not match.'; return; }
+      user.password = nw; saveUser(user);
+      secSuccess.textContent = 'Password updated.';
+      securityForm.reset();
+      setTimeout(() => secSuccess.textContent = '', 1500);
+    });
+
+    // Security modal wiring
+    const secOpenModalBtn = document.getElementById('secOpenModal');
+    const secModalEl = document.getElementById('secModal');
+    const secMBackdrop = secModalEl.querySelector('.auth-backdrop');
+    const secMClose = secModalEl.querySelector('.auth-close');
+    const secMForm = document.getElementById('secModalForm');
+    const secMError = document.getElementById('secMError');
+    const secMSuccess = document.getElementById('secMSuccess');
+    const secMCancel = document.getElementById('secMCancel');
+    const secSubtabs = Array.from(document.querySelectorAll('#secSubtabs .subtab'));
+    const secPaneSecurity = document.getElementById('secPaneSecurity');
+    const secPanePrivacy = document.getElementById('secPanePrivacy');
+    // Security toggles
+    const twoFAEnabled = document.getElementById('twoFAEnabled');
+    const loginAlerts = document.getElementById('loginAlerts');
+    const sessionList = document.getElementById('sessionList');
+    const signOutOthers = document.getElementById('signOutOthers');
+    // Privacy controls
+    const msgSetting = document.getElementById('msgSetting');
+    const blockInput = document.getElementById('blockInput');
+    const blockAdd = document.getElementById('blockAdd');
+    const blockedList = document.getElementById('blockedList');
+    const exportDataBtn = document.getElementById('exportData');
+    const deactivateAccount = document.getElementById('deactivateAccount');
+    const deleteAccountBtn = document.getElementById('deleteAccount');
+    function openSecModal() {
+      secMForm.reset();
+      secMError.textContent = '';
+      secMSuccess.textContent = '';
+      secModalEl.classList.add('show');
+      secModalEl.setAttribute('aria-hidden', 'false');
+      // default to security tab
+      secSubtabs.forEach(t => t.classList.toggle('active', t.dataset.st === 'security'));
+      secPaneSecurity.classList.remove('hidden');
+      secPanePrivacy.classList.add('hidden');
+      // load existing settings
+      const user = currentUser(); if (!user) return;
+      user.settings = user.settings || { security: {}, privacy: {} };
+      const s = user.settings.security, p = user.settings.privacy;
+      twoFAEnabled.checked = !!s.twoFAEnabled;
+      loginAlerts.checked = !!s.loginAlerts;
+      renderSessions();
+      msgSetting.value = p.msgSetting || 'everyone';
+      renderBlocked();
+    }
+    function closeSecModal() {
+      secModalEl.classList.remove('show');
+      secModalEl.setAttribute('aria-hidden', 'true');
+    }
+    secOpenModalBtn.addEventListener('click', openSecModal);
+    secMBackdrop.addEventListener('click', closeSecModal);
+    secMClose.addEventListener('click', closeSecModal);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSecModal(); });
+    secMCancel.addEventListener('click', closeSecModal);
+    secMForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      secMError.textContent = '';
+      secMSuccess.textContent = '';
+      const user = currentUser(); if (!user) return;
+      const cur = document.getElementById('secMCurrent').value;
+      const nw = document.getElementById('secMNew').value;
+      const nw2 = document.getElementById('secMNew2').value;
+      if (user.password !== cur) { secMError.textContent = 'Current password is incorrect.'; return; }
+      if (!strongPassword(nw)) { secMError.textContent = 'Use at least 8 chars with upper, lower and a number.'; return; }
+      if (nw !== nw2) { secMError.textContent = 'Passwords do not match.'; return; }
+      user.password = nw; saveUser(user);
+      secMSuccess.textContent = 'Password updated.';
+      setTimeout(() => { closeSecModal(); }, 800);
+    });
+
+    // Subtabs toggle
+    secSubtabs.forEach(btn => btn.addEventListener('click', () => {
+      secSubtabs.forEach(t => t.classList.toggle('active', t === btn));
+      const st = btn.dataset.st;
+      secPaneSecurity.classList.toggle('hidden', st !== 'security');
+      secPanePrivacy.classList.toggle('hidden', st !== 'privacy');
+    }));
+
+    // Sessions (demo)
+    function renderSessions() {
+      sessionList.innerHTML = '';
+      const cur = document.createElement('div');
+      cur.className = 'list-card';
+      cur.innerHTML = `<div class="list-body"><div class="list-title">This browser</div><div class="list-sub">Signed in</div></div>`;
+      sessionList.appendChild(cur);
+    }
+    signOutOthers.addEventListener('click', () => {
+      const note = document.createElement('div');
+      note.className = 'form-msg success';
+      note.textContent = 'Other sessions signed out.';
+      sessionList.appendChild(note);
+      setTimeout(() => note.remove(), 1200);
+    });
+
+    // Persist settings on change
+  [twoFAEnabled, loginAlerts].forEach(ctrl =>
+      ctrl.addEventListener('change', () => {
+        const u = currentUser(); if (!u) return;
+        u.settings = u.settings || { security: {}, privacy: {} };
+        u.settings.security.twoFAEnabled = twoFAEnabled.checked;
+        u.settings.security.loginAlerts = loginAlerts.checked;
+        saveUser(u);
+      })
+    );
+    msgSetting.addEventListener('change', () => { const u = currentUser(); if (!u) return; u.settings = u.settings||{security:{},privacy:{}}; u.settings.privacy.msgSetting = msgSetting.value; saveUser(u); });
+
+    // Blocked list
+    function renderBlocked() {
+      blockedList.innerHTML = '';
+      const u = currentUser(); if (!u) return;
+      const arr = (u.settings?.privacy?.blocked) || [];
+      if (!arr.length) { blockedList.innerHTML = '<p class="muted">No one is blocked.</p>'; return; }
+      arr.forEach((val, i) => {
+        const el = document.createElement('div');
+        el.className = 'list-card';
+        el.innerHTML = `<div class=\"list-body\"><div class=\"list-title\">${val}</div></div><div class=\"list-actions\"><button class=\"danger\" data-unblock=\"${i}\">Unblock</button></div>`;
+        blockedList.appendChild(el);
+      });
+      blockedList.querySelectorAll('[data-unblock]').forEach(b => b.addEventListener('click', () => {
+        const u2 = currentUser(); if (!u2) return;
+        u2.settings = u2.settings || { security: {}, privacy: {} };
+        u2.settings.privacy.blocked = (u2.settings.privacy.blocked || []);
+        u2.settings.privacy.blocked.splice(+b.dataset.unblock, 1);
+        saveUser(u2);
+        renderBlocked();
+      }));
+    }
+    blockAdd.addEventListener('click', () => {
+      const val = blockInput.value.trim(); if (!val) return;
+      const u = currentUser(); if (!u) return;
+      u.settings = u.settings || { security: {}, privacy: {} };
+      u.settings.privacy.blocked = (u.settings.privacy.blocked || []);
+      if (!u.settings.privacy.blocked.includes(val)) u.settings.privacy.blocked.push(val);
+      saveUser(u);
+      blockInput.value = '';
+      renderBlocked();
+    });
+
+    // Export data
+    exportDataBtn.addEventListener('click', () => {
+      const u = currentUser(); if (!u) return;
+      const blob = new Blob([JSON.stringify(u, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'emferry-account-data.json'; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    });
+
+    // Deactivate/Delete account (demo)
+    deactivateAccount.addEventListener('change', () => {
+      const u = currentUser(); if (!u) return;
+      u.deactivated = deactivateAccount.checked; saveUser(u);
+    });
+    deleteAccountBtn.addEventListener('click', () => {
+      const s = getSession(); if (!s) return;
+      const users = getUsers();
+      const idx = users.findIndex(x => x.email.toLowerCase() === s.email.toLowerCase());
+      if (idx >= 0) {
+        users.splice(idx, 1);
+        saveUsers(users);
+        clearSession();
+        updateHeaderUser();
+        closeSecModal();
+        closeManageModal();
+      }
+    });
+
+    // When manage modal opens, initialize data on first tab
+    manageModalEl.addEventListener('transitionend', () => {});
+    // Prime content when opening
+    const origOpenManage = openManageModal;
+    openManageModal = function() {
+      seedAddrCountries();
+      loadProfile();
+      renderAddresses();
+      renderCards();
+      showManageTab('profile');
+      origOpenManage();
+    };
+  </script>
+</body>
+</html>
