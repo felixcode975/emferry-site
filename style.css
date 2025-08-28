@@ -24,8 +24,8 @@ img, video { max-width: 100%; height: auto; }
   height: 70px;
   display: flex;
   align-items: center;
-  padding: 0 15px;
-  gap: 15px;
+  padding: 0 12px 0 10px; /* slightly more left bias */
+  gap: 12px;
   border-bottom: 1px solid rgba(255,153,0,.35); /* subtle brand accent */
 }
 
@@ -415,32 +415,28 @@ img, video { max-width: 100%; height: auto; }
   .ef-search { max-width: 560px; }
 }
 
-/* Tablets */
-@media (max-width: 1024px) {
-  .ef-search { max-width: 520px; }
-  .header-location select { max-width: 120px; }
-}
 
 /* Phones and small tablets */
 @media (max-width: 768px) {
-  /* Sticky header, mobile refinement */
-  .header { position: sticky; top: 0; z-index: 1100; height: auto; flex-wrap: wrap; padding: 8px 10px; gap: 8px; overflow-x: hidden; }
+  /* Sticky header, Amazon-like mobile layout */
+  html, body { overflow-x: hidden; }
+  .header { position: sticky; top: 0; z-index: 1100; height: auto; flex-wrap: wrap; padding: 6px 6px; gap: 4px; overflow-x: hidden; }
   .hamburger { display: inline-block; }
-  .header-logo { order: 1; }
-  .header-location { order: 2; }
+  .header-logo { order: 1; flex: 1 1 auto; }
+  #accountArea { order: 2; margin-left: auto; white-space: nowrap; }
+  .header-cart { order: 2; margin-right: -6px; }
+  .header-cart .bold-text { display: none; }
   .header-search { order: 3; flex: 1 1 100%; justify-content: stretch; }
-  .header-language { order: 4; }
-  .header-option { order: 5; }
-  .header-cart { order: 6; }
+  .header-location { order: 4; width: 100%; }
+  .header-language { display: none; }
+  .header-orders { display: none; }
   .header-logo .brand { font-size: 20px; }
   /* Tighten location selects */
   .header-location select { max-width: 100%; font-size: 14px; padding: 8px 10px; }
-  /* Mobile: show as chip that toggles dropdown under search */
-  .loc-chip { display: inline-flex; }
+  /* Deliver to bar full-width under search */
+  .loc-chip { display: flex; width: 100%; justify-content: flex-start; background: #232f3e; border: none; border-radius: 8px; padding: 10px; }
   .loc-dropdown { display: none; width: 100%; background: #fff; color: #202124; border-radius: 10px; padding: 10px; border: 1px solid #e0e0e0; }
   .header-location { width: auto; gap: 8px; }
-  /* Put the dropdown full-width below search */
-  .header-search + .header-language + .header-option + .header-cart + .header-location .loc-dropdown { width: 100%; }
   /* Search full width on second row */
   .ef-search { min-width: 0; width: 100%; height: 44px; }
   .ef-search-select { width: 80px; font-size: 12px; }
@@ -448,11 +444,16 @@ img, video { max-width: 100%; height: auto; }
   .header-language select { font-size: 12px; padding: 2px 4px; }
   .header-option { padding: 4px 6px; }
   .header-option .bold-text { font-size: 12px; }
-  #accountArea .mobile-signin { display: inline-flex; align-items: center; gap: 6px; color: #fff; }
+  /* Hide desktop labels, show Sign in > */
+  #accountArea .small-text, #accountArea .bold-text { display: none; }
+  #accountArea .mobile-signin { display: inline-flex; align-items: center; gap: 3px; color: #fff; font-size: 11px; line-height: 1; }
   #accountArea .mobile-signin .chev { opacity: .8; }
+  #accountArea .mobile-signin i { font-size: 13px; }
   .header-orders .small-text { display: none; }
   .header-orders .bold-text { font-size: 12px; }
   .account-dialog, .auth-dialog { margin: 6vh auto 0; width: 94%; }
+  /* Fullscreen auth modal on phones */
+  .auth-dialog { position: fixed; inset: 0; margin: 0; width: 100%; max-width: none; height: 100vh; border-radius: 0; }
   /* Account grid stacks */
   .acct-grid { grid-template-columns: 1fr; }
   /* Profile section stacks */
