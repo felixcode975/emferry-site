@@ -6,10 +6,10 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="x-build-version" content="6">
+  <meta name="x-build-version" content="12">
   <title>EMFERRY</title>
-  <link rel="stylesheet" href="style.css?v=6">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css?v=6">
+  <link rel="stylesheet" href="style.css?v=12">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css?v=12">
 </head>
 <body>
   <!-- HEADER -->
@@ -135,38 +135,45 @@
     </div>
 
     <!-- Cart -->
-    <div class="header-cart">
+  <div class="header-cart" role="button" tabindex="0" onclick="window.openCart && window.openCart()">
       <i class="fa-solid fa-cart-shopping"></i>
       <span class="cart-count">0</span>
       <p class="bold-text">Cart</p>
     </div>
   </header>
 
+  <!-- Scrolling announcement under header -->
+  <div class="ef-marquee" aria-label="Site announcement">
+    <div class="ef-marquee-track">
+      <span class="ef-marquee-item"><i class="fa-solid fa-bolt"></i> Welcome to EMFERRY — discover amazing deals and more. <i class="fa-solid fa-star"></i> Explore categories from the Menu below. <i class="fa-solid fa-bag-shopping"></i> Shop smarter with EMFERRY.</span>
+      <span class="ef-marquee-item" aria-hidden="true"><i class="fa-solid fa-bolt"></i> Welcome to EMFERRY — discover amazing deals and more. <i class="fa-solid fa-star"></i> Explore categories from the Menu below. <i class="fa-solid fa-bag-shopping"></i> Shop smarter with EMFERRY.</span>
+    </div>
+  </div>
+
   <!-- Sub Header removed per request -->
 
   <!-- Side Drawer for "All" menu -->
   <div id="navDrawer" class="nav-drawer" aria-hidden="true">
-  <div class="nav-backdrop" data-close-drawer></div>
-    <aside class="nav-panel" role="dialog" aria-modal="true" aria-label="All Departments">
+    <div class="nav-backdrop" data-close-drawer></div>
+    <aside class="nav-panel" role="dialog" aria-modal="true" aria-label="Categories">
       <div class="nav-panel-header">
         <strong>Browse</strong>
         <button class="nav-close" type="button" aria-label="Close" data-close-drawer>&times;</button>
       </div>
-      <div class="nav-panel-content">
-        <ul class="nav-section">
-          <li><a href="#">Electronics</a></li>
-          <li><a href="#">Computers</a></li>
-          <li><a href="#">Smartphones</a></li>
-          <li><a href="#">Home & Kitchen</a></li>
-          <li><a href="#">Fashion</a></li>
-          <li><a href="#">Beauty & Health</a></li>
-          <li><a href="#">Toys & Games</a></li>
-          <li><a href="#">Sports & Outdoors</a></li>
-          <li><a href="#">Automotive</a></li>
-        </ul>
-      </div>
+      <div class="nav-panel-content" id="navContent"></div>
     </aside>
   </div>
+
+  <!-- Main content (no products yet, but filter UI available) -->
+  <main id="main">
+    <section id="filterBar" class="filter-bar hidden" aria-live="polite">
+      <div class="filter-chip">Filtered by <strong id="filterLabel"></strong></div>
+      <button id="clearFilter" class="auth-secondary small" type="button">Clear</button>
+    </section>
+    <section class="products">
+      <div id="noProducts" class="no-products hidden">No products available yet for this selection.</div>
+    </section>
+  </main>
 
   <!-- Auth Modal -->
   <div id="authModal" class="auth-modal" aria-hidden="true">
@@ -275,9 +282,13 @@
       <div id="manageForm" class="manage-form">
         <div class="manage-tabs" id="manageTabs">
           <button class="manage-tab active" data-tab="profile" type="button">Profile</button>
-          <button class="manage-tab" data-tab="addresses" type="button">Addresses</button>
-          <button class="manage-tab" data-tab="payments" type="button">Payment methods</button>
-          <button class="manage-tab" data-tab="security" type="button">Security &amp; Privacy</button>
+          <button class="manage-tab" data-tab="orders" type="button">Orders</button>
+          <button class="manage-tab" data-tab="billing" type="button">Billing</button>
+          <button class="manage-tab" data-tab="address" type="button">Address</button>
+          <button class="manage-tab" data-tab="lists" type="button">Your List</button>
+          <button class="manage-tab" data-tab="messages" type="button">Messages</button>
+          <button class="manage-tab" data-tab="security" type="button">Security</button>
+          <button class="manage-tab" data-tab="privacy" type="button">Privacy</button>
         </div>
 
         <div class="manage-content">
@@ -299,6 +310,10 @@
                 <div class="form-row">
                   <label for="profileName">Full name</label>
           <input id="profileName" class="input-modern icon-name" type="text" required>
+                </div>
+                <div class="form-row">
+                  <label for="profilePhone">Phone</label>
+                  <input id="profilePhone" class="input-modern" type="tel" inputmode="tel" placeholder="e.g., +1 555 123 4567">
                 </div>
                 <div class="form-row">
                   <label for="profileEmail">Email</label>
@@ -323,6 +338,8 @@
                   <div class="form-row grid-2">
                     <div>
                       <label for="pwNew">New password</label>
+                    <!-- Deals modal removed per request; bottom icon remains -->
+
                       <input id="pwNew" type="password" minlength="8" required>
                     </div>
                     <div>
@@ -344,8 +361,13 @@
             </div>
           </section>
 
-          <!-- Addresses -->
-          <section id="m-addresses" class="manage-section hidden">
+          <!-- Orders -->
+          <section id="m-orders" class="manage-section hidden">
+            <div class="manage-placeholder">Your recent orders will appear here.</div>
+          </section>
+
+          <!-- Address -->
+          <section id="m-address" class="manage-section hidden">
             <div class="section-actions">
               <button id="addrNewBtn" class="auth-primary" type="button">Add address</button>
             </div>
@@ -396,8 +418,8 @@
             <div id="addrList" class="item-list"></div>
           </section>
 
-          <!-- Payments -->
-          <section id="m-payments" class="manage-section hidden">
+          <!-- Billing (Payments) -->
+          <section id="m-billing" class="manage-section hidden">
             <div class="section-actions">
               <button id="cardNewBtn" class="auth-primary" type="button">Add card</button>
             </div>
@@ -424,6 +446,21 @@
               </div>
             </form>
             <div id="cardList" class="item-list"></div>
+          </section>
+
+          <!-- Your List -->
+          <section id="m-lists" class="manage-section hidden">
+            <div class="manage-placeholder">Your saved lists will appear here.</div>
+          </section>
+
+          <!-- Your List -->
+          <section id="m-lists" class="manage-section hidden">
+            <div class="manage-placeholder">Your saved items will appear here.</div>
+          </section>
+
+          <!-- Messages -->
+          <section id="m-messages" class="manage-section hidden">
+            <div class="manage-placeholder">No new messages.</div>
           </section>
 
           <!-- Security -->
@@ -453,6 +490,11 @@
               </div>
             </form>
           </section>
+
+          <!-- Privacy (opens Security & Privacy modal subtabs) -->
+          <section id="m-privacy" class="manage-section hidden">
+            <div class="manage-placeholder">Open Privacy settings under Security & Privacy.</div>
+          </section>
         </div>
       </div>
     </div>
@@ -464,7 +506,7 @@
     <div class="loc-dialog" role="dialog" aria-modal="true" aria-labelledby="locTitle">
       <div class="loc-header">
         <h3 id="locTitle">Deliver to</h3>
-        <button class="auth-close" aria-label="Close" data-close-loc>&times;</button>
+  <button class="auth-close" aria-label="Close" data-close-loc>&times;</button>
       </div>
       <div class="loc-body">
         <div class="form-grid">
@@ -488,6 +530,249 @@
       </div>
     </div>
   </div>
+
+  <!-- Deals Fullscreen Modal (empty placeholder) -->
+  <div id="dealsModal" class="deals-modal" aria-hidden="true">
+    <div class="deals-dialog" role="dialog" aria-modal="true" aria-labelledby="dealsTitle">
+      <div class="deals-header">
+        <h3 id="dealsTitle">Deals</h3>
+        <button class="auth-close" type="button" aria-label="Close" data-close-deals>&times;</button>
+      </div>
+      <div class="deals-body">
+        <div class="deals-vertical">
+          <article class="deal-v-card" data-id="iphone16pm-256" data-title="Apple iPhone 16 Pro Max 256GB" data-price="1400" data-img="images/imagesdealsiphone16-pro-max.jpeg?v=1">
+            <div class="deal-v-img">
+              <img src="images/imagesdealsiphone16-pro-max.jpeg?v=1" alt="Apple iPhone 16 Pro Max 256GB" onerror="this.src='images/placeholder.png'" />
+            </div>
+            <div class="deal-v-body">
+              <h4 class="deal-v-name">Apple iPhone 16 Pro Max 256GB</h4>
+              <div class="deal-v-prices">
+                <span class="deal-v-old">$2,000.00</span>
+                <span class="deal-v-new">$1,400.00</span>
+                <span class="deal-v-off">30% OFF</span>
+              </div>
+              <div class="deal-v-actions"><button class="auth-primary deal-add" type="button">Add to Cart</button></div>
+            </div>
+          </article>
+          <article class="deal-v-card" data-id="macbook16-m3max" data-title="Apple MacBook Pro 16\" (M3 Max)" data-price="2799" data-img="images/macbook-pro-16-m3-max.jpeg">
+            <div class="deal-v-img">
+              <img src="images/macbook-pro-16-m3-max.jpeg" alt="Apple MacBook Pro 16&quot; (M3 Max)" onerror="this.src='images/placeholder.png'" />
+            </div>
+            <div class="deal-v-body">
+              <h4 class="deal-v-name">Apple MacBook Pro 16" (M3 Max)</h4>
+              <div class="deal-v-prices">
+                <span class="deal-v-old">$3,999.00</span>
+                <span class="deal-v-new">$2,799.00</span>
+                <span class="deal-v-off">30% OFF</span>
+              </div>
+              <div class="deal-v-actions"><button class="auth-primary deal-add" type="button">Add to Cart</button></div>
+            </div>
+          </article>
+          <article class="deal-v-card" data-id="rtx4090" data-title="NVIDIA GeForce RTX 4090 24GB" data-price="1119" data-img="images/nvidia-rtx-4090.jpeg">
+            <div class="deal-v-img">
+              <img src="images/nvidia-rtx-4090.jpeg" alt="NVIDIA GeForce RTX 4090 24GB" onerror="this.src='images/placeholder.png'" />
+            </div>
+            <div class="deal-v-body">
+              <h4 class="deal-v-name">NVIDIA GeForce RTX 4090 24GB</h4>
+              <div class="deal-v-prices">
+                <span class="deal-v-old">$1,599.00</span>
+                <span class="deal-v-new">$1,119.00</span>
+                <span class="deal-v-off">30% OFF</span>
+              </div>
+              <div class="deal-v-actions"><button class="auth-primary deal-add" type="button">Add to Cart</button></div>
+            </div>
+          </article>
+          <article class="deal-v-card" data-id="galaxy-z-fold6-256" data-title="Samsung Galaxy Z Fold6 256GB" data-price="1329" data-img="images/samsung-galaxy-z-fold6.jpeg">
+            <div class="deal-v-img">
+              <img src="images/samsung-galaxy-z-fold6.jpeg" alt="Samsung Galaxy Z Fold6 256GB" onerror="this.src='images/placeholder.png'" />
+            </div>
+            <div class="deal-v-body">
+              <h4 class="deal-v-name">Samsung Galaxy Z Fold6 256GB</h4>
+              <div class="deal-v-prices">
+                <span class="deal-v-old">$1,899.00</span>
+                <span class="deal-v-new">$1,329.00</span>
+                <span class="deal-v-off">30% OFF</span>
+              </div>
+              <div class="deal-v-actions"><button class="auth-primary deal-add" type="button">Add to Cart</button></div>
+            </div>
+          </article>
+          <article class="deal-v-card" data-id="bose-lifestyle-650" data-title="Bose Lifestyle 650 Home Theater" data-price="2799" data-img="images/bose-lifestyle-650.jpeg">
+            <div class="deal-v-img">
+              <img src="images/bose-lifestyle-650.jpeg" alt="Bose Lifestyle 650 Home Theater" onerror="this.src='images/placeholder.png'" />
+            </div>
+            <div class="deal-v-body">
+              <h4 class="deal-v-name">Bose Lifestyle 650 Home Theater</h4>
+              <div class="deal-v-prices">
+                <span class="deal-v-old">$3,999.00</span>
+                <span class="deal-v-new">$2,799.00</span>
+                <span class="deal-v-off">30% OFF</span>
+              </div>
+              <div class="deal-v-actions"><button class="auth-primary deal-add" type="button">Add to Cart</button></div>
+            </div>
+          </article>
+          <article class="deal-v-card" data-id="canon-eos-r5" data-title="Canon EOS R5" data-price="2729" data-img="images/canon-eos-r5.jpeg">
+            <div class="deal-v-img">
+              <img src="images/canon-eos-r5.jpeg" alt="Canon EOS R5" onerror="this.src='images/placeholder.png'" />
+            </div>
+            <div class="deal-v-body">
+              <h4 class="deal-v-name">Canon EOS R5</h4>
+              <div class="deal-v-prices">
+                <span class="deal-v-old">$3,899.00</span>
+                <span class="deal-v-new">$2,729.00</span>
+                <span class="deal-v-off">30% OFF</span>
+              </div>
+              <div class="deal-v-actions"><button class="auth-primary deal-add" type="button">Add to Cart</button></div>
+            </div>
+          </article>
+          <article class="deal-v-card" data-id="sony-a7rv" data-title="Sony Alpha a7R V" data-price="2729" data-img="images/sony-a7rv.jpeg">
+            <div class="deal-v-img">
+              <img src="images/sony-a7rv.jpeg" alt="Sony Alpha a7R V" onerror="this.src='images/placeholder.png'" />
+            </div>
+            <div class="deal-v-body">
+              <h4 class="deal-v-name">Sony Alpha a7R V</h4>
+              <div class="deal-v-prices">
+                <span class="deal-v-old">$3,899.00</span>
+                <span class="deal-v-new">$2,729.00</span>
+                <span class="deal-v-off">30% OFF</span>
+              </div>
+              <div class="deal-v-actions"><button class="auth-primary deal-add" type="button">Add to Cart</button></div>
+            </div>
+          </article>
+          <article class="deal-v-card" data-id="dji-mavic-3-pro-cine" data-title="DJI Mavic 3 Pro Cine" data-price="3359" data-img="images/dji-mavic-3-pro-cine.jpeg">
+            <div class="deal-v-img">
+              <img src="images/dji-mavic-3-pro-cine.jpeg" alt="DJI Mavic 3 Pro Cine" onerror="this.src='images/placeholder.png'" />
+            </div>
+            <div class="deal-v-body">
+              <h4 class="deal-v-name">DJI Mavic 3 Pro Cine</h4>
+              <div class="deal-v-prices">
+                <span class="deal-v-old">$4,799.00</span>
+                <span class="deal-v-new">$3,359.00</span>
+                <span class="deal-v-off">30% OFF</span>
+              </div>
+              <div class="deal-v-actions"><button class="auth-primary deal-add" type="button">Add to Cart</button></div>
+            </div>
+          </article>
+          <article class="deal-v-card" data-id="tag-heuer-calibre-e4" data-title="TAG Heuer Calibre E4" data-price="1505" data-img="images/tag-heuer-calibre-e4.jpeg">
+            <div class="deal-v-img">
+              <img src="images/tag-heuer-calibre-e4.jpeg" alt="TAG Heuer Calibre E4" onerror="this.src='images/placeholder.png'" />
+            </div>
+            <div class="deal-v-body">
+              <h4 class="deal-v-name">TAG Heuer Calibre E4</h4>
+              <div class="deal-v-prices">
+                <span class="deal-v-old">$2,150.00</span>
+                <span class="deal-v-new">$1,505.00</span>
+                <span class="deal-v-off">30% OFF</span>
+              </div>
+              <div class="deal-v-actions"><button class="auth-primary deal-add" type="button">Add to Cart</button></div>
+            </div>
+          </article>
+          <article class="deal-v-card" data-id="herman-miller-embody" data-title="Herman Miller Embody Chair" data-price="1326" data-img="images/herman-miller-embody.jpeg">
+            <div class="deal-v-img">
+              <img src="images/herman-miller-embody.jpeg" alt="Herman Miller Embody Chair" onerror="this.src='images/placeholder.png'" />
+            </div>
+            <div class="deal-v-body">
+              <h4 class="deal-v-name">Herman Miller Embody Chair</h4>
+              <div class="deal-v-prices">
+                <span class="deal-v-old">$1,895.00</span>
+                <span class="deal-v-new">$1,326.00</span>
+                <span class="deal-v-off">30% OFF</span>
+              </div>
+              <div class="deal-v-actions"><button class="auth-primary deal-add" type="button">Add to Cart</button></div>
+            </div>
+          </article>
+      <article class="deal-v-card" data-id="sony-wh-1000xm5" data-title="Sony WH‑1000XM5" data-price="279" data-img="images/sony-a7rv.jpeg">
+            <div class="deal-v-img">
+        <img src="images/sony-a7rv.jpeg" alt="Sony WH‑1000XM5" onerror="this.src='images/placeholder.png'" />
+            </div>
+            <div class="deal-v-body">
+              <h4 class="deal-v-name">Sony WH‑1000XM5</h4>
+              <div class="deal-v-prices">
+                <span class="deal-v-old">$399.00</span>
+                <span class="deal-v-new">$279.00</span>
+                <span class="deal-v-off">30% OFF</span>
+              </div>
+              <div class="deal-v-actions"><button class="auth-primary deal-add" type="button">Add to Cart</button></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Minimal fallback: ensure deals can open/close even if main script fails
+    (function(){
+      var IMG_KEY_PREFIX = 'em_deal_img_';
+      function getOverride(id){ try { return localStorage.getItem(IMG_KEY_PREFIX + id) || ''; } catch { return ''; } }
+    function applyOverrides(){
+        var m = document.getElementById('dealsModal'); if (!m) return;
+  var cards = m.querySelectorAll('.deal-v-card, .deal-card');
+        cards.forEach(function(card){
+          var id = card.getAttribute('data-id');
+          var def = card.getAttribute('data-img') || '';
+          var imgEl = card.querySelector('img');
+          if (!imgEl) return;
+      // Clear stale override for iPhone to ensure local file is used
+      if (id === 'iphone16pm-256') { try { localStorage.removeItem(IMG_KEY_PREFIX + id); } catch {} }
+      var over = getOverride(id);
+          if (over) imgEl.src = over; else if (def) imgEl.src = def;
+        });
+      }
+      window.openDeals = window.openDeals || function(){
+        applyOverrides();
+        var m = document.getElementById('dealsModal');
+        if (m){ m.classList.add('show'); m.setAttribute('aria-hidden','false'); }
+      };
+      window.setDealImage = function(id, url){ try { localStorage.setItem(IMG_KEY_PREFIX + id, url || ''); } catch {} };
+      window.clearDealImage = function(id){ try { localStorage.removeItem(IMG_KEY_PREFIX + id); } catch {} };
+    })();
+    window.closeDeals = window.closeDeals || function(){
+      var m = document.getElementById('dealsModal');
+      if (m){ m.classList.remove('show'); m.setAttribute('aria-hidden','true'); }
+    };
+    (function(){
+      document.addEventListener('click', function(e){
+        var c = e.target && e.target.closest && e.target.closest('#dealsModal [data-close-deals]');
+        if (!c) return;
+        window.closeDeals && window.closeDeals();
+      });
+    })();
+  </script>
+
+
+  <!-- Cart Fullscreen Modal (new) -->
+  <div id="cartModal" class="cart-modal" aria-hidden="true">
+    <div class="auth-backdrop" data-close-cart></div>
+    <div class="cart-dialog" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+      <div class="cart-header">
+        <h3 id="cartTitle">Your Cart</h3>
+        <button class="auth-close" type="button" aria-label="Close" data-close-cart>&times;</button>
+      </div>
+      <div class="cart-body">
+        <div id="cartList" class="cart-list"></div>
+        <div class="cart-footer">
+          <div class="cart-total">Total: <strong id="cartTotal">$0.00</strong></div>
+          <button id="checkoutBtn" class="auth-primary" type="button" onclick="window.checkoutCart && window.checkoutCart()">Checkout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Minimal fallback: ensure cart can open/close even if main script fails
+    window.openCart = window.openCart || function(){
+      var m = document.getElementById('cartModal');
+      if (m){ m.classList.add('show'); m.setAttribute('aria-hidden','false'); }
+    };
+    (function(){
+      document.addEventListener('click', function(e){
+        var c = e.target && e.target.closest && e.target.closest('#cartModal [data-close-cart]');
+        if (!c) return;
+        var m = document.getElementById('cartModal');
+        if (m){ m.classList.remove('show'); m.setAttribute('aria-hidden','true'); }
+      });
+    })();
+  </script>
+
+
 
   <!-- Address Modal (Add/Edit) -->
   <div id="addrModal" class="addr-modal" aria-hidden="true">
@@ -713,6 +998,31 @@
   </div>
 
   <script>
+  // Global helpers for per-deal image overrides stored locally
+  (function(){
+    window.EM = window.EM || {};
+    const PREFIX = 'emferry_deal_img_';
+    window.EM.getStoredDealImg = function(id){ try { return localStorage.getItem(PREFIX + id) || ''; } catch { return ''; } };
+    window.EM.setStoredDealImg = function(id, dataUrl){ try { localStorage.setItem(PREFIX + id, dataUrl); } catch {} };
+  })();
+  // Minimal polyfills for older browsers (closest/matches)
+  (function(){
+    if (typeof Element !== 'undefined'){
+      if (!Element.prototype.matches) {
+        Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+      }
+      if (!Element.prototype.closest) {
+        Element.prototype.closest = function(s) {
+          let el = this;
+          if (!document.documentElement.contains(el)) return null;
+          do { if (el.matches && el.matches(s)) return el; el = el.parentElement || el.parentNode; } while (el !== null && el.nodeType === 1);
+          return null;
+        };
+      }
+    }
+  })();
+  // Deal image overrides namespace (no defaults merged)
+  (function(){ window.EM = window.EM || {}; window.EM.dealImageOverrides = window.EM.dealImageOverrides || {}; })();
   // Top hamburger removed; Categories drawer will be opened from bottom nav
     // Mobile/desktop location handling
     (function(){
@@ -723,8 +1033,8 @@
       const city = document.getElementById('citySelect');
       const chipText = document.getElementById('locChipText');
       const mModal = document.getElementById('mobileLocModal');
-      const mBackdrop = mModal.querySelector('[data-close-loc]');
-      const mClose = mModal.querySelector('[data-close-loc]');
+      const mBackdrop = mModal.querySelector('.auth-backdrop[data-close-loc]');
+      const mClose = mModal.querySelector('.auth-close[data-close-loc]');
       const mCountry = document.getElementById('mCountrySelect');
       const mState = document.getElementById('mStateSelect');
       const mCity = document.getElementById('mCitySelect');
@@ -748,76 +1058,12 @@
       }
       // Click opens modal on mobile, toggles dropdown on desktop
       chip.addEventListener('click', () => {
-        if (isMobile()) openLocModal(); else {
-          if (!dd) return;
-          const isOpen = dd.style.display === 'block';
-          dd.style.display = isOpen ? 'none' : 'block';
-          chip.setAttribute('aria-expanded', String(!isOpen));
+        if (isMobile()) {
+          openLocModal();
+        } else {
+          dd && dd.classList.toggle('show');
         }
       });
-      // Desktop: keep chip text updated
-      [country, state, city].forEach(el => el && el.addEventListener('change', () => updateChipText(city, state, country)));
-      // Mobile: wire save and change events
-      mBackdrop && mBackdrop.addEventListener('click', closeLocModal);
-      mClose && mClose.addEventListener('click', closeLocModal);
-      mSave && mSave.addEventListener('click', () => {
-        updateChipText(mCity, mState, mCountry);
-        closeLocModal();
-      });
-      [mCountry, mState, mCity].forEach(el => el && el.addEventListener('change', () => updateChipText(mCity, mState, mCountry)));
-
-      // Mobile location loaders (duplicate logic with mobile selects)
-      function setPlaceholder(select, text) {
-        select.innerHTML = '';
-        const opt = document.createElement('option');
-        opt.value = '';
-        opt.textContent = text;
-        opt.disabled = true;
-        opt.selected = true;
-        select.appendChild(opt);
-      }
-      async function loadCountriesMobile(){
-        setPlaceholder(mCountry, 'Select country');
-        setPlaceholder(mState, 'Select state');
-        setPlaceholder(mCity, 'Select city');
-        mState.disabled = true; mCity.disabled = true;
-        try {
-          const res = await fetch('https://restcountries.com/v3.1/all');
-          const data = await res.json();
-          const names = data.map(c => c?.name?.common).filter(Boolean).sort((a,b)=>a.localeCompare(b));
-          const list = names.length ? names : fallbackCountryList;
-          list.forEach(val => { const o=document.createElement('option'); o.value=val; o.textContent=val; mCountry.appendChild(o); });
-        } catch(e) {
-          fallbackCountryList.forEach(val => { const o=document.createElement('option'); o.value=val; o.textContent=val; mCountry.appendChild(o); });
-        }
-      }
-      async function loadStatesMobile(country){
-        setPlaceholder(mState, 'Select state'); mState.disabled = true;
-        setPlaceholder(mCity, 'Select city'); mCity.disabled = true;
-        const useFallback = async () => {
-          const states = Object.keys(fallbackLocations[country] || {});
-          if (states.length) { states.forEach(val=>{ const o=document.createElement('option'); o.value=val; o.textContent=val; mState.appendChild(o); }); mState.disabled=false; }
-        };
-        try {
-          const res = await fetch('https://countriesnow.space/api/v0.1/countries/states', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ country }) });
-          const json = await res.json();
-          const states = json?.data?.states?.map(s=>s.name) || [];
-          if (states.length) { states.forEach(val=>{ const o=document.createElement('option'); o.value=val; o.textContent=val; mState.appendChild(o); }); mState.disabled=false; } else { await useFallback(); }
-        } catch(e) { await useFallback(); }
-      }
-      async function loadCitiesMobile(country, state){
-        setPlaceholder(mCity, 'Select city'); mCity.disabled = true;
-        const useFallback = () => {
-          const cities = (fallbackLocations[country] || {})[state] || [];
-          if (cities.length) { cities.forEach(val=>{ const o=document.createElement('option'); o.value=val; o.textContent=val; mCity.appendChild(o); }); mCity.disabled=false; }
-        };
-        try {
-          const res = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ country, state }) });
-          const json = await res.json();
-          const cities = json?.data || [];
-          if (Array.isArray(cities) && cities.length) { cities.forEach(val=>{ const o=document.createElement('option'); o.value=val; o.textContent=val; mCity.appendChild(o); }); mCity.disabled=false; } else { useFallback(); }
-        } catch(e) { useFallback(); }
-      }
       mCountry && mCountry.addEventListener('change', (e)=>{ const v=e.target.value; if (v) loadStatesMobile(v); });
       mState && mState.addEventListener('change', (e)=>{ const v=e.target.value; const c=mCountry.value; if (c && v) loadCitiesMobile(c, v); });
     })();
@@ -828,15 +1074,44 @@
       if (!drawer) return;
       const backdrop = drawer.querySelector('[data-close-drawer]');
       const closeBtn = drawer.querySelector('.nav-close');
+  const headerEl = document.querySelector('.header');
+  const marqueeEl = document.querySelector('.ef-marquee');
+  const bottomNavEl = document.querySelector('.bottom-nav');
+
+      function setDrawerOffset(){
+        const headerH = headerEl ? headerEl.getBoundingClientRect().height : 0;
+        const marqueeH = marqueeEl ? marqueeEl.getBoundingClientRect().height : 0;
+        const offsetTop = Math.round(headerH + marqueeH);
+        drawer.style.setProperty('--offset-top', offsetTop + 'px');
+        const bnVisible = bottomNavEl && getComputedStyle(bottomNavEl).display !== 'none';
+        let bottomH = bnVisible ? bottomNavEl.getBoundingClientRect().height : 0;
+        if (bnVisible && (!bottomH || bottomH < 40)) {
+          // Fallback for initial zero/too-small reads; matches typical mobile bottom-nav height
+          bottomH = 64;
+        }
+        const offsetBottom = Math.round(bottomH + 8); // a bit more breathing room above icons
+        drawer.style.setProperty('--offset-bottom', offsetBottom + 'px');
+      }
+      // compute once and on resize
+      setDrawerOffset();
+  window.addEventListener('resize', setDrawerOffset);
+  if (window.visualViewport) { window.visualViewport.addEventListener('resize', setDrawerOffset); }
 
       function openDrawer(){
-        drawer.classList.add('show');
-        drawer.setAttribute('aria-hidden','false');
+  setDrawerOffset();
+  drawer.classList.add('show');
+  drawer.setAttribute('aria-hidden','false');
+  document.documentElement.classList.add('no-scroll');
+  document.body.classList.add('no-scroll');
         if (btn) btn.setAttribute('aria-expanded','true');
+  // recalc once visible to catch any dynamic sizes
+  requestAnimationFrame(setDrawerOffset);
       }
       function closeDrawer(){
         drawer.classList.remove('show');
         drawer.setAttribute('aria-hidden','true');
+  document.documentElement.classList.remove('no-scroll');
+  document.body.classList.remove('no-scroll');
         if (btn) btn.setAttribute('aria-expanded','false');
       }
       // If top button exists, still wire it
@@ -848,6 +1123,94 @@
       window.EM = window.EM || {};
       window.EM.openDrawer = openDrawer;
       window.EM.closeDrawer = closeDrawer;
+
+      // Desktop header categories trigger
+      const headerCats = document.getElementById('headerCategories');
+      headerCats && headerCats.addEventListener('click', openDrawer);
+
+  // Populate categories with many entries and subcategories
+      const navContent = document.getElementById('navContent');
+      if (navContent && !navContent.dataset.populated) {
+        const categories = [
+          { n: 'Electronics', s: ['Phones','Laptops','Cameras','Audio','Wearables'] },
+          { n: 'Computers', s: ['Desktops','Monitors','Storage','Components','Networking'] },
+          { n: 'Smartphones', s: ['Android','iOS','Accessories','Chargers','Cases'] },
+          { n: 'Home & Kitchen', s: ['Cookware','Appliances','Storage','Cleaning','Decor'] },
+          { n: 'Fashion', s: ['Men','Women','Kids','Shoes','Accessories'] },
+          { n: 'Beauty & Health', s: ['Skincare','Hair Care','Makeup','Wellness','Supplements'] },
+          { n: 'Toys & Games', s: ['Puzzles','Board Games','Action Figures','STEM','Outdoor'] },
+          { n: 'Sports & Outdoors', s: ['Fitness','Camping','Cycling','Team Sports','Water Sports'] },
+          { n: 'Automotive', s: ['Car Care','Accessories','Tools','Tires','Motorcycle'] },
+          { n: 'Books', s: ['Fiction','Non-Fiction','Children','Textbooks','Comics'] },
+          { n: 'Movies & TV', s: ['Blu-ray','DVD','Streaming','Projectors','Home Theater'] },
+          { n: 'Music', s: ['Instruments','Vinyl','Headphones','Speakers','Studio'] },
+          { n: 'Video Games', s: ['Consoles','PC Gaming','Accessories','Digital Codes','Merch'] },
+          { n: 'Software', s: ['Office','Security','Design','Development','Utilities'] },
+          { n: 'Baby', s: ['Diapers','Feeding','Strollers','Toys','Safety'] },
+          { n: 'Pet Supplies', s: ['Dogs','Cats','Fish','Birds','Small Animals'] },
+          { n: 'Grocery', s: ['Snacks','Beverages','Pantry','Breakfast','Organic'] },
+          { n: 'Health & Personal Care', s: ['Vitamins','Medical','Personal Care','Oral Care','Sexual Wellness'] },
+          { n: 'Office Products', s: ['Printers','Paper','Supplies','Furniture','Storage'] },
+          { n: 'Arts, Crafts & Sewing', s: ['Painting','Drawing','Sewing','Knitting','Crafting'] },
+          { n: 'Industrial & Scientific', s: ['Lab','Test & Measure','3D Printing','Safety','Fasteners'] },
+          { n: 'Luggage', s: ['Suitcases','Carry-ons','Backpacks','Accessories','Travel Sets'] },
+          { n: 'Travel Accessories', s: ['Adapters','Locks','Organizers','Neck Pillows','Tags'] },
+          { n: 'Jewelry', s: ['Necklaces','Rings','Bracelets','Earrings','Watches'] },
+          { n: 'Watches', s: ['Smartwatches','Luxury','Casual','Sport','Bands'] },
+          { n: 'Shoes', s: ['Sneakers','Boots','Sandals','Dress Shoes','Athletic'] },
+          { n: 'Appliances', s: ['Kitchen','Laundry','Heating & Cooling','Vacuum','Smart'] },
+          { n: 'Furniture', s: ['Bedroom','Living Room','Office','Outdoor','Kids'] },
+          { n: 'Garden & Patio', s: ['Plants','Tools','Grills','Furniture','Lighting'] },
+          { n: 'Tools & Home Improvement', s: ['Power Tools','Hand Tools','Electrical','Plumbing','Paint'] },
+          { n: 'Camera & Photo', s: ['DSLR','Mirrorless','Lenses','Tripods','Lighting'] },
+          { n: 'Cell Phones & Accessories', s: ['Unlocked','Cases','Cables','Power Banks','Mounts'] },
+          { n: 'Handmade', s: ['Jewelry','Home Decor','Gifts','Art','Stationery'] },
+          { n: 'Collectibles & Fine Art', s: ['Memorabilia','Coins','Prints','Paintings','Sculptures'] },
+          { n: 'Digital Music', s: ['MP3','Subscriptions','Playlists','Podcasts','Audiobooks'] },
+          { n: 'Kindle eBooks', s: ['Best Sellers','New Releases','Textbooks','Comics','Magazines'] },
+          { n: 'Apps & Games', s: ['Top Charts','Entertainment','Productivity','Education','Kids'] },
+          { n: 'Automotive Tools', s: ['OBD','Jacks','Compressors','Battery','Detailing'] },
+          { n: 'Security & Surveillance', s: ['Cameras','Alarms','Smart Locks','Sensors','NVR/DVR'] },
+          { n: 'Smart Home', s: ['Hubs','Lighting','Thermostats','Speakers','Security'] },
+          { n: 'Wireless', s: ['Routers','Range Extenders','Mesh','5G','IoT'] },
+          { n: 'Networking', s: ['Switches','Cables','Adapters','Racks','NAS'] },
+          { n: 'Printing', s: ['Printers','Scanners','Ink & Toner','3D Printers','Paper'] },
+          { n: 'Green Living', s: ['Solar','EV Accessories','Reusables','Compost','Energy Monitors'] },
+          { n: 'Medical Supplies', s: ['Masks','First Aid','Mobility','Diagnostic','PPE'] },
+          { n: 'Education', s: ['STEM Kits','Homeschool','Classroom','Reference','Supplies'] },
+          { n: 'Seasonal', s: ['Holiday Decor','Gifts','Costumes','Outdoor','Party'] },
+        ];
+        const frag = document.createDocumentFragment();
+        categories.forEach(cat => {
+          const wrap = document.createElement('div');
+          wrap.className = 'nav-cat';
+          wrap.innerHTML = `<h4>${cat.n}</h4>`;
+          const ul = document.createElement('ul'); ul.className = 'nav-sub';
+          cat.s.forEach(sub => { const li=document.createElement('li'); li.innerHTML = `<a href="#">${sub}</a>`; ul.appendChild(li); });
+          wrap.appendChild(ul); frag.appendChild(wrap);
+        });
+        navContent.appendChild(frag);
+        navContent.dataset.populated = 'true';
+        // Drawer links: clicking a subcategory shows filter UI (no products yet) and closes drawer
+        navContent.addEventListener('click', (e) => {
+          const a = e.target.closest('a');
+          if (!a) return;
+          e.preventDefault();
+          const catEl = a.closest('.nav-cat');
+          const category = catEl ? (catEl.querySelector('h4')?.textContent?.trim() || '') : '';
+          const subcategory = a.textContent.trim();
+          const filterBar = document.getElementById('filterBar');
+          const filterLabel = document.getElementById('filterLabel');
+          const noProducts = document.getElementById('noProducts');
+          if (filterBar && filterLabel && noProducts) {
+            filterLabel.textContent = `${category} › ${subcategory}`;
+            filterBar.classList.remove('hidden');
+            noProducts.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+          if (window.EM && typeof window.EM.closeDrawer === 'function') window.EM.closeDrawer();
+        });
+      }
     })();
 
     // 🌍 Delivery location (countries → states → cities)
@@ -916,20 +1279,15 @@
       stateSelect.disabled = true;
       citySelect.disabled = true;
       try {
-        // Use REST Countries for a near-complete list of country names
         const res = await fetch('https://restcountries.com/v3.1/all');
         const data = await res.json();
-        const names = data
-          .map((c) => c?.name?.common)
-          .filter(Boolean)
-          .sort((a, b) => a.localeCompare(b));
+        const names = data.map((c) => c?.name?.common).filter(Boolean).sort((a,b)=>a.localeCompare(b));
         if (names.length) {
           fillOptions(countrySelect, names);
         } else {
           fillOptions(countrySelect, fallbackCountryList);
         }
       } catch (e) {
-        // Fallback to comprehensive offline list
         fillOptions(countrySelect, fallbackCountryList);
       }
     }
@@ -939,8 +1297,6 @@
       stateSelect.disabled = true;
       setPlaceholder(citySelect, 'Select city');
       citySelect.disabled = true;
-
-      // If we have a local fallback, use it when network fails
       const useFallback = async () => {
         const states = Object.keys(fallbackLocations[country] || {});
         if (states.length) {
@@ -948,13 +1304,9 @@
           stateSelect.disabled = false;
         }
       };
-
       try {
-        // Countries Now API for states
         const res = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ country })
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ country })
         });
         const json = await res.json();
         const states = json?.data?.states?.map((s) => s.name) || [];
@@ -972,8 +1324,6 @@
     async function loadCities(country, state) {
       setPlaceholder(citySelect, 'Select city');
       citySelect.disabled = true;
-
-      // Local fallback
       const useFallback = () => {
         const cities = (fallbackLocations[country] || {})[state] || [];
         if (cities.length) {
@@ -981,12 +1331,9 @@
           citySelect.disabled = false;
         }
       };
-
       try {
         const res = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ country, state })
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ country, state })
         });
         const json = await res.json();
         const cities = json?.data || [];
@@ -1259,16 +1606,31 @@
     const manageTabs = Array.from(document.querySelectorAll('#manageTabs .manage-tab'));
     const manageSections = {
       profile: document.getElementById('m-profile'),
-      addresses: document.getElementById('m-addresses'),
-      payments: document.getElementById('m-payments'),
-      security: document.getElementById('m-security')
+      orders: document.getElementById('m-orders'),
+      billing: document.getElementById('m-billing'),
+      address: document.getElementById('m-address'),
+      lists: document.getElementById('m-lists'),
+      messages: document.getElementById('m-messages'),
+      security: document.getElementById('m-security'),
+      privacy: document.getElementById('m-privacy'),
     };
 
     function showManageTab(tab) {
       manageTabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
       Object.entries(manageSections).forEach(([k, el]) => el.classList.toggle('hidden', k !== tab));
     }
-    manageTabs.forEach(btn => btn.addEventListener('click', () => showManageTab(btn.dataset.tab)));
+    manageTabs.forEach(btn => btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      if (tab === 'privacy') {
+        // Open Security & Privacy modal with Privacy subtab selected
+        openSecModal();
+        // switch to privacy subtab
+        const privacyBtn = document.querySelector('#secSubtabs .subtab[data-st="privacy"]');
+        privacyBtn && privacyBtn.click();
+        return;
+      }
+      showManageTab(tab);
+    }));
 
     // Data helpers under users array
     function getUserByEmail(email) {
@@ -1283,7 +1645,8 @@
     // Profile
     const profileForm = document.getElementById('profileForm');
     const pfName = document.getElementById('profileName');
-    const pfEmail = document.getElementById('profileEmail');
+  const pfEmail = document.getElementById('profileEmail');
+  const pfPhone = document.getElementById('profilePhone');
     const profileMsg = document.getElementById('profileMsg');
     const avatarInput = document.getElementById('avatarInput');
     const avatarImg = document.getElementById('profileAvatarImg');
@@ -1297,7 +1660,8 @@
       const session = getSession(); if (!session) return;
       const user = getUserByEmail(session.email); if (!user) return;
       pfName.value = user.name || '';
-      pfEmail.value = user.email;
+  pfEmail.value = user.email;
+  pfPhone.value = user.phone || '';
       if (user.avatar) { avatarImg.src = user.avatar; avatarImg.style.display = 'block'; }
       else { avatarImg.src = ''; avatarImg.style.display = 'none'; }
     }
@@ -1308,7 +1672,8 @@
       const idx = users.findIndex(u => u.email.toLowerCase() === session.email.toLowerCase());
       if (idx < 0) return;
       const curUser = users[idx];
-      const name = pfName.value.trim();
+  const name = pfName.value.trim();
+  const phone = pfPhone.value.trim();
       const email = pfEmail.value.trim();
       profileMsg.textContent = '';
       if (!name) { profileMsg.textContent = 'Name is required.'; return; }
@@ -1318,7 +1683,7 @@
         const taken = users.some((u, i) => i !== idx && u.email.toLowerCase() === email.toLowerCase());
         if (taken) { profileMsg.textContent = 'That email is already in use.'; return; }
       }
-      users[idx] = { ...curUser, name, email };
+  users[idx] = { ...curUser, name, email, phone };
       saveUsers(users);
       if (emailChanged) { setSession(email); }
       updateHeaderUser();
@@ -1523,11 +1888,30 @@
           </div>`;
         addrList.appendChild(card);
       });
-      addrList.querySelectorAll('[data-edit]').forEach(btn => btn.addEventListener('click', () => openAddrModal('edit', +btn.dataset.edit)));
+
+
+      addrList.querySelectorAll('[data-edit]').forEach(btn => btn.addEventListener('click', () => editAddressInline(+btn.dataset.edit)));
       addrList.querySelectorAll('[data-del]').forEach(btn => btn.addEventListener('click', () => deleteAddress(+btn.dataset.del)));
     }
 
-  function editAddress(index) { openAddrModal('edit', index); }
+  // Edit address inline in Manage > Address
+  function editAddressInline(index) {
+    const user = currentUser(); if (!user) return;
+    ensureCollections(user);
+    const a = user.addresses[index]; if (!a) return;
+    seedAddrCountries();
+    document.getElementById('addrId').value = String(index);
+    document.getElementById('addrLabel').value = a.label || '';
+    document.getElementById('addrFullName').value = a.fullName || '';
+    document.getElementById('addrPhone').value = a.phone || '';
+    document.getElementById('addrCountry').value = a.country || '';
+    document.getElementById('addrState').value = a.state || '';
+    document.getElementById('addrCity').value = a.city || '';
+    document.getElementById('addrStreet').value = a.street || '';
+    document.getElementById('addrPostal').value = a.postal || '';
+    addrMsg.textContent = '';
+    addrForm.classList.remove('hidden');
+  }
 
     function deleteAddress(index) {
       const user = currentUser(); if (!user) return;
@@ -1537,7 +1921,21 @@
       renderAddresses();
     }
 
-  addrNewBtn.addEventListener('click', () => { openAddrModal('new'); });
+  // Use inline address form within Manage > Address instead of modal
+  addrNewBtn.addEventListener('click', () => {
+    seedAddrCountries();
+    document.getElementById('addrId').value = '';
+    document.getElementById('addrLabel').value = '';
+    document.getElementById('addrFullName').value = '';
+    document.getElementById('addrPhone').value = '';
+    document.getElementById('addrCountry').value = '';
+    document.getElementById('addrState').value = '';
+    document.getElementById('addrCity').value = '';
+    document.getElementById('addrStreet').value = '';
+    document.getElementById('addrPostal').value = '';
+    addrMsg.textContent = '';
+    addrForm.classList.remove('hidden');
+  });
   addrMCancel.addEventListener('click', () => { closeAddrModal(); });
     addrCancel.addEventListener('click', () => {
       addrForm.classList.add('hidden');
@@ -1604,10 +2002,21 @@
           </div>`;
         cardList.appendChild(el);
       });
-      cardList.querySelectorAll('[data-edit-card]').forEach(btn => btn.addEventListener('click', () => openCardModal('edit', +btn.dataset.editCard)));
+      cardList.querySelectorAll('[data-edit-card]').forEach(btn => btn.addEventListener('click', () => editCardInline(+btn.dataset.editCard)));
       cardList.querySelectorAll('[data-del-card]').forEach(btn => btn.addEventListener('click', () => deleteCard(+btn.dataset.delCard)));
     }
-    function editCard(index) { openCardModal('edit', index); }
+    // Edit card inline in Manage > Billing
+    function editCardInline(index) {
+      const user = currentUser(); if (!user) return;
+      ensureCollections(user);
+      const c = user.cards[index]; if (!c) return;
+      document.getElementById('cardId').value = String(index);
+      document.getElementById('cardName').value = c.name || '';
+      document.getElementById('cardNumber').value = c.number || '';
+      document.getElementById('cardExpiry').value = c.expiry || '';
+      cardMsg.textContent = '';
+      cardForm.classList.remove('hidden');
+    }
     function deleteCard(index) {
       const user = currentUser(); if (!user) return;
       ensureCollections(user);
@@ -1669,7 +2078,15 @@
     }
     function normalizeCardNumber(s) { return s.replace(/\s+/g, '').replace(/[^\d]/g, ''); }
 
-    cardNewBtn.addEventListener('click', () => openCardModal('new'));
+    // Use inline card form instead of modal
+    cardNewBtn.addEventListener('click', () => {
+      document.getElementById('cardId').value = '';
+      document.getElementById('cardName').value = '';
+      document.getElementById('cardNumber').value = '';
+      document.getElementById('cardExpiry').value = '';
+      cardMsg.textContent = '';
+      cardForm.classList.remove('hidden');
+    });
     cardMCancel.addEventListener('click', () => closeCardModal());
     cardMForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -1893,44 +2310,173 @@
       loadProfile();
       renderAddresses();
       renderCards();
-      showManageTab('profile');
+  showManageTab('profile');
       origOpenManage();
     };
   // Initialize header state and bottom nav actions
   updateHeaderUser();
-  // Bottom nav actions
-    (function(){
-      const sel = (id) => document.getElementById(id);
-      const home = sel('bnHome');
-  const cats = sel('bnCategories');
-      const deals = sel('bnDeals');
-      const cart = sel('bnCart');
-      const acct = sel('bnAccount');
-      home && home.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-      cats && cats.addEventListener('click', () => {
-        if (window.EM && typeof window.EM.openDrawer === 'function') {
-          window.EM.openDrawer();
-        } else {
-          const drawer = document.getElementById('navDrawer');
-          if (drawer) {
-            drawer.classList.add('show');
-            drawer.setAttribute('aria-hidden','false');
-            document.documentElement.style.overflow = 'hidden';
-            document.body.style.overflow = 'hidden';
-          }
+  // Bottom nav actions (delegated on document to avoid timing issues)
+  (function(){
+    function openDrawer(){
+      if (window.EM && typeof window.EM.openDrawer === 'function') return window.EM.openDrawer();
+      const drawer = document.getElementById('navDrawer');
+      if (drawer){ drawer.classList.add('show'); drawer.setAttribute('aria-hidden','false'); }
+    }
+    document.addEventListener('click', (e)=>{
+      const btn = e.target.closest('.bottom-nav .bn-item'); if (!btn) return;
+      const id = btn.id;
+      if (id === 'bnHome') { window.location.reload(); return; }
+  if (id === 'bnCategories') { openDrawer(); return; }
+  if (id === 'bnDeals') { if (window.openDeals) window.openDeals(); else if (window.showDeals) window.showDeals(); else alert('Deals coming soon.'); return; }
+      if (id === 'bnCart') { if (window.CART && typeof window.CART.open === 'function') window.CART.open(); return; }
+      if (id === 'bnAccount') { const accountArea = document.getElementById('accountArea'); if (accountArea) accountArea.click(); return; }
+    });
+  })();
+  // Simple toast + Deals placeholder to visibly confirm first tap
+  (function(){
+    window.efToast = function(msg){
+      var t = document.getElementById('efToast');
+      if (!t) {
+        t = document.createElement('div');
+        t.id = 'efToast';
+        t.className = 'ef-toast';
+        document.body.appendChild(t);
+      }
+      t.textContent = msg || '';
+      t.classList.add('show');
+      clearTimeout(t._tid);
+      t._tid = setTimeout(function(){ t.classList.remove('show'); }, 1600);
+    };
+    window.showDeals = function(){ if (window.efToast) window.efToast('Deals coming soon.'); else alert('Deals coming soon.'); };
+  })();
+  // Provide a simple global close helper for Cart
+  (function(){ window.closeCartModal = function(){ if (window.CART && typeof window.CART.close === 'function') window.CART.close(); }; })();
+  // CART module (modal-based)
+  (function(){
+    const CART_KEY = 'emferry_cart_v1';
+    const modal = document.getElementById('cartModal');
+    const listEl = document.getElementById('cartList');
+    const totalEl = document.getElementById('cartTotal');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+
+    function get(){ try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; } }
+    function set(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); }
+    function badge(){ const b = document.querySelector('.header-cart .cart-count'); if (!b) return; const t = get().reduce((s,i)=>s + (i.qty||1), 0); b.textContent = String(t); }
+
+    function render(){
+      if (!listEl) return;
+      listEl.innerHTML = '';
+      const cart = get();
+      let total = 0;
+      if (!cart.length){
+        const empty = document.createElement('div');
+        empty.className = 'manage-placeholder';
+        empty.textContent = 'Your cart is empty.';
+        listEl.appendChild(empty);
+      }
+      cart.forEach((it, i) => {
+        total += (it.price||0) * (it.qty||1);
+        const row = document.createElement('div');
+        row.className = 'cart-row';
+        row.dataset.index = String(i);
+        row.innerHTML = `
+          <img src="${it.img||'images/placeholder.png'}" alt="${it.title||''}" onerror="this.src='images/placeholder.png'" style="width:48px;height:48px;object-fit:cover;border-radius:8px;">
+          <div style="min-width:0;flex:1">
+            <div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${it.title||''}</div>
+            <div style="color:#5f6368">$${(it.price||0).toFixed(2)}</div>
+          </div>
+          <div style=\"display:flex;align-items:center;gap:6px\">
+            <button type=\"button\" class=\"auth-secondary ci-dec\" data-i=\"${i}\">-</button>
+            <span>${it.qty||1}</span>
+            <button type=\"button\" class=\"auth-secondary ci-inc\" data-i=\"${i}\">+</button>
+            <button type=\"button\" class=\"auth-secondary ci-del\" data-i=\"${i}\" title=\"Remove\">&times;</button>
+          </div>`;
+        listEl.appendChild(row);
+      });
+      if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
+    }
+    function open(){ if (!modal) return; render(); modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); }
+    function close(){ if (!modal) return; modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); }
+    function add(item){
+      const cart = get();
+      const idx = cart.findIndex(x => x.id === item.id);
+      if (idx >= 0){ cart[idx].qty = (cart[idx].qty||1) + (item.qty||1); if (!cart[idx].img && item.img) cart[idx].img = item.img; }
+      else { cart.push({ id:item.id, title:item.title, price:item.price||0, qty:item.qty||1, img:item.img||'' }); }
+      set(cart); badge();
+    }
+    function checkout(){
+      const cart = get(); if (!cart.length){ alert('Your cart is empty.'); return; }
+      set([]); badge(); render(); alert('Checkout complete. Thank you!'); close();
+    }
+
+    // Modal events
+    if (modal){
+      modal.addEventListener('click', (e)=>{ if (e.target.closest('[data-close-cart]')) close(); });
+      modal.addEventListener('click', (e)=>{
+        const dec = e.target.closest('.ci-dec'); const inc = e.target.closest('.ci-inc'); const del = e.target.closest('.ci-del');
+        const btn = dec || inc || del; if (!btn) return;
+        const i = Number(btn.getAttribute('data-i'));
+        const cart = get(); if (isNaN(i) || !cart[i]) return;
+        if (dec) cart[i].qty = Math.max(1, (cart[i].qty||1) - 1);
+        if (inc) cart[i].qty = (cart[i].qty||1) + 1;
+        if (del) cart.splice(i, 1);
+        set(cart); render(); badge();
+      });
+    }
+    if (checkoutBtn){ checkoutBtn.addEventListener('click', checkout); }
+    // Delegated fallback
+    document.addEventListener('click', (e)=>{ const ck = e.target && e.target.closest && e.target.closest('#checkoutBtn'); if (ck) checkout(); });
+
+    // Header cart opens modal
+    const headerCart = document.querySelector('.header-cart');
+    if (headerCart){ headerCart.addEventListener('click', open); }
+
+    // Expose
+    window.CART = { open, close, add, render, badge, checkout };
+    window.openCart = open;
+    window.addToCart = function(item){ add(item); };
+    window.checkoutCart = checkout;
+    badge();
+  })();
+
+  // Deals interactions: Buy -> add to cart and open cart
+  (function(){
+    document.addEventListener('click', function(e){
+  var closeBtn = e.target && e.target.closest && e.target.closest('#dealsModal [data-close-deals], #dealsModal .auth-backdrop');
+  if (closeBtn) {
+        var dm = document.getElementById('dealsModal'); if (dm){ dm.classList.remove('show'); dm.setAttribute('aria-hidden','true'); }
+        return;
+      }
+  // Allow empty Deals modal: handle Buy and Add in both card types
+  var buy = e.target && e.target.closest && e.target.closest('.deal-buy');
+  var addBtn = e.target && e.target.closest && e.target.closest('.deal-add');
+  if (!buy && !addBtn) return;
+      var card = (buy||addBtn).closest('.deal-v-card, .deal-card'); if (!card) return;
+      var id = card.getAttribute('data-id');
+      var title = card.getAttribute('data-title');
+      var price = Number(card.getAttribute('data-price')) || 0;
+      var img = card.getAttribute('data-img') || '';
+      if (window.CART && typeof window.CART.add === 'function'){
+        window.CART.add({ id: 'deal_'+id, title: title, price: price, qty: 1, img: img });
+        if (buy) {
+          // Close deals modal and open cart
+          var dm = document.getElementById('dealsModal'); if (dm){ dm.classList.remove('show'); dm.setAttribute('aria-hidden','true'); }
+          if (typeof window.openCart === 'function') window.openCart();
+        } else if (window.efToast) {
+          window.efToast('Added to cart');
         }
-      });
-      deals && deals.addEventListener('click', () => {
-        const sh = document.querySelector('.sub-header');
-        if (sh) sh.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-      cart && cart.addEventListener('click', () => {
-        const c = document.querySelector('.header-cart');
-        if (c) c.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-      acct && acct.addEventListener('click', () => {
-        const accountArea = document.getElementById('accountArea');
-        if (accountArea) accountArea.click();
+      }
+    });
+  })();
+
+    // No products yet; wire Clear button to hide filter bar
+    (function(){
+      const filterBar = document.getElementById('filterBar');
+      const clearFilter = document.getElementById('clearFilter');
+      const noProducts = document.getElementById('noProducts');
+      clearFilter && clearFilter.addEventListener('click', ()=>{
+        if (filterBar) filterBar.classList.add('hidden');
+        if (noProducts) noProducts.classList.add('hidden');
       });
     })();
   </script>
@@ -1939,8 +2485,8 @@
   <nav class="bottom-nav" aria-label="Primary">
     <button class="bn-item" id="bnHome" type="button" aria-label="Home"><i class="fa-solid fa-house"></i><span>Home</span></button>
     <button class="bn-item" id="bnCategories" type="button" aria-label="Categories"><i class="fa-solid fa-bars"></i><span>Categories</span></button>
-    <button class="bn-item" id="bnDeals" type="button" aria-label="Deals"><i class="fa-solid fa-bolt"></i><span>Deals</span></button>
-    <button class="bn-item" id="bnCart" type="button" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i><span>Cart</span></button>
+  <button class="bn-item" id="bnDeals" type="button" aria-label="Deals" onclick="try{window.openDeals?window.openDeals():(window.showDeals?window.showDeals():alert('Deals coming soon.'))}catch(e){}"><i class="fa-solid fa-bolt"></i><span>Deals</span></button>
+  <button class="bn-item" id="bnCart" type="button" aria-label="Cart" onclick="window.openCart && window.openCart()"><i class="fa-solid fa-cart-shopping"></i><span>Cart</span></button>
     <button class="bn-item" id="bnAccount" type="button" aria-label="Account"><i class="fa-solid fa-user"></i><span>Account</span></button>
   </nav>
 </body>
