@@ -8,6 +8,7 @@
 body {
   background: #e3e6e6;
 }
+html, body { height: 100%; }
 
 /* Mobile-friendly base tweaks (global) */
 html { -webkit-text-size-adjust: 100%; }
@@ -220,6 +221,13 @@ img, video { max-width: 100%; height: auto; }
 .loc-chip { display: none; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.2); cursor: pointer; }
 .loc-chip:hover { background: rgba(255,255,255,.18); }
 .loc-dropdown { display: block; }
+
+/* Mobile location modal */
+.loc-modal { position: fixed; inset: 0; display: none; z-index: 1400; }
+.loc-modal.show { display: block; }
+.loc-dialog { position: absolute; inset: 0; background: #fff; display: flex; flex-direction: column; }
+.loc-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid #eee; }
+.loc-body { flex: 1 1 auto; overflow: auto; -webkit-overflow-scrolling: touch; padding: 12px 14px; }
 
 /* Auth modal */
 .auth-modal { position: fixed; inset: 0; display: none; z-index: 1000; }

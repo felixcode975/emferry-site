@@ -6,10 +6,10 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="x-build-version" content="5">
+  <meta name="x-build-version" content="6">
   <title>EMFERRY</title>
-  <link rel="stylesheet" href="style.css?v=5">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css?v=6">
 </head>
 <body>
   <!-- HEADER -->
@@ -458,6 +458,37 @@
     </div>
   </div>
 
+  <!-- Mobile Location Fullscreen Modal -->
+  <div id="mobileLocModal" class="loc-modal" aria-hidden="true">
+    <div class="auth-backdrop" data-close-loc></div>
+    <div class="loc-dialog" role="dialog" aria-modal="true" aria-labelledby="locTitle">
+      <div class="loc-header">
+        <h3 id="locTitle">Deliver to</h3>
+        <button class="auth-close" aria-label="Close" data-close-loc>&times;</button>
+      </div>
+      <div class="loc-body">
+        <div class="form-grid">
+          <div class="form-row">
+            <label for="mCountrySelect">Country</label>
+            <select id="mCountrySelect"></select>
+          </div>
+          <div class="form-row">
+            <label for="mStateSelect">State/Region</label>
+            <select id="mStateSelect"></select>
+          </div>
+          <div class="form-row">
+            <label for="mCitySelect">City</label>
+            <select id="mCitySelect"></select>
+          </div>
+          <div class="form-actions">
+            <div id="mLocMsg" class="form-msg"></div>
+            <button id="mLocSave" class="auth-primary" type="button">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Address Modal (Add/Edit) -->
   <div id="addrModal" class="addr-modal" aria-hidden="true">
     <div class="auth-backdrop"></div>
@@ -683,7 +714,7 @@
 
   <script>
   // Top hamburger removed; Categories drawer will be opened from bottom nav
-    // Mobile location chip toggle
+    // Mobile/desktop location handling
     (function(){
       const chip = document.getElementById('locChip');
       const dd = document.getElementById('locDropdown');
@@ -691,21 +722,107 @@
       const state = document.getElementById('stateSelect');
       const city = document.getElementById('citySelect');
       const chipText = document.getElementById('locChipText');
-      if (!chip || !dd) return;
-      function toggle(){
-        const isOpen = dd.style.display === 'block';
-        dd.style.display = isOpen ? 'none' : 'block';
-        chip.setAttribute('aria-expanded', String(!isOpen));
+      const mModal = document.getElementById('mobileLocModal');
+      const mBackdrop = mModal.querySelector('[data-close-loc]');
+      const mClose = mModal.querySelector('[data-close-loc]');
+      const mCountry = document.getElementById('mCountrySelect');
+      const mState = document.getElementById('mStateSelect');
+      const mCity = document.getElementById('mCitySelect');
+      const mSave = document.getElementById('mLocSave');
+      if (!chip) return;
+
+      function isMobile(){ return window.matchMedia('(max-width: 768px)').matches; }
+      function openLocModal(){
+        mModal.classList.add('show');
+        mModal.setAttribute('aria-hidden','false');
+        // seed selects if empty
+        if (!mCountry.options.length) loadCountriesMobile();
       }
-      chip.addEventListener('click', toggle);
-      function updateChip(){
-        const c = city.value || state.value || country.value || 'Select';
+      function closeLocModal(){
+        mModal.classList.remove('show');
+        mModal.setAttribute('aria-hidden','true');
+      }
+      function updateChipText(sourceCity, sourceState, sourceCountry){
+        const c = (sourceCity && sourceCity.value) || (sourceState && sourceState.value) || (sourceCountry && sourceCountry.value) || 'Select';
         chipText.textContent = c;
       }
-      [country, state, city].forEach(el => el && el.addEventListener('change', updateChip));
+      // Click opens modal on mobile, toggles dropdown on desktop
+      chip.addEventListener('click', () => {
+        if (isMobile()) openLocModal(); else {
+          if (!dd) return;
+          const isOpen = dd.style.display === 'block';
+          dd.style.display = isOpen ? 'none' : 'block';
+          chip.setAttribute('aria-expanded', String(!isOpen));
+        }
+      });
+      // Desktop: keep chip text updated
+      [country, state, city].forEach(el => el && el.addEventListener('change', () => updateChipText(city, state, country)));
+      // Mobile: wire save and change events
+      mBackdrop && mBackdrop.addEventListener('click', closeLocModal);
+      mClose && mClose.addEventListener('click', closeLocModal);
+      mSave && mSave.addEventListener('click', () => {
+        updateChipText(mCity, mState, mCountry);
+        closeLocModal();
+      });
+      [mCountry, mState, mCity].forEach(el => el && el.addEventListener('change', () => updateChipText(mCity, mState, mCountry)));
+
+      // Mobile location loaders (duplicate logic with mobile selects)
+      function setPlaceholder(select, text) {
+        select.innerHTML = '';
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = text;
+        opt.disabled = true;
+        opt.selected = true;
+        select.appendChild(opt);
+      }
+      async function loadCountriesMobile(){
+        setPlaceholder(mCountry, 'Select country');
+        setPlaceholder(mState, 'Select state');
+        setPlaceholder(mCity, 'Select city');
+        mState.disabled = true; mCity.disabled = true;
+        try {
+          const res = await fetch('https://restcountries.com/v3.1/all');
+          const data = await res.json();
+          const names = data.map(c => c?.name?.common).filter(Boolean).sort((a,b)=>a.localeCompare(b));
+          const list = names.length ? names : fallbackCountryList;
+          list.forEach(val => { const o=document.createElement('option'); o.value=val; o.textContent=val; mCountry.appendChild(o); });
+        } catch(e) {
+          fallbackCountryList.forEach(val => { const o=document.createElement('option'); o.value=val; o.textContent=val; mCountry.appendChild(o); });
+        }
+      }
+      async function loadStatesMobile(country){
+        setPlaceholder(mState, 'Select state'); mState.disabled = true;
+        setPlaceholder(mCity, 'Select city'); mCity.disabled = true;
+        const useFallback = async () => {
+          const states = Object.keys(fallbackLocations[country] || {});
+          if (states.length) { states.forEach(val=>{ const o=document.createElement('option'); o.value=val; o.textContent=val; mState.appendChild(o); }); mState.disabled=false; }
+        };
+        try {
+          const res = await fetch('https://countriesnow.space/api/v0.1/countries/states', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ country }) });
+          const json = await res.json();
+          const states = json?.data?.states?.map(s=>s.name) || [];
+          if (states.length) { states.forEach(val=>{ const o=document.createElement('option'); o.value=val; o.textContent=val; mState.appendChild(o); }); mState.disabled=false; } else { await useFallback(); }
+        } catch(e) { await useFallback(); }
+      }
+      async function loadCitiesMobile(country, state){
+        setPlaceholder(mCity, 'Select city'); mCity.disabled = true;
+        const useFallback = () => {
+          const cities = (fallbackLocations[country] || {})[state] || [];
+          if (cities.length) { cities.forEach(val=>{ const o=document.createElement('option'); o.value=val; o.textContent=val; mCity.appendChild(o); }); mCity.disabled=false; }
+        };
+        try {
+          const res = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ country, state }) });
+          const json = await res.json();
+          const cities = json?.data || [];
+          if (Array.isArray(cities) && cities.length) { cities.forEach(val=>{ const o=document.createElement('option'); o.value=val; o.textContent=val; mCity.appendChild(o); }); mCity.disabled=false; } else { useFallback(); }
+        } catch(e) { useFallback(); }
+      }
+      mCountry && mCountry.addEventListener('change', (e)=>{ const v=e.target.value; if (v) loadStatesMobile(v); });
+      mState && mState.addEventListener('change', (e)=>{ const v=e.target.value; const c=mCountry.value; if (c && v) loadCitiesMobile(c, v); });
     })();
     // ===== Categories drawer (opened from bottom nav) =====
-    (function(){
+  (function(){
       const btn = document.getElementById('navAllBtn'); // may not exist
       const drawer = document.getElementById('navDrawer');
       if (!drawer) return;
@@ -716,16 +833,11 @@
         drawer.classList.add('show');
         drawer.setAttribute('aria-hidden','false');
         if (btn) btn.setAttribute('aria-expanded','true');
-        // prevent body scroll behind drawer
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.overflow = 'hidden';
       }
       function closeDrawer(){
         drawer.classList.remove('show');
         drawer.setAttribute('aria-hidden','true');
         if (btn) btn.setAttribute('aria-expanded','false');
-        document.documentElement.style.overflow = '';
-        document.body.style.overflow = '';
       }
       // If top button exists, still wire it
       btn && btn.addEventListener('click', openDrawer);
@@ -1025,7 +1137,7 @@
       }
     }
 
-    // Handlers
+  // Handlers
     accountArea.addEventListener('click', () => {
       const session = getSession();
       if (session && session.email) {
@@ -1772,7 +1884,7 @@
       }
     });
 
-    // When manage modal opens, initialize data on first tab
+  // When manage modal opens, initialize data on first tab
     manageModalEl.addEventListener('transitionend', () => {});
     // Prime content when opening
     const origOpenManage = openManageModal;
@@ -1784,7 +1896,9 @@
       showManageTab('profile');
       origOpenManage();
     };
-    // Bottom nav actions
+  // Initialize header state and bottom nav actions
+  updateHeaderUser();
+  // Bottom nav actions
     (function(){
       const sel = (id) => document.getElementById(id);
       const home = sel('bnHome');
