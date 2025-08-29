@@ -6,10 +6,10 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="x-build-version" content="12">
+  <meta name="x-build-version" content="14">
   <title>EMFERRY</title>
-  <link rel="stylesheet" href="style.css?v=12">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css?v=12">
+  <link rel="stylesheet" href="style.css?v=14">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css?v=14">
 </head>
 <body>
   <!-- HEADER -->
@@ -27,6 +27,11 @@
       <button id="locChip" class="loc-chip" type="button" aria-expanded="false" aria-controls="locDropdown">
         Deliver to <span id="locChipText">Select</span>
       </button>
+      <!-- Mobile language (shown on mobile, right side of Deliver) -->
+      <div class="mobile-language" aria-label="Language">
+        <img id="langFlagMobile" src="https://flagcdn.com/w20/us.png" alt="EN">
+        <select id="languageSelectMobile" aria-label="Language"></select>
+      </div>
       <div id="locDropdown" class="loc-dropdown">
         <p class="small-text">Deliver to</p>
         <select id="countrySelect" aria-label="Country"></select>
@@ -1052,17 +1057,125 @@
         mModal.classList.remove('show');
         mModal.setAttribute('aria-hidden','true');
       }
+      // Close (backdrop and X)
+      mBackdrop && mBackdrop.addEventListener('click', closeLocModal);
+      mClose && mClose.addEventListener('click', closeLocModal);
+      document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && mModal.classList.contains('show')) closeLocModal(); });
       function updateChipText(sourceCity, sourceState, sourceCountry){
         const c = (sourceCity && sourceCity.value) || (sourceState && sourceState.value) || (sourceCountry && sourceCountry.value) || 'Select';
         chipText.textContent = c;
       }
       // Click opens modal on mobile, toggles dropdown on desktop
+      function positionLocDropdown(){
+        if (!dd) return;
+        // Use fixed positioning so we can clamp to viewport cleanly
+        dd.style.position = 'fixed';
+        dd.style.left = 'auto';
+        dd.style.right = 'auto';
+        // Ensure it's visible to measure
+        const wasHidden = !dd.classList.contains('show');
+        if (wasHidden) dd.classList.add('show');
+        const chipRect = chip.getBoundingClientRect();
+        const ddW = Math.min(dd.offsetWidth || 520, Math.floor(window.innerWidth * 0.96));
+        const padding = 8;
+        // Place under chip with small gap
+        let top = Math.round(chipRect.bottom + padding);
+        // Clamp left within viewport
+        let left = Math.round(Math.min(
+          Math.max(padding, chipRect.right - ddW),
+          window.innerWidth - ddW - padding
+        ));
+        // Account for bottom nav height on mobile widths
+        const bn = document.querySelector('.bottom-nav');
+        const bnVisible = bn && getComputedStyle(bn).display !== 'none';
+        let bnH = bnVisible ? Math.round(bn.getBoundingClientRect().height) : 0;
+        if (bnVisible && (!bnH || bnH < 40)) bnH = 64;
+        const available = Math.max(180, window.innerHeight - top - (bnH + padding));
+        dd.style.width = ddW + 'px';
+        dd.style.left = left + 'px';
+        dd.style.top = top + 'px';
+        dd.style.maxHeight = available + 'px';
+        dd.style.overflow = 'auto';
+        if (wasHidden) dd.classList.remove('show');
+      }
       chip.addEventListener('click', () => {
         if (isMobile()) {
           openLocModal();
-        } else {
-          dd && dd.classList.toggle('show');
+        } else if (dd) {
+          // Toggle and position within viewport
+          const willShow = !dd.classList.contains('show');
+          if (willShow) {
+            positionLocDropdown();
+            dd.classList.add('show');
+          } else {
+            dd.classList.remove('show');
+          }
         }
+      });
+      // Reposition on resize if open
+      window.addEventListener('resize', () => { if (dd && dd.classList.contains('show')) positionLocDropdown(); });
+      // Mobile loaders
+      function setMobilePlaceholder(select, text){
+        if (!select) return;
+        select.innerHTML = '';
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = text;
+        opt.disabled = true;
+        opt.selected = true;
+        select.appendChild(opt);
+      }
+      function fillMobileOptions(select, items){
+        if (!select || !Array.isArray(items)) return;
+        items.forEach(v => { const o=document.createElement('option'); o.value=v; o.textContent=v; select.appendChild(o); });
+      }
+  async function loadCountriesMobile(){
+        setMobilePlaceholder(mCountry, 'Select country');
+        setMobilePlaceholder(mState, 'Select state'); mState.disabled = true;
+        setMobilePlaceholder(mCity, 'Select city'); mCity.disabled = true;
+        try {
+          const res = await fetch('https://restcountries.com/v3.1/all');
+          const data = await res.json();
+          const names = (data||[]).map(c=>c?.name?.common).filter(Boolean).sort((a,b)=>a.localeCompare(b));
+          if (names.length) fillMobileOptions(mCountry, names); else if (Array.isArray(fallbackCountryList)) fillMobileOptions(mCountry, fallbackCountryList);
+        } catch(e){
+          if (Array.isArray(fallbackCountryList)) fillMobileOptions(mCountry, fallbackCountryList);
+        }
+      }
+      async function loadStatesMobile(country){
+        setMobilePlaceholder(mState, 'Select state'); mState.disabled = true;
+        setMobilePlaceholder(mCity, 'Select city'); mCity.disabled = true;
+        const useFallback = () => {
+          const states = Object.keys((fallbackLocations||{})[country]||{});
+          if (states.length){ fillMobileOptions(mState, states); mState.disabled = false; }
+        };
+        try{
+          const res = await fetch('https://countriesnow.space/api/v0.1/countries/states', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ country }) });
+          const json = await res.json();
+          const states = json?.data?.states?.map(s=>s.name) || [];
+          if (states.length){ fillMobileOptions(mState, states); mState.disabled = false; } else useFallback();
+        }catch(e){ useFallback(); }
+      }
+      async function loadCitiesMobile(country, state){
+        setMobilePlaceholder(mCity, 'Select city'); mCity.disabled = true;
+        const useFallback = () => {
+          const cities = ((fallbackLocations||{})[country]||{})[state]||[];
+          if (cities.length){ fillMobileOptions(mCity, cities); mCity.disabled = false; }
+        };
+        try{
+          const res = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ country, state }) });
+          const json = await res.json();
+          const cities = Array.isArray(json?.data) ? json.data : [];
+          if (cities.length){ fillMobileOptions(mCity, cities); mCity.disabled = false; } else useFallback();
+        }catch(e){ useFallback(); }
+      }
+      // Save selection -> update header chip and close
+      mSave && mSave.addEventListener('click', () => {
+        const c = mCountry && mCountry.value; const s = mState && mState.value; const ci = mCity && mCity.value;
+        if (!c) { window.efToast ? efToast('Select a country') : alert('Select a country'); return; }
+        // Prefer city > state > country for chip label
+        updateChipText({ value: ci||'' }, { value: s||'' }, { value: c||'' });
+        closeLocModal();
       });
       mCountry && mCountry.addEventListener('change', (e)=>{ const v=e.target.value; if (v) loadStatesMobile(v); });
       mState && mState.addEventListener('change', (e)=>{ const v=e.target.value; const c=mCountry.value; if (c && v) loadCitiesMobile(c, v); });
@@ -1348,31 +1461,48 @@
       }
     }
 
-    // Wire up events
-    countrySelect.addEventListener('change', (e) => {
-      const country = e.target.value;
-      if (!country) return;
-      loadStates(country);
-    });
-
-    stateSelect.addEventListener('change', (e) => {
-      const state = e.target.value;
-      const country = countrySelect.value;
-      if (!country || !state) return;
-      loadCities(country, state);
-    });
-
-    // Init
-    loadCountries();
+  // Desktop header dropdown is intentionally non-functional.
+  // No change handlers or auto-population here.
 
     // 🌐 Language change flag
     const languageSelect = document.getElementById("languageSelect");
     const langFlag = document.getElementById("langFlag");
+    const languageSelectMobile = document.getElementById("languageSelectMobile");
+    const langFlagMobile = document.getElementById("langFlagMobile");
 
-    languageSelect.addEventListener("change", function() {
-      const selected = this.options[this.selectedIndex];
-      const flag = selected.getAttribute("data-flag");
-      langFlag.src = flag;
+    function getFlag(selectEl){
+      const opt = selectEl && selectEl.options && selectEl.options[selectEl.selectedIndex];
+      return opt ? opt.getAttribute('data-flag') : '';
+    }
+    function setFlags(url){ if (url){ if (langFlag) langFlag.src = url; if (langFlagMobile) langFlagMobile.src = url; } }
+    function cloneLanguageOptions(){
+      if (!languageSelect || !languageSelectMobile || languageSelectMobile.options.length) return;
+      const SHORT = {
+        en: 'ENG', es: 'ESP', fr: 'FRA', de: 'DEU', pt: 'POR', it: 'ITA', ru: 'RUS',
+        zh: 'ZH', 'zh-tw': 'ZH-TW', ja: 'JPN', ko: 'KOR', ar: 'ARA', hi: 'HIN', bn: 'BEN',
+        pa: 'PAN', ur: 'URD', fa: 'FAS', tr: 'TUR', vi: 'VIE', th: 'THA', id: 'IND', ms: 'MS',
+        sw: 'SWA', ha: 'HAU', yo: 'YOR', ig: 'IBO', zu: 'ZUL', xh: 'XHO', am: 'AMH', he: 'HEB',
+        el: 'ELL', pl: 'POL', uk: 'UKR'
+      };
+      Array.from(languageSelect.options).forEach(src => {
+        const o = document.createElement('option');
+        o.value = src.value; o.textContent = SHORT[src.value] || (src.textContent || '').slice(0,3).toUpperCase();
+        const df = src.getAttribute('data-flag'); if (df) o.setAttribute('data-flag', df);
+        languageSelectMobile.appendChild(o);
+      });
+      languageSelectMobile.value = languageSelect.value;
+      setFlags(getFlag(languageSelect));
+    }
+    // Initialize mobile language options once DOM is ready
+    cloneLanguageOptions();
+    // Keep both selects in sync
+    if (languageSelect) languageSelect.addEventListener('change', function(){
+      if (languageSelectMobile) languageSelectMobile.value = this.value;
+      setFlags(getFlag(this));
+    });
+    if (languageSelectMobile) languageSelectMobile.addEventListener('change', function(){
+      if (languageSelect) languageSelect.value = this.value;
+      setFlags(getFlag(this));
     });
 
     // 📍 Auto-detect user location
