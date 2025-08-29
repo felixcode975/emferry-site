@@ -131,6 +131,7 @@
       <p class="small-text">Hello, sign in</p>
   <p class="bold-text">Account & Lists</p>
   <span class="mobile-signin">Sign in <span class="chev">&gt;</span> <i class="fa-solid fa-user" aria-hidden="true"></i></span>
+  <span class="mobile-avatar" aria-label="Account avatar"></span>
     </div>
 
     <!-- Orders -->
@@ -1579,21 +1580,26 @@
       const small = acct.querySelector('.small-text');
       const bold = acct.querySelector('.bold-text');
       const mob = acct.querySelector('.mobile-signin');
+      const mobAv = acct.querySelector('.mobile-avatar');
       if (session && session.email) {
         const user = users.find(u => u.email.toLowerCase() === session.email.toLowerCase());
         const name = user ? user.name : session.email;
         const initial = (name || 'U').trim().charAt(0).toUpperCase();
         if (user && user.avatar) {
-          small.innerHTML = `<span class="avatar"><img src="${user.avatar}" alt="avatar"/></span>`;
+          small.innerHTML = `<span class=\"avatar\"><img src=\"${user.avatar}\" alt=\"avatar\"/></span>`;
+          if (mobAv) mobAv.innerHTML = `<img src=\"${user.avatar}\" alt=\"avatar\"/>`;
         } else {
-          small.innerHTML = `<span class="avatar">${initial}</span>`;
+          small.innerHTML = `<span class=\"avatar\">${initial}</span>`;
+          if (mobAv) mobAv.textContent = initial;
         }
         bold.textContent = 'Account';
         if (mob) mob.style.display = 'none';
+        if (mobAv) mobAv.style.display = '';
       } else {
         small.textContent = 'Hello, sign in';
         bold.textContent = 'Account & Lists';
         if (mob) mob.style.display = '';
+        if (mobAv) mobAv.style.display = 'none';
       }
     }
 
@@ -1625,6 +1631,18 @@
         openModal();
       }
     });
+    // Mobile avatar/sign-in taps open the same
+    (function(){
+      const acct = document.getElementById('accountArea');
+      const mobAv = acct && acct.querySelector('.mobile-avatar');
+      const mobSig = acct && acct.querySelector('.mobile-signin');
+      function openAcctOrAuth(){
+        const session = getSession();
+        if (session && session.email) openAccountModal(); else { switchTab('signin'); toggleSignedInView(); openModal(); }
+      }
+      mobAv && mobAv.addEventListener('click', openAcctOrAuth);
+      mobSig && mobSig.addEventListener('click', openAcctOrAuth);
+    })();
     authBackdrop.addEventListener('click', closeModal);
     authClose.addEventListener('click', closeModal);
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });

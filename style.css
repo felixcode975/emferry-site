@@ -489,6 +489,9 @@ img, video { max-width: 100%; height: auto; }
 
 /* Extra styles for profile redesign */
 .header-option .avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+/* Mobile header mini avatar next to Cart */
+.mobile-avatar { display: none; width: 22px; height: 22px; border-radius: 50%; background: #ffb74d; color: #131921; font-weight: 800; font-size: 12px; align-items: center; justify-content: center; margin-left: 6px; cursor: pointer; }
+.mobile-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
 .form-grid.narrow { max-width: 420px; }
 .profile-layout { display: grid; grid-template-columns: 260px 1fr; gap: 20px; align-items: start; }
 .profile-avatar-wrap { text-align: center; }
@@ -573,7 +576,7 @@ img, video { max-width: 100%; height: auto; }
   .deal-v-name { font-size: 18px; }
   .deal-v-new { font-size: 20px; }
   .deal-v-actions .auth-primary { padding: 10px 16px; border-radius: 10px; font-weight: 800; }
-  #accountArea { order: 2; margin-left: auto; white-space: nowrap; }
+  #accountArea { order: 2; margin-left: auto; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
   .header-cart { order: 2; margin-right: -6px; }
   .header-cart .bold-text { display: none; }
   .header-search { order: 3; flex: 1 1 100%; justify-content: stretch; }
@@ -608,7 +611,9 @@ img, video { max-width: 100%; height: auto; }
   .header-option .bold-text { font-size: 12px; }
   /* Hide desktop labels, show Sign in > */
   #accountArea .small-text, #accountArea .bold-text { display: none; }
-  #accountArea .mobile-signin { display: inline-flex; align-items: center; gap: 3px; color: #fff; font-size: 11px; line-height: 1; }
+  #accountArea .mobile-signin { display: inline-flex; align-items: center; gap: 3px; color: #fff; font-size: 11px; line-height: 1; cursor: pointer; }
+  /* Show avatar on mobile */
+  .mobile-avatar { display: inline-flex; }
   #accountArea .mobile-signin .chev { opacity: .8; }
   #accountArea .mobile-signin i { font-size: 13px; }
   .header-orders .small-text { display: none; }
@@ -616,6 +621,8 @@ img, video { max-width: 100%; height: auto; }
   .account-dialog, .auth-dialog { margin: 6vh auto 0; width: 94%; }
   /* Fullscreen auth modal on phones */
   .auth-dialog { position: fixed; inset: 0; margin: 0; width: 100%; max-width: none; height: 100vh; border-radius: 0; }
+  /* Fullscreen account modal on phones */
+  .account-dialog { position: fixed; inset: 0; margin: 0; width: 100%; max-width: none; height: 100vh; border-radius: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   /* Account grid stacks */
   .acct-grid { grid-template-columns: 1fr; }
   /* Profile section stacks */
