@@ -156,18 +156,7 @@
     </div>
   </div>
 
-  <!-- Sub Header (desktop) -->
-  <nav class="sub-header" role="navigation" aria-label="Site navigation">
-    <ul class="nav-links">
-      <li><a href="#" class="nav-link fx">Home</a></li>
-      <li><a href="#" class="nav-link fx">Today's Deals</a></li>
-      <li><a href="#" class="nav-link fx">Customer Service</a></li>
-      <li><a href="#" class="nav-link fx">Registry</a></li>
-      <li><a href="#" class="nav-link fx">Gift Cards</a></li>
-      <li><a href="#" class="nav-link fx">Sell</a></li>
-      <li><a href="#" class="nav-link fx">Buy</a></li>
-    </ul>
-  </nav>
+  <!-- Sub Header removed per request -->
 
   <!-- Side Drawer for "All" menu -->
   <div id="navDrawer" class="nav-drawer" aria-hidden="true">
@@ -470,8 +459,8 @@
             <div class="manage-placeholder">Your saved lists will appear here.</div>
           </section>
 
-          <!-- Saved Items (avoid duplicate id) -->
-          <section id="m-saved" class="manage-section hidden" aria-label="Saved items">
+          <!-- Your List -->
+          <section id="m-lists" class="manage-section hidden">
             <div class="manage-placeholder">Your saved items will appear here.</div>
           </section>
 
@@ -742,28 +731,6 @@
       window.setDealImage = function(id, url){ try { localStorage.setItem(IMG_KEY_PREFIX + id, url || ''); } catch {} };
       window.clearDealImage = function(id){ try { localStorage.removeItem(IMG_KEY_PREFIX + id); } catch {} };
     })();
-    // Global image fallback: if an <img> fails (e.g., missing in /images), swap to an inline SVG placeholder
-    (function(){
-      function svgDataUrl(){
-        var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="240" height="180" viewBox="0 0 240 180">'
-                + '<rect width="100%" height="100%" fill="#f1f3f4"/>'
-                + '<g opacity="0.3">'
-                + '<rect x="48" y="40" width="144" height="84" rx="8" fill="#9aa0a6"/>'
-                + '<circle cx="96" cy="82" r="16" fill="#f1f3f4"/>'
-                + '<path d="M72 116l32-32 24 24 16-16 24 24H72z" fill="#f1f3f4"/></g>'
-                + '<text x="50%" y="160" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#9aa0a6">No image</text>'
-                + '</svg>';
-        return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
-      }
-      document.addEventListener('error', function(e){
-        var el = e.target;
-        if (!el || !el.tagName || el.tagName.toLowerCase() !== 'img') return;
-        if (el.dataset && el.dataset.fbkApplied) return;
-        if (el.removeAttribute) el.removeAttribute('onerror');
-        el.src = svgDataUrl();
-        if (el.dataset) el.dataset.fbkApplied = '1';
-      }, true);
-    })();
     window.closeDeals = window.closeDeals || function(){
       var m = document.getElementById('dealsModal');
       if (m){ m.classList.remove('show'); m.setAttribute('aria-hidden','true'); }
@@ -784,7 +751,7 @@
     <div class="cart-dialog" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
       <div class="cart-header">
         <h3 id="cartTitle">Your Cart</h3>
-  <button class="auth-close" type="button" aria-label="Close" data-close-cart>&times;</button>
+        <button class="auth-close" type="button" aria-label="Close" data-close-cart>&times;</button>
       </div>
       <div class="cart-body">
         <div id="cartList" class="cart-list"></div>
@@ -1132,9 +1099,19 @@
         dd.style.overflow = 'auto';
         if (wasHidden) dd.classList.remove('show');
       }
-      // Always open full-screen location modal (desktop and mobile)
       chip.addEventListener('click', () => {
-        openLocModal();
+        if (isMobile()) {
+          openLocModal();
+        } else if (dd) {
+          // Toggle and position within viewport
+          const willShow = !dd.classList.contains('show');
+          if (willShow) {
+            positionLocDropdown();
+            dd.classList.add('show');
+          } else {
+            dd.classList.remove('show');
+          }
+        }
       });
       // Reposition on resize if open
       window.addEventListener('resize', () => { if (dd && dd.classList.contains('show')) positionLocDropdown(); });
@@ -1409,7 +1386,7 @@
       });
     }
 
-  async function loadCountries() {
+    async function loadCountries() {
       setPlaceholder(countrySelect, 'Select country');
       setPlaceholder(stateSelect, 'Select state');
       setPlaceholder(citySelect, 'Select city');
@@ -1485,34 +1462,8 @@
       }
     }
 
-    // Desktop header dropdown: populate and wire like mobile
-    (function(){
-      if (!countrySelect || !stateSelect || !citySelect) return;
-      // Lazy populate on first open/click
-      let seeded = false;
-      function ensureSeed(){ if (!seeded){ seeded = true; loadCountries(); } }
-      const chipBtn = document.getElementById('locChip');
-      const ddWrap = document.getElementById('locDropdown');
-      chipBtn && chipBtn.addEventListener('click', ensureSeed, { once: true });
-      // Also seed if user hovers the area (desktop convenience)
-      const headerLoc = document.querySelector('.header-location');
-      headerLoc && headerLoc.addEventListener('mouseenter', ensureSeed, { once: true });
-      // Wire dependent selects
-      countrySelect.addEventListener('change', (e)=>{ const v=e.target.value; if (v) loadStates(v); });
-      stateSelect.addEventListener('change', (e)=>{ const v=e.target.value; const c=countrySelect.value; if (c && v) loadCities(c, v); });
-      citySelect.addEventListener('change', ()=>{ const ct = document.getElementById('locChipText'); if (ct) ct.textContent = citySelect.value || stateSelect.value || countrySelect.value || 'Select'; });
-      // Close dropdown when clicking outside or pressing Escape
-      document.addEventListener('click', (e)=>{
-        if (!ddWrap) return;
-        const open = ddWrap.classList.contains('show');
-        if (!open) return;
-        const inDrop = e.target.closest && (e.target.closest('#locDropdown') || e.target.closest('#locChip'));
-        if (!inDrop){ ddWrap.classList.remove('show'); }
-      });
-      document.addEventListener('keydown', (e)=>{
-        if (e.key === 'Escape' && ddWrap && ddWrap.classList.contains('show')) ddWrap.classList.remove('show');
-      });
-    })();
+  // Desktop header dropdown is intentionally non-functional.
+  // No change handlers or auto-population here.
 
     // 🌐 Language change flag
     const languageSelect = document.getElementById("languageSelect");
@@ -2576,7 +2527,7 @@
         const row = document.createElement('div');
         row.className = 'cart-row';
         row.dataset.index = String(i);
-  row.innerHTML = `
+        row.innerHTML = `
           <img src="${it.img||'images/placeholder.png'}" alt="${it.title||''}" onerror="this.src='images/placeholder.png'" style="width:48px;height:48px;object-fit:cover;border-radius:8px;">
           <div style="min-width:0;flex:1">
             <div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${it.title||''}</div>
@@ -2586,6 +2537,7 @@
             <button type=\"button\" class=\"auth-secondary ci-dec\" data-i=\"${i}\">-</button>
             <span>${it.qty||1}</span>
             <button type=\"button\" class=\"auth-secondary ci-inc\" data-i=\"${i}\">+</button>
+            <button type=\"button\" class=\"auth-secondary ci-del\" data-i=\"${i}\" title=\"Remove\">&times;</button>
           </div>`;
         listEl.appendChild(row);
       });
@@ -2609,12 +2561,13 @@
     if (modal){
       modal.addEventListener('click', (e)=>{ if (e.target.closest('[data-close-cart]')) close(); });
       modal.addEventListener('click', (e)=>{
-        const dec = e.target.closest('.ci-dec'); const inc = e.target.closest('.ci-inc');
-        const btn = dec || inc; if (!btn) return;
+        const dec = e.target.closest('.ci-dec'); const inc = e.target.closest('.ci-inc'); const del = e.target.closest('.ci-del');
+        const btn = dec || inc || del; if (!btn) return;
         const i = Number(btn.getAttribute('data-i'));
         const cart = get(); if (isNaN(i) || !cart[i]) return;
         if (dec) cart[i].qty = Math.max(1, (cart[i].qty||1) - 1);
         if (inc) cart[i].qty = (cart[i].qty||1) + 1;
+        if (del) cart.splice(i, 1);
         set(cart); render(); badge();
       });
     }
