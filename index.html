@@ -171,11 +171,11 @@
 
   <!-- Side Drawer for "All" menu -->
   <div id="navDrawer" class="nav-drawer" aria-hidden="true">
-    <div class="nav-backdrop" data-close-drawer></div>
+    <div class="nav-backdrop" data-close-drawer onclick="try{window.EM&&window.EM.closeDrawer&&window.EM.closeDrawer()}catch(e){}"></div>
     <aside class="nav-panel" role="dialog" aria-modal="true" aria-label="Categories">
       <div class="nav-panel-header">
         <strong>Browse</strong>
-        <button class="nav-close" type="button" aria-label="Close" data-close-drawer>&times;</button>
+  <button class="nav-close" type="button" aria-label="Close" data-close-drawer onclick="try{window.EM&&window.EM.closeDrawer&&window.EM.closeDrawer()}catch(e){}">&times;</button>
       </div>
       <div class="nav-panel-content" id="navContent"></div>
     </aside>
@@ -259,18 +259,18 @@
       <h3 id="acctTitle" class="acct-title">Account</h3>
       <div class="acct-header">Hello, <strong id="acctHelloName"></strong></div>
       <div class="acct-actions">
-        <button id="acctManageBtn" class="auth-secondary">Manage account</button>
-        <button id="acctSignOutBtn" class="auth-secondary">Sign out</button>
+        <button id="acctManageBtn" class="auth-secondary" type="button">Manage account</button>
+        <button id="acctSignOutBtn" class="auth-secondary" type="button">Sign out</button>
       </div>
       <div class="acct-grid">
         <div class="acct-col">
           <h4>Your account</h4>
           <ul>
-            <li><a href="#">Orders</a></li>
+            <li><a href="#" id="acctOrdersLink">Orders</a></li>
             <li><a href="#">Returns & Refunds</a></li>
             <li><a href="#">Addresses</a></li>
             <li><a href="#">Payment methods</a></li>
-            <li><a href="#">Security settings</a></li>
+            <li><a href="#" id="acctSecurityLink">Security settings</a></li>
             <li><a href="#">Notifications</a></li>
           </ul>
         </div>
@@ -288,6 +288,8 @@
     </div>
   </div>
 
+  <!-- Orders view moved back into Manage modal -->
+
   <!-- Manage Account Fullscreen Modal -->
   <div id="manageModal" class="manage-modal" aria-hidden="true">
     <div class="auth-backdrop"></div>
@@ -299,16 +301,25 @@
       <div id="manageForm" class="manage-form">
         <div class="manage-tabs" id="manageTabs">
           <button class="manage-tab active" data-tab="profile" type="button">Profile</button>
-          <button class="manage-tab" data-tab="orders" type="button">Orders</button>
           <button class="manage-tab" data-tab="billing" type="button">Billing</button>
           <button class="manage-tab" data-tab="address" type="button">Address</button>
-          <button class="manage-tab" data-tab="lists" type="button">Your List</button>
+          <button class="manage-tab" data-tab="orders" type="button">Orders</button>
           <button class="manage-tab" data-tab="messages" type="button">Messages</button>
+          <button class="manage-tab" data-tab="lists" type="button">Your Lists</button>
           <button class="manage-tab" data-tab="security" type="button">Security</button>
           <button class="manage-tab" data-tab="privacy" type="button">Privacy</button>
         </div>
 
         <div class="manage-content">
+          <!-- Orders (restored inside Manage) -->
+          <section id="m-orders" class="manage-section hidden">
+            <div class="section-actions">
+              <button id="refreshOrders" class="auth-secondary" type="button">Refresh</button>
+            </div>
+            <div id="orderList" class="item-list"></div>
+            <div id="ordersEmpty" class="manage-placeholder">Your recent orders will appear here.</div>
+          </section>
+
           <!-- Profile -->
           <section id="m-profile" class="manage-section">
             <div class="profile-layout">
@@ -329,59 +340,48 @@
           <input id="profileName" class="input-modern icon-name" type="text" required>
                 </div>
                 <div class="form-row">
-                  <label for="profilePhone">Phone</label>
-                  <input id="profilePhone" class="input-modern" type="tel" inputmode="tel" placeholder="e.g., +1 555 123 4567">
+                  <label for="profilePhoneNum">Phone</label>
+                  <div class="phone-group">
+                    <select id="profilePhoneCode" class="phone-code" aria-label="Country code">
+                      <option value="" disabled selected>Code</option>
+                      <option value="+111">+111</option>
+                    </select>
+                    <input id="profilePhoneNum" class="input-modern" type="tel" inputmode="tel" placeholder="812 345 6789">
+                  </div>
                 </div>
                 <div class="form-row">
                   <label for="profileEmail">Email</label>
           <input id="profileEmail" class="input-modern icon-email" type="email" required>
+                </div>
+                <div class="form-row">
+                  <label for="profileDesc">Description</label>
+                  <textarea id="profileDesc" placeholder="write a description about your self...." rows="4"></textarea>
+                  <div id="profileDescCount" class="form-msg">0/500 words</div>
                 </div>
                 <div class="form-actions">
                   <div id="profileMsg" class="form-msg"></div>
                   <button class="auth-primary" type="submit">Save profile</button>
                 </div>
               </form>
+            </div>
+          </section>
 
-              <div class="divider"></div>
+          <!-- Your Lists (restored) -->
+          <section id="m-lists" class="manage-section hidden">
+            <div class="manage-placeholder">You can create and manage wishlists and saved items here.</div>
+          </section>
 
-              <div class="profile-security">
-                <h4>Password</h4>
-                <button id="pwToggle" class="auth-secondary" type="button">Change password</button>
-                <form id="profilePwdForm" class="form-grid hidden" novalidate>
-                  <div class="form-row">
-                    <label for="pwCurrent">Current password</label>
-                    <input id="pwCurrent" type="password" required>
-                  </div>
-                  <div class="form-row grid-2">
-                    <div>
-                      <label for="pwNew">New password</label>
-                    <!-- Deals modal removed per request; bottom icon remains -->
-
-                      <input id="pwNew" type="password" minlength="8" required>
-                    </div>
-                    <div>
-                      <label for="pwNew2">Confirm new password</label>
-                      <input id="pwNew2" type="password" minlength="8" required>
-                    </div>
-                  </div>
-                  <div class="pw-rules">
-                    Must be at least 8 characters and include upper, lower, and a number.
-                  </div>
-                  <div class="form-actions">
-                    <div id="pwError" class="form-msg error"></div>
-                    <div id="pwSuccess" class="form-msg success"></div>
-                    <button id="pwCancel" class="auth-secondary" type="button">Cancel</button>
-                    <button class="auth-primary" type="submit">Update password</button>
-                  </div>
-                </form>
+          <!-- Security (restored inside Manage) -->
+          <section id="m-security" class="manage-section hidden">
+            <div class="manage-placeholder">
+              For full controls, open Security & Privacy.
+              <div style="margin-top:10px;">
+                <button type="button" class="auth-secondary" onclick="if(window.openSecModal) openSecModal()">Open Security & Privacy</button>
               </div>
             </div>
           </section>
 
-          <!-- Orders -->
-          <section id="m-orders" class="manage-section hidden">
-            <div class="manage-placeholder">Your recent orders will appear here.</div>
-          </section>
+          
 
           <!-- Address -->
           <section id="m-address" class="manage-section hidden">
@@ -465,11 +465,6 @@
             <div id="cardList" class="item-list"></div>
           </section>
 
-          <!-- Your List -->
-          <section id="m-lists" class="manage-section hidden">
-            <div class="manage-placeholder">Your saved lists will appear here.</div>
-          </section>
-
           <!-- Saved Items (avoid duplicate id) -->
           <section id="m-saved" class="manage-section hidden" aria-label="Saved items">
             <div class="manage-placeholder">Your saved items will appear here.</div>
@@ -480,33 +475,7 @@
             <div class="manage-placeholder">No new messages.</div>
           </section>
 
-          <!-- Security -->
-          <section id="m-security" class="manage-section hidden">
-            <div class="section-actions">
-              <button id="secOpenModal" class="auth-primary" type="button">Change password</button>
-            </div>
-            <form id="securityForm" class="form-grid hidden" novalidate>
-              <div class="form-row">
-                <label for="secCurrent">Current password</label>
-                <input id="secCurrent" type="password" required>
-              </div>
-              <div class="form-row grid-2">
-                <div>
-                  <label for="secNew">New password</label>
-                  <input id="secNew" type="password" minlength="6" required>
-                </div>
-                <div>
-                  <label for="secNew2">Confirm new password</label>
-                  <input id="secNew2" type="password" minlength="6" required>
-                </div>
-              </div>
-              <div class="form-actions">
-                <div id="secError" class="form-msg error"></div>
-                <div id="secSuccess" class="form-msg success"></div>
-                <button class="auth-primary" type="submit">Update password</button>
-              </div>
-            </form>
-          </section>
+          
 
           <!-- Privacy (opens Security & Privacy modal subtabs) -->
           <section id="m-privacy" class="manage-section hidden">
@@ -1723,7 +1692,12 @@
     const manageModalEl = document.getElementById('manageModal');
     const manageBackdrop = manageModalEl.querySelector('.auth-backdrop');
     const manageClose = manageModalEl.querySelector('.auth-close');
-    function openManageModal() {
+    function openManageModal(defaultTab) {
+      // default to profile unless a specific tab is requested
+      try {
+        const tab = defaultTab || 'profile';
+        if (typeof showManageTab === 'function') showManageTab(tab);
+      } catch(_) {}
       manageModalEl.classList.add('show');
       manageModalEl.setAttribute('aria-hidden', 'false');
     }
@@ -1731,7 +1705,17 @@
       manageModalEl.classList.remove('show');
       manageModalEl.setAttribute('aria-hidden', 'true');
     }
-    acctManageBtn.addEventListener('click', () => { closeAccountModal(); openManageModal(); });
+  // expose for bottom-nav access
+  window.openManageModal = openManageModal;
+  window.closeManageModal = closeManageModal;
+  // Open Manage: prevent bubbling, show Manage first, then close Account slightly later
+  acctManageBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+    e.stopPropagation();
+    openManageModal();
+    setTimeout(() => { try { closeAccountModal(); } catch(_) {} }, 50);
+  });
     manageBackdrop.addEventListener('click', closeManageModal);
     manageClose.addEventListener('click', closeManageModal);
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeManageModal(); });
@@ -1803,22 +1787,22 @@
     const manageTabs = Array.from(document.querySelectorAll('#manageTabs .manage-tab'));
     const manageSections = {
       profile: document.getElementById('m-profile'),
-      orders: document.getElementById('m-orders'),
       billing: document.getElementById('m-billing'),
       address: document.getElementById('m-address'),
-      lists: document.getElementById('m-lists'),
+      orders: document.getElementById('m-orders'),
       messages: document.getElementById('m-messages'),
+      lists: document.getElementById('m-lists'),
       security: document.getElementById('m-security'),
       privacy: document.getElementById('m-privacy'),
     };
 
     function showManageTab(tab) {
-      manageTabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-      Object.entries(manageSections).forEach(([k, el]) => el.classList.toggle('hidden', k !== tab));
+  manageTabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  Object.entries(manageSections).forEach(([k, el]) => { if (!el) return; el.classList.toggle('hidden', k !== tab); });
     }
     manageTabs.forEach(btn => btn.addEventListener('click', () => {
       const tab = btn.dataset.tab;
-      if (tab === 'privacy') {
+  if (tab === 'privacy') {
         // Open Security & Privacy modal with Privacy subtab selected
         openSecModal();
         // switch to privacy subtab
@@ -1843,22 +1827,100 @@
     const profileForm = document.getElementById('profileForm');
     const pfName = document.getElementById('profileName');
   const pfEmail = document.getElementById('profileEmail');
-  const pfPhone = document.getElementById('profilePhone');
-    const profileMsg = document.getElementById('profileMsg');
-    const avatarInput = document.getElementById('avatarInput');
-    const avatarImg = document.getElementById('profileAvatarImg');
-    const pwForm = document.getElementById('profilePwdForm');
-    const pwToggle = document.getElementById('pwToggle');
-    const pwCancel = document.getElementById('pwCancel');
-    const pwError = document.getElementById('pwError');
-    const pwSuccess = document.getElementById('pwSuccess');
+  const pfPhoneCode = document.getElementById('profilePhoneCode');
+  const pfPhoneNum = document.getElementById('profilePhoneNum');
+  if (pfPhoneCode && pfPhoneNum) {
+    pfPhoneCode.addEventListener('change', () => {
+      const val = String(pfPhoneCode.value || '').trim();
+      // ensure placeholder option is not kept selected
+      const ph = pfPhoneCode.querySelector('option[value=""]');
+      if (ph) ph.selected = false;
+      // visual feedback so it feels “added”
+      pfPhoneNum.placeholder = val ? `${val} 812 345 6789` : '812 345 6789';
+    });
+  }
+  // Seed country dial codes into the select (no real country default; +111 is requested)
+  const DIAL_CODES = [
+    {c:'AF',d:'+93'},{c:'AL',d:'+355'},{c:'DZ',d:'+213'},{c:'AS',d:'+1684'},{c:'AD',d:'+376'},{c:'AO',d:'+244'},{c:'AI',d:'+1264'},{c:'AG',d:'+1268'},
+    {c:'AR',d:'+54'},{c:'AM',d:'+374'},{c:'AW',d:'+297'},{c:'AU',d:'+61'},{c:'AT',d:'+43'},{c:'AZ',d:'+994'},{c:'BS',d:'+1242'},{c:'BH',d:'+973'},
+    {c:'BD',d:'+880'},{c:'BB',d:'+1246'},{c:'BY',d:'+375'},{c:'BE',d:'+32'},{c:'BZ',d:'+501'},{c:'BJ',d:'+229'},{c:'BM',d:'+1441'},{c:'BT',d:'+975'},
+    {c:'BO',d:'+591'},{c:'BA',d:'+387'},{c:'BW',d:'+267'},{c:'BR',d:'+55'},{c:'IO',d:'+246'},{c:'BN',d:'+673'},{c:'BG',d:'+359'},{c:'BF',d:'+226'},
+    {c:'BI',d:'+257'},{c:'KH',d:'+855'},{c:'CM',d:'+237'},{c:'CA',d:'+1'},{c:'CV',d:'+238'},{c:'KY',d:'+1345'},{c:'CF',d:'+236'},{c:'TD',d:'+235'},
+    {c:'CL',d:'+56'},{c:'CN',d:'+86'},{c:'CX',d:'+61'},{c:'CC',d:'+61'},{c:'CO',d:'+57'},{c:'KM',d:'+269'},{c:'CG',d:'+242'},{c:'CD',d:'+243'},
+    {c:'CK',d:'+682'},{c:'CR',d:'+506'},{c:'CI',d:'+225'},{c:'HR',d:'+385'},{c:'CU',d:'+53'},{c:'CW',d:'+599'},{c:'CY',d:'+357'},{c:'CZ',d:'+420'},
+    {c:'DK',d:'+45'},{c:'DJ',d:'+253'},{c:'DM',d:'+1767'},{c:'DO',d:'+1'},{c:'EC',d:'+593'},{c:'EG',d:'+20'},{c:'SV',d:'+503'},{c:'GQ',d:'+240'},
+    {c:'ER',d:'+291'},{c:'EE',d:'+372'},{c:'SZ',d:'+268'},{c:'ET',d:'+251'},{c:'FK',d:'+500'},{c:'FO',d:'+298'},{c:'FJ',d:'+679'},{c:'FI',d:'+358'},
+    {c:'FR',d:'+33'},{c:'GF',d:'+594'},{c:'PF',d:'+689'},{c:'GA',d:'+241'},{c:'GM',d:'+220'},{c:'GE',d:'+995'},{c:'DE',d:'+49'},{c:'GH',d:'+233'},
+    {c:'GI',d:'+350'},{c:'GR',d:'+30'},{c:'GL',d:'+299'},{c:'GD',d:'+1473'},{c:'GP',d:'+590'},{c:'GU',d:'+1671'},{c:'GT',d:'+502'},{c:'GG',d:'+44'},
+    {c:'GN',d:'+224'},{c:'GW',d:'+245'},{c:'GY',d:'+592'},{c:'HT',d:'+509'},{c:'HN',d:'+504'},{c:'HK',d:'+852'},{c:'HU',d:'+36'},{c:'IS',d:'+354'},
+    {c:'IN',d:'+91'},{c:'ID',d:'+62'},{c:'IR',d:'+98'},{c:'IQ',d:'+964'},{c:'IE',d:'+353'},{c:'IM',d:'+44'},{c:'IL',d:'+972'},{c:'IT',d:'+39'},
+    {c:'JM',d:'+1876'},{c:'JP',d:'+81'},{c:'JE',d:'+44'},{c:'JO',d:'+962'},{c:'KZ',d:'+7'},{c:'KE',d:'+254'},{c:'KI',d:'+686'},{c:'KP',d:'+850'},
+    {c:'KR',d:'+82'},{c:'KW',d:'+965'},{c:'KG',d:'+996'},{c:'LA',d:'+856'},{c:'LV',d:'+371'},{c:'LB',d:'+961'},{c:'LS',d:'+266'},{c:'LR',d:'+231'},
+    {c:'LY',d:'+218'},{c:'LI',d:'+423'},{c:'LT',d:'+370'},{c:'LU',d:'+352'},{c:'MO',d:'+853'},{c:'MK',d:'+389'},{c:'MG',d:'+261'},{c:'MW',d:'+265'},
+    {c:'MY',d:'+60'},{c:'MV',d:'+960'},{c:'ML',d:'+223'},{c:'MT',d:'+356'},{c:'MH',d:'+692'},{c:'MQ',d:'+596'},{c:'MR',d:'+222'},{c:'MU',d:'+230'},
+    {c:'YT',d:'+262'},{c:'MX',d:'+52'},{c:'FM',d:'+691'},{c:'MD',d:'+373'},{c:'MC',d:'+377'},{c:'MN',d:'+976'},{c:'ME',d:'+382'},{c:'MS',d:'+1664'},
+    {c:'MA',d:'+212'},{c:'MZ',d:'+258'},{c:'MM',d:'+95'},{c:'NA',d:'+264'},{c:'NR',d:'+674'},{c:'NP',d:'+977'},{c:'NL',d:'+31'},{c:'NC',d:'+687'},
+    {c:'NZ',d:'+64'},{c:'NI',d:'+505'},{c:'NE',d:'+227'},{c:'NG',d:'+234'},{c:'NU',d:'+683'},{c:'NF',d:'+672'},{c:'MP',d:'+1670'},{c:'NO',d:'+47'},
+    {c:'OM',d:'+968'},{c:'PK',d:'+92'},{c:'PW',d:'+680'},{c:'PS',d:'+970'},{c:'PA',d:'+507'},{c:'PG',d:'+675'},{c:'PY',d:'+595'},{c:'PE',d:'+51'},
+    {c:'PH',d:'+63'},{c:'PL',d:'+48'},{c:'PT',d:'+351'},{c:'PR',d:'+1'},{c:'QA',d:'+974'},{c:'RE',d:'+262'},{c:'RO',d:'+40'},{c:'RU',d:'+7'},
+    {c:'RW',d:'+250'},{c:'BL',d:'+590'},{c:'SH',d:'+290'},{c:'KN',d:'+1869'},{c:'LC',d:'+1758'},{c:'MF',d:'+590'},{c:'PM',d:'+508'},{c:'VC',d:'+1784'},
+    {c:'WS',d:'+685'},{c:'SM',d:'+378'},{c:'ST',d:'+239'},{c:'SA',d:'+966'},{c:'SN',d:'+221'},{c:'RS',d:'+381'},{c:'SC',d:'+248'},{c:'SL',d:'+232'},
+    {c:'SG',d:'+65'},{c:'SX',d:'+1721'},{c:'SK',d:'+421'},{c:'SI',d:'+386'},{c:'SB',d:'+677'},{c:'SO',d:'+252'},{c:'ZA',d:'+27'},{c:'SS',d:'+211'},
+    {c:'ES',d:'+34'},{c:'LK',d:'+94'},{c:'SD',d:'+249'},{c:'SR',d:'+597'},{c:'SJ',d:'+47'},{c:'SE',d:'+46'},{c:'CH',d:'+41'},{c:'SY',d:'+963'},
+    {c:'TW',d:'+886'},{c:'TJ',d:'+992'},{c:'TZ',d:'+255'},{c:'TH',d:'+66'},{c:'TL',d:'+670'},{c:'TG',d:'+228'},{c:'TK',d:'+690'},{c:'TO',d:'+676'},
+    {c:'TT',d:'+1868'},{c:'TN',d:'+216'},{c:'TR',d:'+90'},{c:'TM',d:'+993'},{c:'TC',d:'+1649'},{c:'TV',d:'+688'},{c:'UG',d:'+256'},{c:'UA',d:'+380'},
+    {c:'AE',d:'+971'},{c:'GB',d:'+44'},{c:'US',d:'+1'},{c:'UY',d:'+598'},{c:'UZ',d:'+998'},{c:'VU',d:'+678'},{c:'VA',d:'+39'},{c:'VE',d:'+58'},
+    {c:'VN',d:'+84'},{c:'VG',d:'+1284'},{c:'VI',d:'+1340'},{c:'WF',d:'+681'},{c:'EH',d:'+212'},{c:'YE',d:'+967'},{c:'ZM',d:'+260'},{c:'ZW',d:'+263'}
+  ];
+  function flagEmoji(cc){
+    if (!cc || cc.length !== 2) return '';
+    const up = cc.toUpperCase();
+    return String.fromCodePoint(127397 + up.charCodeAt(0)) + String.fromCodePoint(127397 + up.charCodeAt(1));
+  }
+  function seedDialCodesOnce(){
+    if (!pfPhoneCode || pfPhoneCode._seeded) return;
+    // Keep the first option (+111) then append countries with readable names
+    let regionNames;
+    try { regionNames = new Intl.DisplayNames(['en'], { type: 'region' }); } catch(e) { regionNames = null; }
+    DIAL_CODES.forEach(({c,d})=>{
+      const opt = document.createElement('option');
+      opt.value = d; opt.textContent = `${d} ${c}`;
+      pfPhoneCode.appendChild(opt);
+    });
+    pfPhoneCode._seeded = true;
+  }
+  const profileMsg = document.getElementById('profileMsg');
+  const avatarInput = document.getElementById('avatarInput');
+  const avatarImg = document.getElementById('profileAvatarImg');
+  const pfDesc = document.getElementById('profileDesc');
+  const pfDescCount = document.getElementById('profileDescCount');
 
     function loadProfile() {
       const session = getSession(); if (!session) return;
       const user = getUserByEmail(session.email); if (!user) return;
       pfName.value = user.name || '';
   pfEmail.value = user.email;
-  pfPhone.value = user.phone || '';
+  seedDialCodesOnce();
+  // Split stored phone like "+234 8123456789" or "+234-8123456789"
+  const storedPhone = (user.phone||'').trim();
+  let code = '', num = '';
+  const m = storedPhone.match(/^(\+\d{1,4})[\s-]?(.+)$/);
+  if (m) { code = m[1]; num = m[2]; }
+  if (code && Array.from(pfPhoneCode.options).some(o => o.value === code)) {
+    pfPhoneCode.value = code;
+  }
+  // Sync placeholder to current code for clear feedback
+  if (pfPhoneNum) {
+    const currentCode = String(pfPhoneCode && pfPhoneCode.value || '').trim();
+    pfPhoneNum.placeholder = currentCode ? `${currentCode} 812 345 6789` : '812 345 6789';
+  }
+  pfPhoneNum.value = num || '';
+      if (pfDesc) { pfDesc.value = user.description || ''; }
+      // sync counter
+      if (pfDesc && pfDescCount) {
+        const words = (pfDesc.value.trim() ? pfDesc.value.trim().split(/\s+/).length : 0);
+        pfDescCount.textContent = `${words}/500 words`;
+      }
       if (user.avatar) { avatarImg.src = user.avatar; avatarImg.style.display = 'block'; }
       else { avatarImg.src = ''; avatarImg.style.display = 'none'; }
     }
@@ -1870,7 +1932,8 @@
       if (idx < 0) return;
       const curUser = users[idx];
   const name = pfName.value.trim();
-  const phone = pfPhone.value.trim();
+  const phone = [String(pfPhoneCode.value||'').trim(), String(pfPhoneNum.value||'').trim()].filter(Boolean).join(' ');
+  const description = pfDesc ? pfDesc.value.trim() : '';
       const email = pfEmail.value.trim();
       profileMsg.textContent = '';
       if (!name) { profileMsg.textContent = 'Name is required.'; return; }
@@ -1880,7 +1943,7 @@
         const taken = users.some((u, i) => i !== idx && u.email.toLowerCase() === email.toLowerCase());
         if (taken) { profileMsg.textContent = 'That email is already in use.'; return; }
       }
-  users[idx] = { ...curUser, name, email, phone };
+  users[idx] = { ...curUser, name, email, phone, description };
       saveUsers(users);
       if (emailChanged) { setSession(email); }
       updateHeaderUser();
@@ -1912,31 +1975,20 @@
       reader.readAsDataURL(file);
     });
 
-    // Stronger password change flow under Profile
-    function strongPassword(pw) {
-      // at least 8 chars, with upper, lower, number
-      return /(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}/.test(pw);
+    // Description word limit (500 words) with live counter
+    function countWords(s){ if (!s) return 0; return s.trim() ? s.trim().split(/\s+/).length : 0; }
+    if (pfDesc && pfDescCount) {
+      const updateCount = () => {
+        const words = countWords(pfDesc.value);
+        if (words > 500) {
+          // Trim to 500 words max
+          pfDesc.value = pfDesc.value.trim().split(/\s+/).slice(0,500).join(' ');
+        }
+        const w = countWords(pfDesc.value);
+        pfDescCount.textContent = `${w}/500 words`;
+      };
+      pfDesc.addEventListener('input', updateCount);
     }
-    pwToggle.addEventListener('click', () => { pwForm.classList.toggle('hidden'); });
-    pwCancel.addEventListener('click', () => { pwForm.reset(); pwError.textContent=''; pwSuccess.textContent=''; pwForm.classList.add('hidden'); });
-    pwForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      pwError.textContent = ''; pwSuccess.textContent = '';
-      const session = getSession(); if (!session) return;
-      const users = getUsers();
-      const idx = users.findIndex(u => u.email.toLowerCase() === session.email.toLowerCase());
-      if (idx < 0) return;
-      const cur = document.getElementById('pwCurrent').value;
-      const nw = document.getElementById('pwNew').value;
-      const nw2 = document.getElementById('pwNew2').value;
-      if (users[idx].password !== cur) { pwError.textContent = 'Current password is incorrect.'; return; }
-      if (!strongPassword(nw)) { pwError.textContent = 'Use at least 8 chars with upper, lower and a number.'; return; }
-      if (nw !== nw2) { pwError.textContent = 'Passwords do not match.'; return; }
-      users[idx].password = nw; saveUsers(users);
-      pwSuccess.textContent = 'Password updated.';
-      pwForm.reset();
-      setTimeout(() => { pwSuccess.textContent = ''; pwForm.classList.add('hidden'); }, 1200);
-    });
 
     // Addresses
     const addrCountry = document.getElementById('addrCountry');
@@ -2053,7 +2105,8 @@
     function currentUser() { const s = getSession(); return s ? getUserByEmail(s.email) : null; }
     function ensureCollections(user) {
       user.addresses = user.addresses || [];
-      user.cards = user.cards || [];
+  user.cards = user.cards || [];
+  user.orders = user.orders || [];
     }
 
     function renderAddresses() {
@@ -2090,6 +2143,71 @@
       addrList.querySelectorAll('[data-edit]').forEach(btn => btn.addEventListener('click', () => editAddressInline(+btn.dataset.edit)));
       addrList.querySelectorAll('[data-del]').forEach(btn => btn.addEventListener('click', () => deleteAddress(+btn.dataset.del)));
     }
+
+    // Orders
+  const orderListEl = document.getElementById('orderList');
+  const ordersEmptyEl = document.getElementById('ordersEmpty');
+  const refreshOrdersBtn = document.getElementById('refreshOrders');
+    function renderOrders() {
+      const user = currentUser(); if (!user) return;
+      ensureCollections(user);
+      if (!orderListEl || !ordersEmptyEl) return;
+      orderListEl.innerHTML = '';
+      const orders = Array.isArray(user.orders) ? user.orders.slice().reverse() : [];
+      if (!orders.length) {
+        ordersEmptyEl.classList.remove('hidden');
+        return;
+      }
+      ordersEmptyEl.classList.add('hidden');
+      orders.forEach((o, i) => {
+        const el = document.createElement('div');
+        el.className = 'list-card';
+        const date = new Date(o.createdAt || Date.now()).toLocaleString();
+        const total = typeof o.total === 'number' ? `$${o.total.toFixed(2)}` : '$0.00';
+        el.innerHTML = `
+          <div class="list-body">
+            <div class="list-title">Order #${o.id || (i+1)} <span class="badge">${o.status || 'Placed'}</span></div>
+            <div class="list-sub">${date} · ${total}</div>
+            <div class="list-sub">${(o.items||[]).length} item(s)</div>
+          </div>
+          <div class="list-actions">
+            <button class="auth-secondary" data-view-order="${o.id}">View</button>
+          </div>`;
+        orderListEl.appendChild(el);
+      });
+    }
+    if (refreshOrdersBtn) refreshOrdersBtn.addEventListener('click', renderOrders);
+
+    // Account > Orders now opens Manage modal at Orders tab
+    (function(){
+      const acctOrdersLink = document.getElementById('acctOrdersLink');
+      if (!acctOrdersLink) return;
+      acctOrdersLink.addEventListener('click', function(e){
+        e.preventDefault();
+        try {
+          openManageModal();
+          // show Orders tab
+          const tabBtn = document.querySelector('#manageTabs .manage-tab[data-tab="orders"]');
+          if (tabBtn) tabBtn.click(); else if (typeof showManageTab==='function') showManageTab('orders');
+          setTimeout(function(){ try { closeAccountModal(); } catch(_) {} }, 50);
+        } catch(_) {}
+      });
+    })();
+
+    // Account > Security settings now opens Manage modal at Security tab
+    (function(){
+      const acctSecurityLink = document.getElementById('acctSecurityLink');
+      if (!acctSecurityLink) return;
+      acctSecurityLink.addEventListener('click', function(e){
+        e.preventDefault();
+        try {
+          openManageModal();
+          const tabBtn = document.querySelector('#manageTabs .manage-tab[data-tab="security"]');
+          if (tabBtn) tabBtn.click(); else if (typeof showManageTab==='function') showManageTab('security');
+          setTimeout(function(){ try { closeAccountModal(); } catch(_) {} }, 50);
+        } catch(_) {}
+      });
+    })();
 
   // Edit address inline in Manage > Address
   function editAddressInline(index) {
@@ -2341,6 +2459,8 @@
     const secMSuccess = document.getElementById('secMSuccess');
     const secMCancel = document.getElementById('secMCancel');
     const secSubtabs = Array.from(document.querySelectorAll('#secSubtabs .subtab'));
+  // Ensure strongPassword exists for Security modal validation
+  function strongPassword(pw) { return /(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}/.test(String(pw||'')); }
     const secPaneSecurity = document.getElementById('secPaneSecurity');
     const secPanePrivacy = document.getElementById('secPanePrivacy');
     // Security toggles
@@ -2503,10 +2623,11 @@
     // Prime content when opening
     const origOpenManage = openManageModal;
     openManageModal = function() {
-      seedAddrCountries();
+    seedAddrCountries();
+    try { if (typeof seedDialCodesOnce === 'function') seedDialCodesOnce(); } catch(e) {}
       loadProfile();
       renderAddresses();
-      renderCards();
+  renderCards();
   showManageTab('profile');
       origOpenManage();
     };
@@ -2514,20 +2635,64 @@
   updateHeaderUser();
   // Bottom nav actions (delegated on document to avoid timing issues)
   (function(){
+    // Simple globals used by inline bottom-nav taps
+    window.bnHome = function(ev){
+      try {
+        if (ev) ev.preventDefault();
+        window.location.href = 'index.html';
+      } catch(_) {}
+      return false;
+    };
+  window.bnAccount = function(ev){
+      try {
+        if (ev) ev.preventDefault();
+        const session = (typeof getSession === 'function') ? getSession() : null;
+        if (session && session.email) {
+          if (typeof openManageModal === 'function') openManageModal('profile');
+        } else {
+          if (typeof switchTab === 'function') switchTab('signin');
+          if (typeof toggleSignedInView === 'function') toggleSignedInView();
+          if (typeof openModal === 'function') openModal();
+        }
+      } catch(_) {}
+      return false;
+    };
+    window.bnCategories = function(){
+      try {
+        if (window.efToast) window.efToast('Categories');
+        let opened = false;
+        if (window.EM && typeof window.EM.openDrawer === 'function') {
+          try { window.EM.openDrawer(); } catch(_) {}
+          const d1 = document.getElementById('navDrawer');
+          if (d1 && d1.classList.contains('show')) opened = true;
+        }
+        if (!opened) {
+          const drawer = document.getElementById('navDrawer');
+          if (drawer){ drawer.classList.add('show'); drawer.setAttribute('aria-hidden','false'); opened = true; }
+        }
+      } catch(_) {}
+      return false;
+    };
+  // Account nav entry removed per request
     function openDrawer(){
-      if (window.EM && typeof window.EM.openDrawer === 'function') return window.EM.openDrawer();
+      if (window.EM && typeof window.EM.openDrawer === 'function') { window.EM.openDrawer(); return; }
       const drawer = document.getElementById('navDrawer');
       if (drawer){ drawer.classList.add('show'); drawer.setAttribute('aria-hidden','false'); }
     }
-    document.addEventListener('click', (e)=>{
-      const btn = e.target.closest('.bottom-nav .bn-item'); if (!btn) return;
-      const id = btn.id;
-      if (id === 'bnHome') { window.location.reload(); return; }
-  if (id === 'bnCategories') { openDrawer(); return; }
-  if (id === 'bnDeals') { if (window.openDeals) window.openDeals(); else if (window.showDeals) window.showDeals(); else alert('Deals coming soon.'); return; }
-      if (id === 'bnCart') { if (window.CART && typeof window.CART.open === 'function') window.CART.open(); return; }
-      if (id === 'bnAccount') { const accountArea = document.getElementById('accountArea'); if (accountArea) accountArea.click(); return; }
-    });
+    // Bind per-button listeners as a robust fallback
+    try {
+  var bHome = document.getElementById('bnHome');
+  var bCats = document.getElementById('bnCategories');
+      var bDeals = document.getElementById('bnDeals');
+      var bCart = document.getElementById('bnCart');
+  // no account button
+  // Home uses native navigation; no JS handler to avoid interference
+  // Categories uses inline handler; no extra JS binding to avoid duplicate triggers
+      if (bDeals) bDeals.addEventListener('click', function(e){ e.preventDefault(); try { window.openDeals?window.openDeals():(window.showDeals?window.showDeals():alert('Deals coming soon.')); } catch(_) {} });
+      if (bCart) bCart.addEventListener('click', function(e){ e.preventDefault(); try { (window.CART&&window.CART.open)?window.CART.open(): (window.openCart&&window.openCart()); } catch(_) {} });
+  // account button removed
+    } catch(_) {}
+  // Removed global delegated listener to avoid propagation/timing issues.
   })();
   // Simple toast + Deals placeholder to visibly confirm first tap
   (function(){
@@ -2602,6 +2767,28 @@
     }
     function checkout(){
       const cart = get(); if (!cart.length){ alert('Your cart is empty.'); return; }
+      // Create a simple order and attach to current user
+      try {
+        const s = getSession();
+        if (s && s.email) {
+          const users = getUsers();
+          const idx = users.findIndex(u => u.email.toLowerCase() === s.email.toLowerCase());
+          if (idx >= 0) {
+            const user = users[idx];
+            user.addresses = user.addresses || []; user.cards = user.cards || []; user.orders = user.orders || [];
+            const total = cart.reduce((sum, it) => sum + (it.price||0) * (it.qty||1), 0);
+            const order = {
+              id: String(Date.now()),
+              createdAt: Date.now(),
+              items: cart.map(it => ({ id: it.id, title: it.title, price: it.price, qty: it.qty, img: it.img })),
+              total,
+              status: 'Placed'
+            };
+            user.orders.push(order);
+            users[idx] = user; saveUsers(users);
+          }
+        }
+      } catch(e) { /* ignore */ }
       set([]); badge(); render(); alert('Checkout complete. Thank you!'); close();
     }
 
@@ -2678,11 +2865,11 @@
 
   <!-- Bottom navigation (mobile) -->
   <nav class="bottom-nav" aria-label="Primary">
-    <button class="bn-item" id="bnHome" type="button" aria-label="Home"><i class="fa-solid fa-house"></i><span>Home</span></button>
-    <button class="bn-item" id="bnCategories" type="button" aria-label="Categories"><i class="fa-solid fa-bars"></i><span>Categories</span></button>
+  <a class="bn-item" id="bnHome" href="index.html" aria-label="Home" onclick="return bnHome(event)"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <button class="bn-item" id="bnCategories" type="button" aria-label="Categories" onclick="try{(window.EM&&window.EM.openDrawer)?window.EM.openDrawer():(function(d){if(d){d.classList.add('show');d.setAttribute('aria-hidden','false');}})(document.getElementById('navDrawer'));}catch(e){};return false"><i class="fa-solid fa-bars"></i><span>Categories</span></button>
   <button class="bn-item" id="bnDeals" type="button" aria-label="Deals" onclick="try{window.openDeals?window.openDeals():(window.showDeals?window.showDeals():alert('Deals coming soon.'))}catch(e){}"><i class="fa-solid fa-bolt"></i><span>Deals</span></button>
   <button class="bn-item" id="bnCart" type="button" aria-label="Cart" onclick="window.openCart && window.openCart()"><i class="fa-solid fa-cart-shopping"></i><span>Cart</span></button>
-    <button class="bn-item" id="bnAccount" type="button" aria-label="Account"><i class="fa-solid fa-user"></i><span>Account</span></button>
+  <button class="bn-item" id="bnAccount" type="button" aria-label="Account" onclick="try{if(window.getSession&&getSession()&&getSession().email){window.openManageModal&&openManageModal('profile')}else{try{switchTab&&switchTab('signin')}catch(e){};try{toggleSignedInView&&toggleSignedInView()}catch(e){};try{openModal&&openModal()}catch(e){}}}catch(e){};return false"><i class="fa-solid fa-user"></i><span>Account</span></button>
   </nav>
 </body>
 </html>

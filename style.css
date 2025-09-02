@@ -394,6 +394,19 @@ img, video { max-width: 100%; height: auto; }
 .auth-modal { position: fixed; inset: 0; display: none; z-index: 1500; }
 .auth-modal.show { display: block; }
 .auth-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.5); }
+@media (max-width: 768px) {
+  /* keep modal backdrops off the bottom nav area on mobile */
+  .manage-modal .auth-backdrop,
+  .account-modal .auth-backdrop,
+  .auth-modal .auth-backdrop,
+  .cart-modal .auth-backdrop,
+  .loc-modal .auth-backdrop,
+  .addr-modal .auth-backdrop,
+  .pay-modal .auth-backdrop,
+  .sec-modal .auth-backdrop {
+    bottom: 64px; /* matches body padding-bottom */
+  }
+}
 .auth-dialog {
   position: relative;
   margin: 8vh auto 0;
@@ -447,14 +460,22 @@ img, video { max-width: 100%; height: auto; }
 .auth-secondary:hover { border-color: #cbd5e1; box-shadow: 0 6px 16px rgba(2,6,23,.08); }
 .auth-secondary:active { transform: translateY(1px); box-shadow: 0 2px 10px rgba(2,6,23,.06); }
 .auth-secondary:focus { outline: none; box-shadow: 0 0 0 4px rgba(147, 197, 253, .35); }
-.manage-modal { position: fixed; inset: 0; display: none; z-index: 1500; }
+.manage-modal { position: fixed; inset: 0; display: none; z-index: 1500; overflow: hidden; }
 .manage-modal.show { display: block; }
-.manage-dialog {
-  position: absolute; inset: 0; background: #fff; color: #202124; display: flex; flex-direction: column;
-}
-.manage-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #eee; }
-.manage-header h3 { margin: 0; font-size: 18px; }
-.manage-form { flex: 1; overflow: auto; padding: 16px; }
+.manage-dialog { position: absolute; inset: 0; display: flex; flex-direction: column; background: transparent; color: #eaf2ff; }
+.manage-dialog::before { content: ""; position: absolute; inset: -20%; z-index: 0; background:
+    radial-gradient(700px 520px at 12% 10%, rgba(255,153,0,.24), transparent 60%),
+    radial-gradient(820px 600px at 88% 12%, rgba(99,102,241,.22), transparent 62%),
+    radial-gradient(760px 540px at 22% 88%, rgba(16,185,129,.20), transparent 58%),
+    radial-gradient(840px 560px at 84% 82%, rgba(14,165,233,.18), transparent 60%),
+    linear-gradient(135deg, #0b1220 0%, #0f172a 45%, #111827 100%);
+  filter: saturate(1.05) contrast(1.04);
+  animation: ef-aurora 28s ease-in-out infinite alternate; }
+.manage-dialog::after { content: ""; position: absolute; left: -30%; right: -30%; top: -60%; bottom: -60%; z-index: 0; background: radial-gradient(40% 28% at 50% 50%, rgba(255,255,255,.08), transparent 70%); transform: rotate(9deg); animation: ef-sweep 22s linear infinite; }
+.manage-header { position: sticky; top: 0; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,.08); background: rgba(2,6,23,0.45); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 2; }
+.manage-header h3 { margin: 0; font-size: 18px; color: #eaf2ff; }
+.manage-dialog .auth-close { color: #eaf2ff; }
+.manage-form { flex: 1; overflow: auto; padding: 16px; position: relative; z-index: 1; background: rgba(255,255,255,0.92); border: 1px solid rgba(255,255,255,0.6); border-radius: 14px; box-shadow: 0 20px 40px rgba(0,0,0,.18), 0 10px 20px rgba(0,0,0,.10); color: #0b1220; margin: 12px; }
 .manage-placeholder { border: 2px dashed #e0e0e0; color: #5f6368; padding: 24px; border-radius: 12px; text-align: center; }
 
 /* Manage tabs/content */
@@ -476,6 +497,16 @@ img, video { max-width: 100%; height: auto; }
 .form-grid select:focus,
 .form-grid textarea:focus { border-color: #ff9900; box-shadow: 0 0 0 3px rgba(255,153,0,.15); }
 .form-grid select { appearance: none; -webkit-appearance: none; -moz-appearance: none; padding-right: 28px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; background-size: 12px 12px; }
+.phone-group { display: grid; grid-template-columns: 74px 1fr; gap: 8px; align-items: center; }
+.phone-group .phone-code { height: 44px; border-radius: 10px; border: 1px solid #e0e0e0; padding: 0 8px; background: #fff; max-width: 100%; appearance: auto; -webkit-appearance: menulist; -moz-appearance: menulist; }
+.phone-group .phone-code { text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+.phone-group .phone-code option { max-width: 100%; }
+.phone-group .input-modern { width: 100%; }
+
+@media (max-width: 420px) {
+  .phone-group { grid-template-columns: 68px 1fr; gap: 6px; }
+}
+.phone-group .input-modern { width: 100%; }
 .grid-2 { grid-template-columns: 1fr 1fr; gap: 10px; }
 .form-msg { font-size: 13px; color: #5f6368; min-height: 18px; }
 .form-msg.error { color: #c62828; }
@@ -532,19 +563,21 @@ img, video { max-width: 100%; height: auto; }
 }
 
 /* Account modal */
-.account-modal { position: fixed; inset: 0; display: none; z-index: 1500; }
+.account-modal { position: fixed; inset: 0; display: none; z-index: 1500; overflow: hidden; }
 .account-modal.show { display: block; }
-.account-dialog {
-  position: relative;
-  margin: 8vh auto 0;
-  width: 95%;
-  max-width: 720px;
-  background: #fff;
-  color: #202124;
-  border-radius: 12px;
-  box-shadow: 0 12px 32px rgba(0,0,0,.25);
-  padding: 18px 20px 16px;
-}
+.account-modal .auth-backdrop { background: transparent; }
+.account-modal::before { content: ""; position: absolute; inset: -20%; z-index: 0; background:
+    radial-gradient(520px 380px at 14% 12%, rgba(255,153,0,.24), transparent 60%),
+    radial-gradient(660px 460px at 86% 14%, rgba(99,102,241,.22), transparent 62%),
+    radial-gradient(700px 500px at 22% 88%, rgba(16,185,129,.18), transparent 58%),
+    radial-gradient(760px 520px at 84% 82%, rgba(14,165,233,.18), transparent 60%),
+    linear-gradient(135deg, #0b1220 0%, #0f172a 45%, #111827 100%);
+  filter: saturate(1.05) contrast(1.04);
+  animation: ef-aurora 28s ease-in-out infinite alternate; }
+.account-modal::after { content: ""; position: absolute; left: -30%; right: -30%; top: -60%; bottom: -60%; z-index: 0; background: radial-gradient(38% 26% at 50% 50%, rgba(255,255,255,.08), transparent 70%); transform: rotate(9deg); animation: ef-sweep 22s linear infinite; }
+.account-dialog { position: relative; z-index: 1; margin: 8vh auto 0; width: 95%; max-width: 720px; background: rgba(255,255,255,0.92); color: #0b1220; border-radius: 14px; box-shadow: 0 20px 48px rgba(0,0,0,.22), 0 10px 24px rgba(255,153,0,.10); padding: 18px 20px 16px; border: 1px solid rgba(255,255,255,0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.acct-title { background: linear-gradient(90deg, #eaf2ff, #ffffff, #dbeafe, #eaf2ff); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 220% 100%; animation: ef-text-shimmer 10s linear infinite; }
+.acct-header { color: #233876; }
 
 /* Mobile Location (Deliver) Modal */
 .loc-modal { position: fixed; inset: 0; display: none; z-index: 1450; overflow: hidden; }
@@ -750,6 +783,23 @@ img, video { max-width: 100%; height: auto; }
 /* Security Modal (elevated above Manage so it feels nested on desktop) */
 .sec-modal { position: fixed; inset: 0; display: none; z-index: 1550; }
 .sec-modal.show { display: block; }
+
+/* Orders fullscreen modal */
+.orders-modal { position: fixed; inset: 0; display: none; z-index: 1500; overflow: hidden; }
+.orders-modal.show { display: block; }
+.orders-modal .auth-backdrop { background: transparent; }
+.orders-modal::before { content: ""; position: absolute; inset: -20%; z-index: 0; background:
+  radial-gradient(40% 28% at 20% 20%, rgba(66,133,244,.18), transparent 60%),
+  radial-gradient(36% 26% at 80% 30%, rgba(16,185,129,.16), transparent 58%),
+  radial-gradient(30% 24% at 40% 80%, rgba(253,186,116,.16), transparent 58%),
+  linear-gradient(180deg, rgba(10,20,34,.78), rgba(10,20,34,.78)); }
+.orders-modal::after { content: ""; position: absolute; left: -30%; right: -30%; top: -60%; bottom: -60%; z-index: 0; background: radial-gradient(40% 28% at 50% 50%, rgba(255,255,255,.08), transparent 70%); transform: rotate(9deg); animation: ef-sweep 22s linear infinite; }
+.orders-dialog { position: relative; z-index: 1; margin: 8vh auto 0; width: 95%; max-width: 720px; background: rgba(255,255,255,0.92); color: #0b1220; border-radius: 14px; box-shadow: 0 20px 48px rgba(0,0,0,.22), 0 10px 24px rgba(255,153,0,.10); padding: 18px 20px 16px; border: 1px solid rgba(255,255,255,0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+
+@media (max-width: 900px) {
+  /* Fullscreen orders modal on phones */
+  .orders-dialog { position: fixed; inset: 0; margin: 0; width: 100%; max-width: none; height: 100vh; border-radius: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+}
 .sec-dialog { position: relative; margin: 6vh auto 0; width: 96%; max-width: 520px; background: #fff; color: #202124; border-radius: 12px; box-shadow: 0 16px 40px rgba(0,0,0,.25); padding: 18px 20px 16px; display: flex; flex-direction: column; max-height: 90vh; overflow: hidden; }
 .sec-dialog h3 { margin: 0 0 10px; font-size: 18px; }
 .sec-dialog form { flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding-right: 6px; }
@@ -949,6 +999,9 @@ img, video { max-width: 100%; height: auto; }
 .nav-drawer { position: fixed; inset: 0; display: none; z-index: 1190; pointer-events: none; }
 .nav-drawer.show { display: block; }
 .nav-drawer .nav-backdrop { position: absolute; left: 0; right: 0; top: var(--offset-top, 0); bottom: var(--offset-bottom, 0); background: rgba(0,0,0,.5); opacity: 0; transition: opacity 220ms ease-out; pointer-events: auto; }
+@media (max-width: 768px) {
+  .nav-drawer .nav-backdrop { bottom: calc(64px + var(--safe-bottom, 0px)); }
+}
 .nav-drawer .nav-panel {
   position: absolute; left: 0; top: var(--offset-top, 0); bottom: var(--offset-bottom, 0); width: 86%; max-width: 360px;
   background: rgba(255,255,255,.9); color: #0f172a; box-shadow: 8px 0 28px rgba(0,0,0,.25);
@@ -1087,9 +1140,11 @@ html.no-scroll, body.no-scroll { overflow: hidden; }
   .bottom-nav {
     position: fixed; left: 0; right: 0; bottom: 0;
     background: #ffffff; border-top: 1px solid #e0e0e0;
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
     padding: 8px 6px calc(8px + var(--safe-bottom));
-    z-index: 1200;
+  /* ensure bottom nav stays clickable above all overlays */
+  z-index: 2001;
+  pointer-events: auto;
   }
   .bn-item { display: flex; flex-direction: column; align-items: center; gap: 4px; background: transparent; border: none; color: #202124; }
   .bn-item i { font-size: 18px; }
@@ -1286,3 +1341,5 @@ html.no-scroll, body.no-scroll { overflow: hidden; }
 .addr-modal.show .addr-dialog,
 .pay-modal.show .pay-dialog,
 .sec-modal.show .sec-dialog { animation: ef-slide-up 220ms ease-out; }
+.orders-modal.show .auth-backdrop { animation: ef-fade 160ms ease-out; }
+.orders-modal.show .orders-dialog { animation: ef-slide-up 220ms ease-out; }
